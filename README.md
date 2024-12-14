@@ -9,11 +9,11 @@ cd api-one-core
 ```
 Then, you can create a virtual environment and install the dependencies:
 ```bash
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+.\.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 After installing the dependencies, you can run the backend using the following command:
 ```bash
-python server.py
+python main.py
 ```
