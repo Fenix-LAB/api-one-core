@@ -1,5 +1,6 @@
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, Response
+from fastapi.responses import JSONResponse
 
 from app.api.schemas.auth.request import (
     RefreshTokenRequest,
@@ -26,14 +27,18 @@ async def refresh_token(
     # )
     # return {"token": token.token, "refresh_token": token.refresh_token}
     print("refresh_token")
-    return {"token": "123", "refresh": "54"}
+    # return {"token": "123", "refresh": "54"}
+    return JSONResponse(status_code=200, content="refresh_token")
 
 
-# @auth_router.post("/verify")
-# @inject
-# async def verify_token(
-#     request: VerifyTokenRequest,
-#     usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
-# ):
-#     await usecase.verify_token(token=request.token)
-#     return Response(status_code=200)
+@auth_router.post("/verify")
+@inject
+async def verify_token(
+    request: VerifyTokenRequest,
+    # usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
+):
+    # await usecase.verify_token(token=request.token)
+    # return Response(status_code=200)
+
+    print("verify_token")
+    return JSONResponse(status_code=200, content="verify_token")

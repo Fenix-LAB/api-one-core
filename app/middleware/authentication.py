@@ -17,8 +17,10 @@ class AuthBackend(AuthenticationBackend):
     async def authenticate(
         self, conn: HTTPConnection
     ) -> tuple[bool, CurrentUser | None]:
+        print("Auth Backend")
         current_user = CurrentUser()
         authorization: str = conn.headers.get("Authorization")
+        print("Auth Backend", authorization)
         if not authorization:
             return False, current_user
 
@@ -43,6 +45,8 @@ class AuthBackend(AuthenticationBackend):
             return False, current_user
 
         current_user.id = user_id
+
+        print("Auth Backend", current_user)
         return True, current_user
 
 
