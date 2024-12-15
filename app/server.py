@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from config.config import config
+from app.api.appi_router import router
 # from app.auth.adapter.input.api import router as auth_router
 # from app.container import Container
 # from app.user.adapter.input.api import router as user_router
@@ -19,11 +20,12 @@ from app.middleware import (
 
 
 def init_routers(app_: FastAPI) -> None:
-    container = Container()
-    user_router.container = container
-    auth_router.container = container
-    app_.include_router(user_router)
-    app_.include_router(auth_router)
+    # container = Container()
+    # user_router.container = container
+    # auth_router.container = container
+    app_.include_router(router)
+    print("Router included")
+    # app_.include_router(auth_router)
 
 
 def init_listeners(app_: FastAPI) -> None:
@@ -83,7 +85,7 @@ def create_app() -> FastAPI:
         # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
     )
-    # init_routers(app_=app_)
+    init_routers(app_=app_)
     # init_listeners(app_=app_)
     # init_cache()
     return app_
