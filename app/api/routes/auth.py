@@ -5,7 +5,7 @@ from app.api.schemas.auth.request import (
     RefreshTokenRequest,
     VerifyTokenRequest,
 )
-from app.api.schemas.auth.reesponse import RefreshTokenResponse
+from app.api.schemas.auth.response import RefreshTokenResponse
 # from app.auth.domain.usecase.jwt import JwtUseCase
 # from app.container import Container
 

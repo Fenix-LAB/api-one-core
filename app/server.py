@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from config.config import config
-from app.api.appi_router import router
+from app.api.api_router import router
 # from app.auth.adapter.input.api import router as auth_router
 # from app.container import Container
 # from app.user.adapter.input.api import router as user_router
