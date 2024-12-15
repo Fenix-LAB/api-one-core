@@ -9,12 +9,12 @@ from config.config import config
 # from app.user.adapter.input.api import router as user_router
 # from core.exceptions import CustomException
 # from core.fastapi.dependencies import Logging
-# from core.fastapi.middlewares import (
-#     AuthBackend,
-#     AuthenticationMiddleware,
-#     ResponseLogMiddleware,
-#     SQLAlchemyMiddleware,
-# )
+from app.middleware import (
+    AuthBackend,
+    AuthenticationMiddleware,
+    ResponseLogMiddleware,
+    # SQLAlchemyMiddleware,
+)
 # from core.helpers.cache import Cache, CustomKeyMaker, RedisBackend
 
 
@@ -63,7 +63,7 @@ def make_middleware() -> list[Middleware]:
             backend=AuthBackend(),
             on_error=on_auth_error,
         ),
-        Middleware(SQLAlchemyMiddleware),
+        # Middleware(SQLAlchemyMiddleware),
         Middleware(ResponseLogMiddleware),
     ]
     return middleware
@@ -81,7 +81,7 @@ def create_app() -> FastAPI:
         docs_url=None if config.ENV == "production" else "/docs",
         redoc_url=None if config.ENV == "production" else "/redoc",
         # dependencies=[Depends(Logging)],
-        # middleware=make_middleware(),
+        middleware=make_middleware(),
     )
     # init_routers(app_=app_)
     # init_listeners(app_=app_)
