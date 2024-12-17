@@ -1,10 +1,10 @@
-from .authentication import AuthenticationMiddleware, AuthBackend
+from .authentication import AuthenticationMiddleware, OneAuthBackend
 from .response_log import ResponseLogMiddleware
 from .sqlalchemy import SQLAlchemyMiddleware
 
 __all__ = [
     "AuthenticationMiddleware",
-    "AuthBackend",
+    "OneAuthBackend",
     "SQLAlchemyMiddleware",
     "ResponseLogMiddleware",
 ]

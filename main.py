@@ -32,3 +32,14 @@ def main(env: str, debug: bool):
 
 if __name__ == "__main__":
     main()
+
+# Run the following command to start the FastAPI server:
+# python main.py
+# Run the following command to start the FastAPI server in development mode:
+# python main.py --env dev --debug
+# Run the following command to start the FastAPI server in production mode:
+# python main.py --env prod
+# Run the following command to start the FastAPI server in local mode:
+# python main.py --env local
+
+# Defaul mode is local

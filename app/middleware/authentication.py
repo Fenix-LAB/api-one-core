@@ -1,54 +1,68 @@
 import jwt
-from pydantic import BaseModel, Field
-from starlette.authentication import AuthenticationBackend
+from jwt import PyJWTError
+from typing import List, Tuple
+from starlette.middleware.authentication import AuthenticationError
+from starlette.requests import HTTPConnection
+from starlette.authentication import (
+    AuthenticationBackend,
+    AuthCredentials,
+)
 from starlette.middleware.authentication import (
     AuthenticationMiddleware as BaseAuthenticationMiddleware,
 )
-from starlette.requests import HTTPConnection
 
 from config.config import config
 
 
-class CurrentUser(BaseModel):
-    id: int = Field(None, description="ID")
+class BaseUser:
+    def __init__(self, user_id: int, username: str):
+        self.user_id = user_id
+        self.username = username
+
+    def __str__(self):
+        return self.username
 
 
-class AuthBackend(AuthenticationBackend):
-    async def authenticate(
-        self, conn: HTTPConnection
-    ) -> tuple[bool, CurrentUser | None]:
-        print("Auth Backend")
-        current_user = CurrentUser()
-        authorization: str = conn.headers.get("Authorization")
-        print("Auth Backend", authorization)
-        if not authorization:
-            return False, current_user
+class OneAuthBackend(AuthenticationBackend):
+    """Auth Backend para FastAPI con validación de token JWT."""
+
+    def __init__(self, excluded_urls: List[str] = None):
+        """
+        Args:
+            excluded_urls (List[str]): Routes excluded from authentication.
+        
+        """
+        self.excluded_urls = [] if excluded_urls is None else excluded_urls
+
+    async def authenticate(self, conn: HTTPConnection) -> Tuple[AuthCredentials, BaseUser]:
+        """
+        Authenticate the request and return the credentials and user.
+
+        Args:
+            conn (HTTPConnection): HTTP Connection object.
+
+        """
+        # Excluded Public Routes
+        if conn.url.path in self.excluded_urls:
+            print(f'Excluded URL: {conn.url.path}')
+            return AuthCredentials(scopes=[]), None
+
+        # Authorization Header
+        auth_header = conn.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            raise AuthenticationError("No token provided in the Authorization header")
+
+        token = auth_header.split(" ")[1]
 
         try:
-            scheme, credentials = authorization.split(" ")
-            if scheme.lower() != "bearer":
-                return False, current_user
-        except ValueError:
-            return False, current_user
+            payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
+            user = BaseUser(user_id=payload.get("sub"), username=payload.get("username"))
+            scopes = payload.get("scopes", []) 
+        except PyJWTError:
+            raise AuthenticationError("Invalid token provided")
 
-        if not credentials:
-            return False, current_user
-
-        try:
-            payload = jwt.decode(
-                credentials,
-                config.JWT_SECRET_KEY,
-                algorithms=[config.JWT_ALGORITHM],
-            )
-            user_id = payload.get("user_id")
-        except jwt.exceptions.PyJWTError:
-            return False, current_user
-
-        current_user.id = user_id
-
-        print("Auth Backend", current_user)
-        return True, current_user
-
+        return AuthCredentials(scopes=scopes), user
+    
 
 class AuthenticationMiddleware(BaseAuthenticationMiddleware):
     pass

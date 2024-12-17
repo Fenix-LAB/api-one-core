@@ -11,7 +11,7 @@ from app.api.api_router import router
 # from core.exceptions import CustomException
 # from core.fastapi.dependencies import Logging
 from app.middleware import (
-    AuthBackend,
+    OneAuthBackend,
     AuthenticationMiddleware,
     ResponseLogMiddleware,
     # SQLAlchemyMiddleware,
@@ -62,8 +62,8 @@ def make_middleware() -> list[Middleware]:
         ),
         Middleware(
             AuthenticationMiddleware,
-            backend=AuthBackend(),
-            on_error=on_auth_error,
+            backend=OneAuthBackend(excluded_urls=config.EXCLUDED_URLS),
+            # on_error=on_auth_error,
         ),
         # Middleware(SQLAlchemyMiddleware),
         Middleware(ResponseLogMiddleware),
@@ -84,6 +84,7 @@ def create_app() -> FastAPI:
         redoc_url=None if config.ENV == "production" else "/redoc",
         # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
+
     )
     init_routers(app_=app_)
     # init_listeners(app_=app_)
