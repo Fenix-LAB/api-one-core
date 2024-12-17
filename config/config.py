@@ -12,8 +12,9 @@ class Config(BaseSettings):
     READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi"
     JWT_SECRET_KEY: str = "your_secret_key"
     JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     SENTRY_SDN: str = ""
-    EXCLUDED_URLS: list[str] = ["/api/auth/login", "/api/auth/refresh", "/docs", "/redoc", "/openapi.json"]
+    EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
 
 
 class TestConfig(Config):

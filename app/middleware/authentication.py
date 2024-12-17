@@ -55,6 +55,7 @@ class OneAuthBackend(AuthenticationBackend):
         token = auth_header.split(" ")[1]
 
         try:
+            print(f'Token: {token}')
             payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
             user = BaseUser(user_id=payload.get("sub"), username=payload.get("username"))
             scopes = payload.get("scopes", []) 

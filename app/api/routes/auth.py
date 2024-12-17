@@ -4,11 +4,13 @@ from fastapi.responses import JSONResponse
 
 from app.api.schemas.auth.request import (
     RefreshTokenRequest,
-    VerifyTokenRequest,
+    LoginTokenRequest
 )
-from app.api.schemas.auth.response import RefreshTokenResponse
+from app.api.schemas.generic_response import ApiResponse
+from app.api.schemas.auth.response import LoginResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.middleware.authentication import OneAuthBackend
+from app.api.services.auth import create_access_token, verify_token
 # from app.auth.domain.usecase.jwt import JwtUseCase
 # from app.container import Container
 
@@ -18,21 +20,35 @@ security = HTTPBearer()
 
 @auth_router.post("/auth/login")
 @inject
-async def verify_token(
-    request: VerifyTokenRequest,
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+async def login(
+    # request: LoginTokenRequest,
+    # credentials: HTTPAuthorizationCredentials = Depends(security),
     # usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
 ):
-    # await usecase.verify_token(token=request.token)
-    # return Response(status_code=200)
+    """
+    ## DESCRIPTION
+    ### Endpoint to login, in order to get a JWT token is necessary provide a valid JWT token (from main backend).
 
-    print("verify_token")
-    return JSONResponse(status_code=200, content="verify_token")
+    ## REQUEST
+    - token: str (JWT token)
+
+    ## RESPONSE
+    - 200: Success
+    - 400: Bad Request
+    - 401: Unauthorized
+    - 403: Forbidden
+    - 500: Internal Server Error
+
+    """
+
+    token = create_access_token(data={"sub": 1, "username": "test"})
+
+    return ApiResponse[LoginResponse](data=LoginResponse(token=token), message="Login successful", status="200")
 
 
 @auth_router.post(
     "/auth/refresh",
-    response_model=RefreshTokenResponse,
+    # response_model=RefreshTokenResponse,
 )
 @inject
 async def refresh_token(

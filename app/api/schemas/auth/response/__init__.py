@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-class RefreshTokenResponse(BaseModel):
+class LoginResponse(BaseModel):
     token: str = Field(..., description="Token")
-    refresh_token: str = Field(..., description="Refresh token")
+    # refresh_token: str = Field(..., description="Refresh token")
