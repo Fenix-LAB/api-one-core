@@ -1,5 +1,6 @@
 import jwt
 from jwt import PyJWTError
+from datetime import datetime, timedelta
 from typing import List, Tuple
 from starlette.middleware.authentication import AuthenticationError
 from starlette.requests import HTTPConnection
@@ -14,13 +15,15 @@ from starlette.middleware.authentication import (
 from config.config import config
 
 
-class BaseUser:
-    def __init__(self, user_id: int, username: str):
-        self.user_id = user_id
-        self.username = username
+class BaseData:
+    def __init__(self, user_id: int, role: str, token: str):
+        self.id_client_user = user_id
+        self.role = role
+        self.token = token # New token returned to the client
+
 
     def __str__(self):
-        return self.username
+        return f"User ID: {self.id_client_user}, Role: {self.role}"
 
 
 class OneAuthBackend(AuthenticationBackend):
@@ -33,8 +36,18 @@ class OneAuthBackend(AuthenticationBackend):
         
         """
         self.excluded_urls = [] if excluded_urls is None else excluded_urls
+    
+    def generate_new_token(self, payload: dict) -> str:
+        """
+        Generate a new JWT token with an updated expiration time.
 
-    async def authenticate(self, conn: HTTPConnection) -> Tuple[AuthCredentials, BaseUser]:
+        Args:
+            payload (dict): JWT payload.
+        """
+        payload["exp"] = datetime.utcnow() + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)  # New expiration time
+        return jwt.encode(payload, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+
+    async def authenticate(self, conn: HTTPConnection) -> Tuple[AuthCredentials, BaseData]:
         """
         Authenticate the request and return the credentials and user.
 
@@ -57,12 +70,21 @@ class OneAuthBackend(AuthenticationBackend):
         try:
             print(f'Token: {token}')
             payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
-            user = BaseUser(user_id=payload.get("sub"), username=payload.get("username"))
-            scopes = payload.get("scopes", []) 
-        except PyJWTError:
+            # Generate a new token
+            new_token = self.generate_new_token(payload)
+
+            # Build BaseData object with new token
+            data = BaseData(
+                user_id=payload.get("sub"),
+                role=payload.get("role"),
+                token=new_token,  # Include the new token
+            )
+
+            scopes = payload.get("scopes", [])
+        except jwt.PyJWTError:
             raise AuthenticationError("Invalid token provided")
 
-        return AuthCredentials(scopes=scopes), user
+        return AuthCredentials(scopes=scopes), data
     
 
 class AuthenticationMiddleware(BaseAuthenticationMiddleware):

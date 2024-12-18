@@ -49,25 +49,5 @@ async def Login(
 
     # id_usuario_clente, role [admin, legal, RH, etc], tiempo de expiración
 
-    token = create_access_token(data={"sub": 1, "username": "test"})
-
+    token = create_access_token(data={"sub": 1, "role": "admin"})
     return ApiResponse[LoginResponse](Data=LoginResponse(Token=token), Message="Login successful", Status="200", Token=token)
-
-
-@auth_router.post(
-    "/auth/refresh",
-    # response_model=RefreshTokenResponse,
-)
-@inject
-async def refresh_token(
-    request: RefreshTokenRequest,
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    # usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
-):
-    # token = await usecase.create_refresh_token(
-    #     token=request.token, refresh_token=request.refresh_token
-    # )
-    # return {"token": token.token, "refresh_token": token.refresh_token}
-    print("refresh_token")
-    # return {"token": "123", "refresh": "54"}
-    return JSONResponse(status_code=200, content="refresh_token")
