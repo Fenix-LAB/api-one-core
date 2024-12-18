@@ -4,7 +4,8 @@ from pydantic import BaseModel
 T = TypeVar('T')
 
 class ApiResponse(BaseModel, Generic[T]):
-    status: str
-    message: Optional[str]
-    data: Optional[T]
+    Status: str
+    Message: Optional[str]
+    Data: Optional[T]
+    Token: Optional[str]
     

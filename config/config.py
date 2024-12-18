@@ -15,6 +15,7 @@ class Config(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     SENTRY_SDN: str = ""
     EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
+    ROUTE_PATH: str = "app/api/routes"
 
 
 class TestConfig(Config):
