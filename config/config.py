@@ -1,21 +1,22 @@
 import os
 
 from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Config(BaseSettings):
     ENV: str = "development"
     DEBUG: bool = True
-    APP_HOST: str = "0.0.0.0"
-    APP_PORT: int = 8080
-    WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi"
-    READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi"
-    JWT_SECRET_KEY: str = "your_secret_key"
-    JWT_ALGORITHM: str = "HS256"
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
-    SENTRY_SDN: str = ""
-    EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
-    ROUTE_PATH: str = "app/api/routes"
+    APP_HOST: str = os.getenv("APP_HOST", "0.0.0.0")
+    APP_PORT: int = os.getenv("APP_PORT", 8000)
+    WRITER_DB_URL: str = os.getenv("WRITER_DB_URL", "None")
+    READER_DB_URL: str = os.getenv("READER_DB_URL", "None")
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "None")
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 30)
+    EXCLUDED_URLS: list[str] = os.getenv("EXCLUDED_URLS", ["/api/auth/login", "/docs", "/redoc", "/openapi.json"])
+    ROUTE_PATH: str = os.getenv("ROUTE_PATH", "app/v1/routes")
 
 
 class TestConfig(Config):
@@ -25,9 +26,7 @@ class TestConfig(Config):
 
 class LocalConfig(Config):
     APP_HOST: str = "127.0.0.1"
-    JWT_SECRET_KEY: str = "43611869c1ed09fe5388ecbc8b3eab582f2c5c4fe22a2ed8de1fe9455c10267c"
-    JWT_ALGORITHM: str = "HS256"
-
+    
 
 class ProductionConfig(Config):
     DEBUG: bool = False
