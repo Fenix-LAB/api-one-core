@@ -20,8 +20,7 @@ class BaseData:
     def __init__(self, user_id: int, role: str, token: str):
         self.id_client_user = user_id
         self.role = role
-        self.token = token # New token returned to the client
-
+        self.token = token  # New token returned to the client
 
     def __str__(self):
         return f"User ID: {self.id_client_user}, Role: {self.role}"
@@ -34,10 +33,10 @@ class OneAuthBackend(AuthenticationBackend):
         """
         Args:
             excluded_urls (List[str]): Routes excluded from authentication.
-        
+
         """
         self.excluded_urls = [] if excluded_urls is None else excluded_urls
-    
+
     def generate_new_token(self, payload: dict) -> str:
         """
         Generate a new JWT token with an updated expiration time.
@@ -46,7 +45,9 @@ class OneAuthBackend(AuthenticationBackend):
             payload (dict): JWT payload.
         """
         logger.info("MIDDLEWARE: Generating new token")
-        payload["exp"] = datetime.utcnow() + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)  # New expiration time
+        payload["exp"] = datetime.utcnow() + timedelta(
+            minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        )  # New expiration time
         return jwt.encode(payload, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
 
     async def authenticate(self, conn: HTTPConnection) -> Tuple[AuthCredentials, BaseData]:
@@ -90,7 +91,7 @@ class OneAuthBackend(AuthenticationBackend):
             raise AuthenticationError(f"Invalid token provided")
 
         return AuthCredentials(scopes=scopes), data
-    
+
 
 class AuthenticationMiddleware(BaseAuthenticationMiddleware):
     pass

@@ -18,7 +18,7 @@ async def Create(
     request: UserRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user)
+    user_data: BaseData = Depends(get_current_user),
 ):
     """
     ## DESCRIPTION
@@ -40,5 +40,9 @@ async def Create(
 
     """
 
-    return ApiResponse[UserResponse](Data=UserResponse(**request.dict()), Message="User created successfully", Status="200", Token=user_data.token)
-    
+    return ApiResponse[UserResponse](
+        Data=UserResponse(**request.dict()),
+        Message="User created successfully",
+        Status="200",
+        Token=user_data.token,
+    )

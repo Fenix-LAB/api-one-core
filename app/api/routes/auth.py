@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from dependency_injector.wiring import inject
-from app.api.schemas.auth.request import (LoginTokenRequest)
+from app.api.schemas.auth.request import LoginTokenRequest
 from app.api.schemas.generic_response import ApiResponseNoToken
 from app.api.schemas.auth.response import LoginResponse
 from app.api.services.auth import create_access_token, verify_token
@@ -37,4 +37,6 @@ async def Login(
     # id_usuario_clente, role [admin, legal, RH, etc], tiempo de expiración
 
     token = create_access_token(data={"sub": "1", "role": "admin"})
-    return ApiResponseNoToken[LoginResponse](Data=LoginResponse(Token=token), Message="Login successful", Status="200")
+    return ApiResponseNoToken[LoginResponse](
+        Data=LoginResponse(Token=token), Message="Login successful", Status="200"
+    )

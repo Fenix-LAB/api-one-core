@@ -6,6 +6,7 @@ from logger_config import logger
 
 from config.config import config
 from app.api.api_router import router
+
 # from app.auth.adapter.input.api import router as auth_router
 # from app.container import Container
 # from app.user.adapter.input.api import router as user_router
@@ -17,6 +18,7 @@ from app.middleware import (
     ResponseLogMiddleware,
     # SQLAlchemyMiddleware,
 )
+
 # from core.helpers.cache import Cache, CustomKeyMaker, RedisBackend
 
 
@@ -57,7 +59,6 @@ def create_app() -> FastAPI:
         redoc_url=None if config.ENV == "production" else "/redoc",
         # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
-
     )
     init_routers(app_=app_)
     # init_listeners(app_=app_)

@@ -17,3 +17,9 @@ After installing the dependencies, you can run the backend using the following c
 ```bash
 python main.py
 ```
+
+## Apply black formatter
+To apply the black formatter to the code, you can run the following command:
+```bash
+black --config .\pyproject.toml .
+```

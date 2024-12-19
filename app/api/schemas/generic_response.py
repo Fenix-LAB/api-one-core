@@ -1,7 +1,8 @@
 from typing import Generic, TypeVar, Optional
 from pydantic import BaseModel
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class ApiResponse(BaseModel, Generic[T]):
     Status: str
@@ -14,4 +15,3 @@ class ApiResponseNoToken(BaseModel, Generic[T]):
     Status: str
     Message: Optional[str]
     Data: Optional[T]
-    

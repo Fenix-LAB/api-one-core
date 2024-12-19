@@ -1,4 +1,5 @@
 import logging
+
 # from logging.config import dictConfig
 
 # LOGGING_CONFIG = {
@@ -43,4 +44,4 @@ import logging
 # logger = logging.getLogger("app")
 
 
-logger = logging.getLogger('uvicorn.error')
+logger = logging.getLogger("uvicorn.error")

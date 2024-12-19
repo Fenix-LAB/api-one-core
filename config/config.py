@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config(BaseSettings):
     ENV: str = "development"
     DEBUG: bool = True
@@ -15,7 +16,9 @@ class Config(BaseSettings):
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "None")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 30)
-    EXCLUDED_URLS: list[str] = os.getenv("EXCLUDED_URLS", ["/api/auth/login", "/docs", "/redoc", "/openapi.json"])
+    EXCLUDED_URLS: list[str] = os.getenv(
+        "EXCLUDED_URLS", ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
+    )
     ROUTE_PATH: str = os.getenv("ROUTE_PATH", "app/v1/routes")
 
 
@@ -26,7 +29,7 @@ class TestConfig(Config):
 
 class LocalConfig(Config):
     APP_HOST: str = "127.0.0.1"
-    
+
 
 class ProductionConfig(Config):
     DEBUG: bool = False

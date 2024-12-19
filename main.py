@@ -17,7 +17,6 @@ from config.config import config
     is_flag=True,
     default=False,
 )
-
 def main(env: str, debug: bool):
     os.environ["ENV"] = env
     os.environ["DEBUG"] = str(debug)
