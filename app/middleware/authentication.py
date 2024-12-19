@@ -13,6 +13,7 @@ from starlette.middleware.authentication import (
 )
 
 from config.config import config
+from logger_config import logger
 
 
 class BaseData:
@@ -44,6 +45,7 @@ class OneAuthBackend(AuthenticationBackend):
         Args:
             payload (dict): JWT payload.
         """
+        logger.info("MIDDLEWARE: Generating new token")
         payload["exp"] = datetime.utcnow() + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)  # New expiration time
         return jwt.encode(payload, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
 
@@ -55,14 +57,15 @@ class OneAuthBackend(AuthenticationBackend):
             conn (HTTPConnection): HTTP Connection object.
 
         """
+        logger.info(f"MIDDLEWARE: Authenticating request to {conn.url.path}")
         # Excluded Public Routes
         if conn.url.path in self.excluded_urls:
-            print(f'Excluded URL: {conn.url.path}')
             return AuthCredentials(scopes=[]), None
 
         # Authorization Header
         auth_header = conn.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
+            logger.error("MIDDLEWARE: No token provided in the Authorization header")
             raise AuthenticationError("No token provided in the Authorization header")
 
         token = auth_header.split(" ")[1]
@@ -80,8 +83,11 @@ class OneAuthBackend(AuthenticationBackend):
             )
 
             scopes = payload.get("scopes", [])
-        except jwt.PyJWTError as e:
-            raise AuthenticationError(f"Invalid token provided - {e}")
+
+            logger.info("MIDDLEWARE: Authenticated user successfully")
+        except jwt.PyJWTError:
+            logger.error(f"MIDDLEWARE: Invalid token provided")
+            raise AuthenticationError(f"Invalid token provided")
 
         return AuthCredentials(scopes=scopes), data
     
