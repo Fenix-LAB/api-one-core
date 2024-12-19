@@ -16,7 +16,7 @@ security = HTTPBearer()
 @inject
 async def Create(
     request: UserRequest,
-    dependencies: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user)
 ):
