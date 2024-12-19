@@ -1,30 +1,17 @@
-from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, Response
-from fastapi.responses import JSONResponse
-
-from app.api.schemas.auth.request import (
-    RefreshTokenRequest,
-    LoginTokenRequest
-)
-from app.api.schemas.generic_response import ApiResponse
+from fastapi import APIRouter
+from dependency_injector.wiring import inject
+from app.api.schemas.auth.request import (LoginTokenRequest)
+from app.api.schemas.generic_response import ApiResponseNoToken
 from app.api.schemas.auth.response import LoginResponse
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from app.middleware.authentication import OneAuthBackend
 from app.api.services.auth import create_access_token, verify_token
-# from app.auth.domain.usecase.jwt import JwtUseCase
-# from app.container import Container
 
 auth_router = APIRouter()
-security = HTTPBearer()
 
 
 @auth_router.post("/auth/login")
 @inject
 async def Login(
     request: LoginTokenRequest,
-    # credentials: HTTPAuthorizationCredentials = Depends(security),
-    # usecase: JwtUseCase = Depends(Provide[Container.jwt_service]),
-    # allow: roles = Depends(allowroles(["admin", "legal", "RH"])
 ):
     """
     ## DESCRIPTION
@@ -49,5 +36,5 @@ async def Login(
 
     # id_usuario_clente, role [admin, legal, RH, etc], tiempo de expiración
 
-    token = create_access_token(data={"sub": 1, "role": "admin"})
-    return ApiResponse[LoginResponse](Data=LoginResponse(Token=token), Message="Login successful", Status="200", Token=token)
+    token = create_access_token(data={"sub": "1", "role": "admin"})
+    return ApiResponseNoToken[LoginResponse](Data=LoginResponse(Token=token), Message="Login successful", Status="200")

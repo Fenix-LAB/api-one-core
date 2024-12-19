@@ -8,4 +8,10 @@ class ApiResponse(BaseModel, Generic[T]):
     Message: Optional[str]
     Data: Optional[T]
     Token: Optional[str]
+
+
+class ApiResponseNoToken(BaseModel, Generic[T]):
+    Status: str
+    Message: Optional[str]
+    Data: Optional[T]
     

@@ -68,7 +68,6 @@ class OneAuthBackend(AuthenticationBackend):
         token = auth_header.split(" ")[1]
 
         try:
-            print(f'Token: {token}')
             payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
             # Generate a new token
             new_token = self.generate_new_token(payload)
@@ -81,8 +80,8 @@ class OneAuthBackend(AuthenticationBackend):
             )
 
             scopes = payload.get("scopes", [])
-        except jwt.PyJWTError:
-            raise AuthenticationError("Invalid token provided")
+        except jwt.PyJWTError as e:
+            raise AuthenticationError(f"Invalid token provided - {e}")
 
         return AuthCredentials(scopes=scopes), data
     

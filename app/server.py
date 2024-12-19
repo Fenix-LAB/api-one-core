@@ -24,7 +24,6 @@ def init_routers(app_: FastAPI) -> None:
     # user_router.container = container
     # auth_router.container = container
     app_.include_router(router, prefix="/api")
-    print("Router included")
     # app_.include_router(auth_router)
 
 
