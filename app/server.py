@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, Request
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from logger_config import logger
+from config.logger_config import logger
 
 from config.config import config
 from app.api.api_router import router

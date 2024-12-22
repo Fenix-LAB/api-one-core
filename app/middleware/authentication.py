@@ -13,7 +13,7 @@ from starlette.middleware.authentication import (
 )
 
 from config.config import config
-from logger_config import logger
+from config.logger_config import logger
 
 
 class BaseData:
