@@ -1,25 +1,19 @@
 import os
+import json
 
 from pydantic_settings import BaseSettings
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class Config(BaseSettings):
     ENV: str = "development"
     DEBUG: bool = True
-    APP_HOST: str = os.getenv("APP_HOST", "0.0.0.0")
-    APP_PORT: int = os.getenv("APP_PORT", 8000)
-    WRITER_DB_URL: str = os.getenv("WRITER_DB_URL", "None")
-    READER_DB_URL: str = os.getenv("READER_DB_URL", "None")
-    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "None")
-    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 30)
-    EXCLUDED_URLS: list[str] = os.getenv(
-        "EXCLUDED_URLS", ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
-    )
-    ROUTE_PATH: str = os.getenv("ROUTE_PATH", "app/v1/routes")
+    APP_HOST: str = "0.0.0.0"
+    APP_PORT: int = 8080
+    JWT_SECRET_KEY: str = "your_secret_key"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
+    ROUTE_PATH: str = "app/v1/routes"
 
 
 class TestConfig(Config):
@@ -32,7 +26,19 @@ class LocalConfig(Config):
 
 
 class ProductionConfig(Config):
-    DEBUG: bool = False
+    with open("config.json") as f:
+        production_conf = json.load(f)
+
+    DEBUG: bool = production_conf["prod"]["debug"]
+    APP_HOST: str = production_conf["prod"]["app"]["host"]
+    APP_PORT: int = production_conf["prod"]["app"]["port"]
+    JWT_SECRET: str = production_conf["prod"]["jwt"]["secret_key"]
+    JWT_ALGORITHM: str = production_conf["prod"]["jwt"]["algorithm"]
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = production_conf["prod"]["jwt"]["access_token_expire_minutes"]
+    WRITER_DB_URL: str = production_conf["prod"]["db"]["writer"]
+    READER_DB_URL: str = production_conf["prod"]["db"]["reader"]
+    EXCLUDED_URLS: list[str] = production_conf["prod"]["excluded_urls"]
+    ROUTE_PATH: str = production_conf["prod"]["route_path"]
 
 
 def get_config():
