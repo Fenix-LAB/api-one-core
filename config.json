@@ -3,7 +3,7 @@
         "debug": false,
         "app": {
             "host": "0.0.0.0",
-            "port": 8000
+            "port": "8000"
         },
         "databases": {
             "engine": "postgres",
@@ -19,7 +19,7 @@
             "access_token_expire_minutes": 15
         },
         "excluded_urls": ["/api/auth/login", "/docs", "/redoc", "/openapi.json"],
-        "route_path": "app/v1/routes",
+        "route_path": "/app/v1/routes",
         "secret_keys": {
             "key1": "value1",
             "key2": "value2"
