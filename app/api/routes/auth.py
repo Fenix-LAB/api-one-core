@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from dependency_injector.wiring import inject
-from app.api.schemas.auth.request import LoginTokenRequest
-from app.api.schemas.generic_response import ApiResponseNoToken
-from app.api.schemas.auth.response import LoginResponse
+from app.schemas.auth.request import LoginTokenRequest
+from app.schemas.generic_response import ApiResponseNoToken
+from app.schemas.auth.response import LoginResponse
 from app.services.auth import create_access_token, verify_token
 
 auth_router = APIRouter()

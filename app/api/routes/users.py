@@ -1,9 +1,9 @@
 from dependency_injector.wiring import inject
 from fastapi import APIRouter, Depends
 
-from app.api.schemas.user.request import UserRequest
-from app.api.schemas.generic_response import ApiResponse
-from app.api.schemas.user.response import UserResponse
+from app.schemas.user.request import UserRequest
+from app.schemas.generic_response import ApiResponse
+from app.schemas.user.response import UserResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.services.role_checker import RoleChecker, get_current_user
 from app.middleware.authentication import BaseData
