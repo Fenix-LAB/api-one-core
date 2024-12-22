@@ -13,16 +13,7 @@ class Config(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
-    ROUTE_PATH: str = "app/v1/routes"
-
-
-class TestConfig(Config):
-    WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
-    READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
-
-
-class LocalConfig(Config):
-    APP_HOST: str = "127.0.0.1"
+    ROUTE_PATH: str = "app/v1/"
 
 
 class ProductionConfig(Config):
@@ -39,6 +30,17 @@ class ProductionConfig(Config):
     READER_DB_URL: str = production_conf["prod"]["db"]["reader"]
     EXCLUDED_URLS: list[str] = production_conf["prod"]["excluded_urls"]
     ROUTE_PATH: str = production_conf["prod"]["route_path"]
+
+
+class TestConfig(ProductionConfig):
+    WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
+    READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
+
+
+class LocalConfig(Config):
+    APP_HOST: str = "127.0.0.1"
+    WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
+    READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
 
 
 def get_config():

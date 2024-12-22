@@ -7,11 +7,6 @@ from logger_config import logger
 from config.config import config
 from app.api.api_router import router
 
-# from app.auth.adapter.input.api import router as auth_router
-# from app.container import Container
-# from app.user.adapter.input.api import router as user_router
-# from core.exceptions import CustomException
-# from core.fastapi.dependencies import Logging
 from app.middleware import (
     OneAuthBackend,
     AuthenticationMiddleware,
@@ -19,14 +14,12 @@ from app.middleware import (
     # SQLAlchemyMiddleware,
 )
 
-# from core.helpers.cache import Cache, CustomKeyMaker, RedisBackend
-
 
 def init_routers(app_: FastAPI) -> None:
     # container = Container()
     # user_router.container = container
     # auth_router.container = container
-    app_.include_router(router, prefix="/api")
+    app_.include_router(router, prefix=config.ROUTE_PATH)
     # app_.include_router(auth_router)
 
 
