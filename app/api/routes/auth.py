@@ -3,7 +3,7 @@ from dependency_injector.wiring import inject
 from app.api.schemas.auth.request import LoginTokenRequest
 from app.api.schemas.generic_response import ApiResponseNoToken
 from app.api.schemas.auth.response import LoginResponse
-from app.api.services.auth import create_access_token, verify_token
+from app.services.auth import create_access_token, verify_token
 
 auth_router = APIRouter()
 
