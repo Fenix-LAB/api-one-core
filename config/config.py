@@ -40,8 +40,11 @@ class TestConfig(ProductionConfig):
 
 class LocalConfig(Config):
     APP_HOST: str = "127.0.0.1"
-    WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
-    READER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
+    ONE_CORE_DB_NAME: str = "one-core-db"
+    ONE_CORE_DB_USER: str = "postgres"
+    ONE_CORE_DB_PASSWORD: str = "onecore77"
+    ONE_CORE_DB_HOST: str = "localhost"
+    ONE_CORE_DB_PORT: int = 5432
 
 
 def get_config():

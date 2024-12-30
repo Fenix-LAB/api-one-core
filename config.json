@@ -14,11 +14,11 @@
                 "host": "localhost",
                 "port": 5432
             },
-            "base_de_datos_2": {
+            "database-one-core": {
                 "engine": "postgres",
-                "name": "db2",
-                "user": "user",
-                "password": "password",
+                "name": "one-core-db",
+                "user": "postgres",
+                "password": "onecore77",
                 "host": "localhost",
                 "port": 5432
             }

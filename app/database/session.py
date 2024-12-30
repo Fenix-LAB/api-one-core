@@ -33,10 +33,12 @@ class EngineType(Enum):
     WRITER = "writer"
     READER = "reader"
 
+POSTGRES_STRING_CONNECTION = f"postgresql+asyncpg://{config.ONE_CORE_DB_USER}:{config.ONE_CORE_DB_PASSWORD}@{config.ONE_CORE_DB_HOST}:{config.ONE_CORE_DB_PORT}/{config.ONE_CORE_DB_NAME}"
+
 
 engines = {
-    EngineType.WRITER: create_async_engine(config.WRITER_DB_URL, pool_recycle=3600),
-    EngineType.READER: create_async_engine(config.READER_DB_URL, pool_recycle=3600),
+    EngineType.WRITER: create_async_engine(POSTGRES_STRING_CONNECTION, pool_recycle=3600),
+    EngineType.READER: create_async_engine(POSTGRES_STRING_CONNECTION, pool_recycle=3600),
 }
 
 
