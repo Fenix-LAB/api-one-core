@@ -5,18 +5,36 @@
             "host": "0.0.0.0",
             "port": "8000"
         },
-        "databases": {
-            "engine": "postgres",
-            "name": "writer_db",
-            "user": "user",
-            "password": "password",
-            "host": "localhost",
-            "port": 5432
+        "databases": { 
+            "perfiles": {
+                "engine": "postgres",
+                "name": "perfiles_db",
+                "user": "user",
+                "password": "password",
+                "host": "localhost",
+                "port": 5432
+            },
+            "base_de_datos_2": {
+                "engine": "postgres",
+                "name": "db2",
+                "user": "user",
+                "password": "password",
+                "host": "localhost",
+                "port": 5432
+            }
         },
         "jwt": {
-            "secret_key": "your_secret_key",
-            "algorithm": "HS256",
-            "access_token_expire_minutes": 15
+            "amazon": {
+                "secret_key": "your_secret_key",
+                "algorithm": "HS256",
+                "access_token_expire_minutes": 15
+            },
+
+            "google": {
+                "secret_key": "your_secret_key",
+                "algorithm": "HS256",
+                "access_token_expire_minutes": 15
+            }
         },
         "excluded_urls": ["/api/auth/login", "/docs", "/redoc", "/openapi.json"],
         "route_path": "/app/v1/routes",
