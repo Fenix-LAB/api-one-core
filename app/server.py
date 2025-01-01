@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI, Request
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from app.database.populate import create_tables
 from config.logger_config import logger
 
 from config.config import config
@@ -54,6 +55,7 @@ def create_app() -> FastAPI:
         middleware=make_middleware(),
     )
     init_routers(app_=app_)
+    app_.add_event_handler("startup", create_tables)
     # init_listeners(app_=app_)
     # init_cache()
     logger.info("App created")
