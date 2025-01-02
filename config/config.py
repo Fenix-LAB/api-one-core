@@ -19,8 +19,6 @@ with open("config.json") as f:
         production_conf = json.load(f)
 
 class ProductionConfig(Config):
-    
-
     DEBUG: bool = production_conf["prod"]["debug"]
     APP_HOST: str = production_conf["prod"]["app"]["host"]
     APP_PORT: str = production_conf["prod"]["app"]["port"]
@@ -45,6 +43,7 @@ class LocalConfig(Config):
     ONE_CORE_DB_PASSWORD: str = "onecore77"
     ONE_CORE_DB_HOST: str = "localhost"
     ONE_CORE_DB_PORT: int = 5432
+    EXCLUDED_URLS: list[str] = ["/app/v1/auth/login", "/docs", "/redoc", "/openapi.json"]
 
 
 def get_config():
