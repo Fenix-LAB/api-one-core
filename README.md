@@ -23,3 +23,19 @@ To apply the black formatter to the code, you can run the following command:
 ```bash
 black --config .\pyproject.toml .
 ```
+
+## Create database backup
+To create a backup of the database, first enter the database container:
+```bash
+docker exec -it <hash> bash
+```
+Then, you can run the following command to create a backup of the database:
+```bash
+pg_dump -U postgres one-core-db > /var/lib/postgresql/data/one-core-db-backup.sql
+```
+Finally, you can copy the backup to your local machine using the following command (outside the container):
+```bash
+docker cp <hash>:/var/lib/postgresql/data/one-core-db-backup.sql .
+```
+
+On my end I have a volume mounted to the container so I don't need to copy the backup to my local machine. I can just copy it from the volume
