@@ -46,7 +46,7 @@ def make_middleware() -> list[Middleware]:
 
 
 def create_app() -> FastAPI:
-    logger.info(f"Application One Core - env: {config.ENV}")
+    logger.info(f"SERVER: Application One Core - env: {config.ENV}")
     app_ = FastAPI(
         title="one-core",
         description="One Core API",
@@ -58,13 +58,13 @@ def create_app() -> FastAPI:
     )
     init_routers(app_=app_)
     # app_.add_event_handler("startup", create_tables)
-    logger.info("Event 'start up'")
+    logger.info("SERVER: Event 'start up'")
 
     @app_.on_event("startup")
     async def on_startup():
         await create_tables(engine)
 
-    logger.info("App created")
+    logger.info("SERVER: App created")
     # await create_tables(engine)
     # init_listeners(app_=app_)
     # init_cache()
