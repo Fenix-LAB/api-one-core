@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 from . import Base
 
@@ -12,7 +13,9 @@ class Requirement(Base):
     is_critical = Column(Boolean, default=False)
     verification_status = Column(String, nullable=False)  # Ejemplo: "Pending", "Approved"
     sent_date = Column(DateTime, nullable=False)
+    due_date = Column(DateTime, nullable=True)  # Nueva columna para fecha de vencimiento
     responsible_id = Column(Integer, ForeignKey("responsables.id"))
+    findings = relationship("Finding", back_populates="requirement")
 
     def to_dict(self):
         return {
@@ -23,5 +26,6 @@ class Requirement(Base):
             "is_critical": self.is_critical,
             "verification_status": self.verification_status,
             "sent_date": self.sent_date,
+            "due_date": self.due_date,
             "responsible_id": self.responsible_id
         }
