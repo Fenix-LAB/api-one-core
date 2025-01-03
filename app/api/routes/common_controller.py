@@ -1,12 +1,18 @@
 from dependency_injector.wiring import inject
 from fastapi import APIRouter, Depends
 
-from app.schemas.user.request import UserRequest
 from app.schemas.generic_response import ApiResponse
-from app.schemas.user.response import UserResponse
+from app.schemas.generic_list import ListResponse
+
+from app.schemas.responsable.request import ResponsableRequest
+from app.schemas.responsable.response import ResponsableResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.services.role_checker import RoleChecker, get_current_user
 from app.middleware.authentication import BaseData
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.database.session import get_db_session
+from app.services.responsable_service import fetch_responsables
+
 
 auth_router = APIRouter()
 security = HTTPBearer()
@@ -15,17 +21,25 @@ security = HTTPBearer()
 @auth_router.post("/get_responsable")
 @inject
 async def GetResponsable(
-    # request: UserRequest,
+    request: ResponsableRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     ## DESCRIPTION
     ### Endpoint to get all responsables.
 
     ## REQUEST
-    NONE: No request parameters
+    ### page
+    #### Type: integer
+    #### Description: The page number to retrieve. Starts at 1 and increments to access subsequent pages. Each page contains a subset of records determined by page_size.
+
+    ### page_size
+    #### Type: integer
+    #### Description: The number of records to retrieve per page. Limits the results of the query. Must be between 1 and 100 (depending on your validation logic).
+
 
     ## RESPONSE
     - 200: Success
@@ -35,3 +49,34 @@ async def GetResponsable(
     - 500: Internal Server Error
 
     """
+
+    page = request.page
+    page_size = request.page_size
+
+    responsables, total_records = await fetch_responsables(db_session, page, page_size)
+
+    responsable_responses = [
+        ResponsableResponse(
+            id=responsables.id,
+            name=responsables.name,
+            area_code=responsables.area_code,
+        )
+        for responsables in responsables
+    ]
+
+    total_pages = (total_records + page_size - 1) // page_size
+
+    response = ApiResponse(
+        Status='200',
+        Message="Success",
+        Data=ListResponse(
+            current_page=page,
+            page_size=page_size,
+            total_pages=total_pages,
+            total_records=total_records,
+            data=responsable_responses,
+        ),
+        Token=user_data.token,
+    )
+
+    return response
