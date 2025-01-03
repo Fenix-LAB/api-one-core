@@ -35,11 +35,11 @@ async def GetResponsable(
     ### Endpoint to get all responsables.
 
     ## REQUEST
-    ### page
+    - page
     #### Type: integer
     #### Description: The page number to retrieve. Starts at 1 and increments to access subsequent pages. Each page contains a subset of records determined by page_size.
 
-    ### page_size
+    - page_size
     #### Type: integer
     #### Description: The number of records to retrieve per page. Limits the results of the query. Must be between 1 and 100 (depending on your validation logic).
 
