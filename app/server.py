@@ -13,8 +13,6 @@ from app.database.seeder import seed_database
 from app.middleware import (
     OneAuthBackend,
     AuthenticationMiddleware,
-    ResponseLogMiddleware,
-    # SQLAlchemyMiddleware,
 )
 
 
@@ -38,10 +36,7 @@ def make_middleware() -> list[Middleware]:
         Middleware(
             AuthenticationMiddleware,
             backend=OneAuthBackend(excluded_urls=config.EXCLUDED_URLS),
-            # on_error=on_auth_error,
         ),
-        # Middleware(SQLAlchemyMiddleware),
-        Middleware(ResponseLogMiddleware),
     ]
     return middleware
 
