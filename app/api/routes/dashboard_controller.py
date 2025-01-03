@@ -9,12 +9,12 @@ from app.middleware.authentication import BaseData
 from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
-from app.schemas.generic_list import ListResponse
 from app.schemas.requirements.response import RequerementsObligationsResponse
-from app.schemas.responsable.request import ResponsableRequest
 
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
+
+from config.logger_config import logger
 
 
 app = APIRouter()
@@ -63,7 +63,7 @@ async def GetRequirementObligation(
         )
     
     except Exception as e:
-        print(f'Error: {e}')
+        logger.error(f"ENDPOINT /requirements/get_obligations: {e}")
         return ApiResponse(
             Status="500",
             Message="Internal Server Error",

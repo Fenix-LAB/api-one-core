@@ -16,6 +16,8 @@ from app.schemas.responsable.request import ResponsableRequest
 from app.services.responsable_service import fetch_responsables
 from app.services.role_checker import RoleChecker, get_current_user
 
+from config.logger_config import logger
+
 
 app = APIRouter()
 security = HTTPBearer()
@@ -83,7 +85,8 @@ async def GetResponsable(
             Token=user_data.token,
         )
     
-    except Exception:
+    except Exception as e:
+        logger.error(f'ENDPOINT /get_responsable: {e}')
         return ApiResponse(
             Status='500',
             Message="Internal Server Error",
