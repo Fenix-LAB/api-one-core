@@ -7,19 +7,18 @@ class Evidence(Base):
     __tablename__ = "evidences"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    requirement_id = Column(Integer, ForeignKey("requirements.id"))
     file_name = Column(String, nullable=False)
     file_url = Column(String, nullable=False)
     file_size = Column(Integer, nullable=False)
-    file_extension = Column(String, nullable=False)
-    requirement = relationship("Requirement")
+    requirement_id = Column(Integer, ForeignKey("requirements.id"))
+    requirement = relationship("Requirement", back_populates="evidences")
 
     def to_dict(self):
         return {
             "id": self.id,
-            "requirement_id": self.requirement_id,
             "file_name": self.file_name,
             "file_url": self.file_url,
             "file_size": self.file_size,
-            "file_extension": self.file_extension
+            "requirement_id": self.requirement_id,
+            "requirement": self.requirement.to_dict()
         }

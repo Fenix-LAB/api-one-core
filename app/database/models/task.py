@@ -7,20 +7,18 @@ class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    area = Column(String, nullable=False)  # Ejemplo: "finance", "legal"
-    assigned = Column(Integer, default=0)
-    completed = Column(Integer, default=0)
-    risk_level = Column(String, nullable=False)  # Ejemplo: "low", "medium", "high"
-    user = relationship("User", back_populates="tasks")
+    area = Column(String, nullable=False)
+    assigned_to = Column(Integer, ForeignKey("users.id"))
+    risk_level = Column(String, nullable=False)  # Example: Low, Medium, High
+    status = Column(String, nullable=False)
+    user = relationship("User")
 
     def to_dict(self):
         return {
             "id": self.id,
-            "user_id": self.user_id,
             "area": self.area,
-            "assigned": self.assigned,
-            "completed": self.completed,
+            "assigned_to": self.assigned_to,
             "risk_level": self.risk_level,
+            "status": self.status,
             "user": self.user.to_dict()
         }

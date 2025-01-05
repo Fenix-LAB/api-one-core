@@ -7,15 +7,17 @@ class Provider(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
-    country = Column(String, nullable=False)
-    operations_value = Column(Float, nullable=True)
+    rfc = Column(String, nullable=False)
+    value_operations = Column(Float, nullable=True)
     positive_opinion = Column(Boolean, default=False)
+    virtual_operations = Column(Boolean, default=False)
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
-            "country": self.country,
-            "operations_value": self.operations_value,
-            "positive_opinion": self.positive_opinion
+            "rfc": self.rfc,
+            "value_operations": self.value_operations,
+            "positive_opinion": self.positive_opinion,
+            "virtual_operations": self.virtual_operations
         }

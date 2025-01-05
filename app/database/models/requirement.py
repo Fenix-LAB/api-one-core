@@ -7,25 +7,20 @@ class Requirement(Base):
     __tablename__ = "requirements"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    section_code = Column(String, nullable=False)  # Ejemplo: "Personal", "Fiscal"
-    elements = Column(String, nullable=False)
-    expiration = Column(String, nullable=True)  # Ejemplo: "30 días"
-    is_critical = Column(Boolean, default=False)
-    verification_status = Column(String, nullable=False)  # Ejemplo: "Pending", "Approved"
-    sent_date = Column(DateTime, nullable=False)
-    due_date = Column(DateTime, nullable=True)  # Nueva columna para fecha de vencimiento
-    responsible_id = Column(Integer, ForeignKey("responsables.id"))
-    findings = relationship("Finding", back_populates="requirement")
+    section_code = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    critical = Column(Boolean, default=False)
+    status = Column(String, nullable=False)
+    due_date = Column(DateTime, nullable=True)
+    evidences = relationship("Evidence", back_populates="requirement")
 
     def to_dict(self):
         return {
             "id": self.id,
             "section_code": self.section_code,
-            "elements": self.elements,
-            "expiration": self.expiration,
-            "is_critical": self.is_critical,
-            "verification_status": self.verification_status,
-            "sent_date": self.sent_date,
+            "description": self.description,
+            "critical": self.critical,
+            "status": self.status,
             "due_date": self.due_date,
-            "responsible_id": self.responsible_id
+            "evidences": [evidence.to_dict() for evidence in self.evidences]
         }

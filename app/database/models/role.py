@@ -8,12 +8,13 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, unique=True, nullable=False)
-    description = Column(String, nullable=True)
+    description = Column(String)
     users = relationship("User", back_populates="role")
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "users": [user.to_dict() for user in self.users]
         }

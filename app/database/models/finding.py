@@ -8,14 +8,13 @@ class Finding(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(String, nullable=False)
-    name = Column(String, nullable=False)
-    requirement_id = Column(Integer, ForeignKey("requirements.id"))  # Relación con Requirement
-    requirement = relationship("Requirement", back_populates="findings")
+    description = Column(String, nullable=False)
+    recommendation = Column(String)
 
     def to_dict(self):
         return {
             "id": self.id,
             "code": self.code,
-            "name": self.name,
-            "requirement_id": self.requirement_id
+            "description": self.description,
+            "recommendation": self.recommendation
         }
