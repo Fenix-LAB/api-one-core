@@ -498,14 +498,18 @@ async def getSolicitudID(
     ### Endpoint to get a request by id.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Elemento
+    - CaseNumber
+    - Cliente
+    - Status
+    - FechaRevision
+    - AreaRols
+    - Responsables
 
     """
 
