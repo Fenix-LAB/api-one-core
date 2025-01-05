@@ -21,7 +21,7 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("dashboard/requirements/get_obligations")
+@app.post("dashboard/requirements_get_obligations")
 @inject
 async def GetRequirementObligation(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -34,14 +34,13 @@ async def GetRequirementObligation(
     ### Endpoint to get a count of requirements obligations.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Pendientes
+    - Proximos
+    - Hallazgos
 
     """
 
@@ -85,14 +84,11 @@ async def getGetExpedienteCiva(
     ### Endpoint to get a count of expediente civa.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Actualizacion (datetime)
 
     """
 
@@ -128,14 +124,11 @@ async def getTotalSolicitudesRevisor(
     ### Endpoint to get a count of expediente civa.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Solicitudes
 
     """
 
@@ -174,11 +167,13 @@ async def getNotificaciones(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Titulo
+    - Referencia
+    - Estado
+    - Descripcion
+    - Fecha
+    - EsError
 
     """
 
@@ -214,14 +209,28 @@ async def getDonutPanel(
     ### Endpoint to get a count of expediente civa.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
+    - Type
+        - Expediente
+        - Requerimiento
+        - Verificacion
+        - TareasPendientes
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ColorCode
+        - Green
+        - Red
+        - Orange
+    - NombreCode
+        - Completado
+        - Pendiente
+        - Hallazgos
+        - Bajo
+        - Medio
+        - Alto
+    - Porcentaje
+    - Cantidad
 
     """
 
@@ -257,14 +266,18 @@ async def getTareasResponsable(
     ### Endpoint to get a count of expediente civa.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Area
+    - Usuario
+    - Asignadas
+    - Completadas
+    - RiesgoCode
+        - Alto
+        - Medio
+        - Bajo
 
     """
 
