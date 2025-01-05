@@ -33,14 +33,16 @@ async def getSectionList(
     ### Endpoint to get a list of sections.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Code
+    - Cantidad
+    - Total
+    - ProximosVencer
+    - Selected
+    - Enable
 
     """
 
@@ -76,14 +78,18 @@ async def getRequerimientosList(
     ### Endpoint to get a list of requirements.
 
     ## REQUEST
-    - Empty Request
+    - Code
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Verificacion
+    - Usuario
+    - Elementos
+    - Vencimiento
+    - FechaEnvio
+    - EsCritico
 
     """
 
@@ -118,14 +124,24 @@ async def getEvidenciaID(
     ### Endpoint to get a evidence id.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Elemento
+    - CaseNumber
+    - Status
+    - FechaInicio
+    - FechaVencimiento
+    - ProximoVencer
+    - AreaRols
+    - Responsables
+    - Archivos
+    - Ubicacion
+    - Comentarios
+    - HallazgoComentarios
+    - HallazgoRecomendaciones
 
     """
 
@@ -161,14 +177,12 @@ async def getHallazgosList(
     ### Endpoint to get a list of findings.
 
     ## REQUEST
-    - Empty Request
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Code
+    - Nombre
 
     """
 
@@ -301,14 +315,14 @@ async def getSolicitudesSectionList(
     ### Endpoint to save a finding.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Code
+    - Cantidad
+    - Total
+    - CantidadSolicitudes
 
     """
 
@@ -344,14 +358,18 @@ async def getSolicitudesList(
     ### Endpoint to get a list of requests.
 
     ## REQUEST
-    - Empty Request
+    - Code
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Verificacion
+    - Usuario
+    - Elementos
+    - Vencimiento
+    - FechaEnvio
+    - EsCritico
 
     """
 
@@ -387,14 +405,18 @@ async def getSolicitudID(
     ### Endpoint to get a request by id.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Elemento
+    - CaseNumber
+    - Cliente
+    - Status
+    - FechaRevision
+    - AreaRols
+    - Responsables
 
     """
 
