@@ -32,14 +32,14 @@ async def getSectionList(
     ### Endpoint to get a list of sections.
 
     ## REQUEST
-    - Empty Request
+    - DateIni
+    - DateEnd
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Code
+    - Cantidad
+    - Total
+    - Selected
 
     """
 
@@ -77,11 +77,24 @@ async def getRazonSocialHistoricoList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - IsCompany
+    - Name
+    - RFC
+    - Folio
+    - MovementDate
+    - DeedDate
+    - Fedatario
+    - Notary
+    - Effect
+        - RazonSocial
+        - Fusion
+        - Escision
+        - CambioObjeto
+        - Estatutos
+    - Notice
+    - NoticeDate
 
     """
 
@@ -117,7 +130,19 @@ async def saveRazonSocial(
     ### Endpoint to save social reason.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CaseNumber
+    - IsCompany
+    - Name
+    - RFC
+    - Folio
+    - MovementDate
+    - DeedDate
+    - Fedatario
+    - Notary
+    - Effect
+    - Notice
+    - NoticeDate
 
     ## RESPONSE
     - 200: Success
@@ -160,14 +185,12 @@ async def getHallazgosList(
     ### Endpoint to get findings list.
 
     ## REQUEST
-    - Empty Request
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - Code
+    - Nombre
 
     """
 
@@ -203,14 +226,34 @@ async def getEvidenciaID(
     ### Endpoint to get findings list.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CodeSection
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - Fecha
+    - AreaRole
+        - Code
+            - Administrador
+            - Rrhh
+            - Finanzas
+            - Fiscal
+            - Comex
+            - Legal
+            - Revisor
+        - Name
+    - Responsables
+        - ID
+        - Nombre
+        - AreaCode
+    - Recomendaciones
+    - Cliente
+    - Hallazgo
+        - ID
+        - Code
+        - Nombre
+    - HallazgoComentarios
 
     """
 
@@ -246,7 +289,14 @@ async def saveEvidencia(
     ### Endpoint to save evidence.
 
     ## REQUEST
-    - Empty Request
+    - ID
+    - CodeSection
+    - IsHallazgo
+    - AreaRols
+    - Responsables
+    - Recomendaciones
+    - Hallazgo
+    - HallazgoComentarios
 
     ## RESPONSE
     - 200: Success
@@ -291,11 +341,8 @@ async def getPaises(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - PaisCode
+    - TelefonoCode
 
     """
 
