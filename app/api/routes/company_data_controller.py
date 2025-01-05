@@ -378,14 +378,12 @@ async def getPaisEstados(
     Maybe a good idea to retrieve this info by each country is use a third party API.
 
     ## REQUEST
-    - Empty Request
+    - PaisCode
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - PaisCode
+    - EstadoCode
+    - EstadoName
 
     """
 
@@ -423,11 +421,27 @@ async def getClienteProveedorList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - IsCompany
+    - Name
+    - Tipo
+    - ApellidoPaterno
+    - ApellidoMaterno
+    - TipoMovimiento
+    - FechaMovimiento
+    - Aviso
+    - PaisCode
+    - EstadoCode
+    - EstadoNombre
+    - Municipio
+    - Localidad
+    - Colonia
+    - Calle
+    - NumeroExterior
+    - NumeroInterior
+    - CP
+    - Telefono
 
     """
 
@@ -526,11 +540,16 @@ async def getProveedorNacionalList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - RFC
+    - ValorOperaciones
+    - Porcentaje
+    - IsOpinionPositiva
+    - IsOperacionesVirtuales
+    - FechaMovimiento
+    - Aviso
+    - FechaAviso
 
     """
 
@@ -620,11 +639,8 @@ async def getCaracterTipos(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - Code
+    - Description
 
     """
 
@@ -662,11 +678,23 @@ async def getSocioAccionistaList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - IsCompany
+    - Nombre
+    - RFC
+    - CaracterCode
+    - CaracterDescripcion
+    - IsObligadoTributar
+    - NombreEmpresa
+    - TipoMovimiento
+    - EscrituraPublica
+    - FechaEscritura
+    - Fedatario
+    - NumeroNotario
+    - EfectoEscrituraPublica
+    - Aviso
+    - FechaAviso
 
     """
 
@@ -762,11 +790,45 @@ async def getLegalUsoList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
+    - DomicilioAcreditacion
+        - Arrendador
+        - Aviso
+        - Calle
+        - Colonia
+        - CP
+        - Municipio
+        - EstadoCode
+        - EstadoNombre
+        - PaisCode
+        - Localidad
+        - NumeroExterior
+        - NumeroInterior
+        - Arrendatario
+        - FechaAviso
+        - FechaInicioVigencia
+        - FechaVencimiento
+    - DomicilioNuevo
+        - Arrendador
+        - Aviso
+        - Calle
+        - Colonia
+        - CP
+        - Municipio
+        - EstadoCode
+        - EstadoNombre
+        - PaisCode
+        - Localidad
+        - NumeroExterior
+        - NumeroInterior
+        - Arrendatario
+        - FechaAviso
+        - FechaInicioVigencia
+        - FechaVencimiento
+        - RatificarDomicilio
+        - RFC
+        - TipoDocumento
 
     """
 
@@ -789,7 +851,7 @@ async def getLegalUsoList(
         )
     
     
-@app.post("/company_data/get_legal_use")
+@app.post("/company_data/save_legal_use")
 @inject
 async def saveLegalUso(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -802,7 +864,43 @@ async def saveLegalUso(
     ### Endpoint to get a legal use.
 
     ## REQUEST
-    - Empty Request
+    - DomicilioAcreditacion
+        - Arrendador
+        - Aviso
+        - Calle
+        - Colonia
+        - CP
+        - Municipio
+        - EstadoCode
+        - EstadoNombre
+        - PaisCode
+        - Localidad
+        - NumeroExterior
+        - NumeroInterior
+        - Arrendatario
+        - FechaAviso
+        - FechaInicioVigencia
+        - FechaVencimiento
+    - DomicilioNuevo
+        - Arrendador
+        - Aviso
+        - Calle
+        - Colonia
+        - CP
+        - Municipio
+        - EstadoCode
+        - EstadoNombre
+        - PaisCode
+        - Localidad
+        - NumeroExterior
+        - NumeroInterior
+        - Arrendatario
+        - FechaAviso
+        - FechaInicioVigencia
+        - FechaVencimiento
+        - RatificarDomicilio
+        - RFC
+        - TipoDocumento
 
     ## RESPONSE
     - 200: Success
@@ -848,11 +946,8 @@ async def getEnlacesOperativosList(
     - Empty Request
 
     ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
+    - ID
+    - CaseNumber
 
     """
 
