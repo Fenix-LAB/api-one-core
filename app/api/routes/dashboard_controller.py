@@ -8,8 +8,13 @@ from app.middleware.authentication import BaseData
 
 from app.database.session import get_db_session
 
+from app.schemas.generic.date_request import DateRequest
+
 from app.schemas.generic_response import ApiResponse
-from app.schemas.requirements.response import RequerementsObligationsResponse
+from app.schemas.dashboard import (
+    ExpedienteCivaResponse,
+    RequirementObligationsResponse,
+)
 
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
@@ -24,6 +29,7 @@ security = HTTPBearer()
 @app.post("dashboard/requirements_get_obligations")
 @inject
 async def GetRequirementObligation(
+    request: DateRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -48,7 +54,7 @@ async def GetRequirementObligation(
 
         pending, near_due, findings = await get_requerimiento_obligaciones(db_session)
 
-        response = RequerementsObligationsResponse(
+        response = RequirementObligationsResponse(
             Pending=pending, NearDue=near_due, Findings=findings
         )
 
@@ -69,6 +75,7 @@ async def GetRequirementObligation(
 @app.post("/dashboard/get_expediente_civa")
 @inject
 async def getGetExpedienteCiva(
+    request: DateRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
