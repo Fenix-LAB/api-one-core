@@ -10,8 +10,8 @@ from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
 from app.schemas.generic_list import ListResponse
-from app.schemas.responsable.response import ResponsableResponse
-from app.schemas.responsable.request import ResponsableRequest
+from app.schemas.common.response import ResponsableResponse
+from app.schemas.common.request import ResponsableRequest
 
 from app.services.responsable_service import fetch_responsables
 from app.services.role_checker import RoleChecker, get_current_user
