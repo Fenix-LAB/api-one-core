@@ -20,6 +20,7 @@ from config.logger_config import logger
 app = APIRouter()
 security = HTTPBearer()
 
+
 @app.post("requirements/get_section_list")
 @inject
 async def getSectionList(
@@ -47,21 +48,15 @@ async def getSectionList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_section_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -94,23 +89,18 @@ async def getRequerimientosList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_requerments_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("requirements/get_evidence_id")
 @inject
 async def getEvidenciaID(
@@ -146,23 +136,17 @@ async def getEvidenciaID(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_evience_id: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/get_finding_list")
 @inject
@@ -187,23 +171,17 @@ async def getHallazgosList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_finding_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/save_evidence")
 @inject
@@ -235,23 +213,17 @@ async def saveEvidencia(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/save_evidence: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/save_finding")
 @inject
@@ -284,23 +256,17 @@ async def saveHallazgo(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/save_finding: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/get_section_request_list")
 @inject
@@ -327,23 +293,17 @@ async def getSolicitudesSectionList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_section_request_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/get_request_list")
 @inject
@@ -374,23 +334,17 @@ async def getSolicitudesList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_request_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/get_request_by_id")
 @inject
@@ -421,23 +375,17 @@ async def getSolicitudID(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_request_by_id: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/=save_request")
 @inject
@@ -467,23 +415,17 @@ async def saveSolicitud(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/gsave_request: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("requirements/get_request_by_id")
 @inject
@@ -514,19 +456,13 @@ async def getSolicitudID(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /requirements/get_request_by_id: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )

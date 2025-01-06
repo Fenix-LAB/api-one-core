@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class Request(Base):
     __tablename__ = "requests"
 
@@ -21,5 +22,5 @@ class Request(Base):
             "status": self.status,
             "review_date": self.review_date,
             "case_number": self.case_number,
-            "requirement_id": self.requirement_id
+            "requirement_id": self.requirement_id,
         }

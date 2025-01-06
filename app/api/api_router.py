@@ -1,6 +1,12 @@
 from fastapi import APIRouter, status
 
-from .routes import auth, common_controller, dashboard_controller, company_data_controller, requirements_controller
+from .routes import (
+    auth,
+    common_controller,
+    dashboard_controller,
+    company_data_controller,
+    requirements_controller,
+)
 
 router = APIRouter()
 

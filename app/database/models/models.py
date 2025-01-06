@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
 
+
 # Tabla de usuarios
 class User(Base):
     __tablename__ = "users"
@@ -14,6 +15,7 @@ class User(Base):
     role = relationship("Role", back_populates="users")
     tasks = relationship("Task", back_populates="user")
 
+
 # Tabla de roles
 class Role(Base):
     __tablename__ = "roles"
@@ -23,6 +25,7 @@ class Role(Base):
     description = Column(String, nullable=True)
     users = relationship("User", back_populates="role")
 
+
 # Tabla de responsables
 class Responsable(Base):
     __tablename__ = "responsables"
@@ -30,6 +33,7 @@ class Responsable(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     area_code = Column(String, nullable=False)  # Ejemplo: "admin", "finance", etc.
+
 
 # Tabla de notificaciones
 class Notification(Base):
@@ -41,6 +45,7 @@ class Notification(Base):
     status = Column(String, nullable=False)  # Ejemplo: "approved", "pending", etc.
     created_at = Column(DateTime, nullable=False)
     is_error = Column(Boolean, default=False)
+
 
 # Tabla de tareas
 class Task(Base):
@@ -54,6 +59,7 @@ class Task(Base):
     risk_level = Column(String, nullable=False)  # Ejemplo: "low", "medium", "high"
     user = relationship("User", back_populates="tasks")
 
+
 # Tabla de empresas
 class Company(Base):
     __tablename__ = "companies"
@@ -64,6 +70,7 @@ class Company(Base):
     case_number = Column(Integer, nullable=True)
     creation_date = Column(DateTime, nullable=False)
     shareholders = relationship("Shareholder", back_populates="company")
+
 
 # Tabla de socios y accionistas
 class Shareholder(Base):
@@ -76,6 +83,7 @@ class Shareholder(Base):
     is_company = Column(Boolean, default=False)
     company = relationship("Company", back_populates="shareholders")
 
+
 # Tabla de proveedores
 class Provider(Base):
     __tablename__ = "providers"
@@ -86,6 +94,7 @@ class Provider(Base):
     operations_value = Column(Float, nullable=True)
     positive_opinion = Column(Boolean, default=False)
 
+
 # Tabla de países
 class Country(Base):
     __tablename__ = "countries"
@@ -93,6 +102,7 @@ class Country(Base):
     code = Column(String, primary_key=True)
     name = Column(String, nullable=False)
     phone_code = Column(String, nullable=True)
+
 
 # Tabla de requerimientos
 class Requirement(Base):
@@ -107,6 +117,7 @@ class Requirement(Base):
     sent_date = Column(DateTime, nullable=False)
     responsible_id = Column(Integer, ForeignKey("responsables.id"))
 
+
 # Tabla de evidencias
 class Evidence(Base):
     __tablename__ = "evidences"
@@ -119,6 +130,7 @@ class Evidence(Base):
     file_extension = Column(String, nullable=False)
     requirement = relationship("Requirement")
 
+
 # Tabla de hallazgos
 class Finding(Base):
     __tablename__ = "findings"
@@ -126,6 +138,7 @@ class Finding(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(String, nullable=False)
     name = Column(String, nullable=False)
+
 
 # Tabla de solicitudes
 class Request(Base):

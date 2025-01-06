@@ -11,10 +11,11 @@ role_data = [
     {"name": "Legal", "description": ""},
 ]
 
+
 async def seed_database(engine):
     """
     Method to seed the database
-    
+
     """
     logger.info("SQL: Seeding database")
     async with engine.begin() as conn:
@@ -22,10 +23,3 @@ async def seed_database(engine):
             await conn.execute(Role.__table__.insert().values(role))
 
     logger.info("SQL: Database seeded")
-    
-
-
-
-    
-
-

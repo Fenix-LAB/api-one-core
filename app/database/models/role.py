@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, declarative_base
 
 from . import Base
 
+
 class Role(Base):
     __tablename__ = "roles"
 
@@ -16,5 +17,5 @@ class Role(Base):
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "users": [user.to_dict() for user in self.users]
+            "users": [user.to_dict() for user in self.users],
         }

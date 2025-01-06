@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class Company(Base):
     __tablename__ = "companies"
 
@@ -16,5 +17,5 @@ class Company(Base):
             "id": self.id,
             "name": self.name,
             "rfc": self.rfc,
-            "shareholders": [shareholder.to_dict() for shareholder in self.shareholders]
+            "shareholders": [shareholder.to_dict() for shareholder in self.shareholders],
         }

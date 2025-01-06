@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 
 from . import Base
 
+
 class Client(Base):
     __tablename__ = "clients"
 
@@ -10,8 +11,4 @@ class Client(Base):
     contact_info = Column(String, nullable=True)
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "contact_info": self.contact_info
-        }
+        return {"id": self.id, "name": self.name, "contact_info": self.contact_info}

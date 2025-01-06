@@ -73,7 +73,7 @@ async def GetResponsable(
         total_pages = (total_records + page_size - 1) // page_size
 
         return ApiResponse(
-            Status='200',
+            Status="200",
             Message="Success",
             Data=ListResponse(
                 current_page=page,
@@ -84,11 +84,11 @@ async def GetResponsable(
             ),
             Token=user_data.token,
         )
-    
+
     except Exception as e:
-        logger.error(f'ENDPOINT /get_responsable: {e}')
+        logger.error(f"ENDPOINT /get_responsable: {e}")
         return ApiResponse(
-            Status='500',
+            Status="500",
             Message="Internal Server Error",
             Data=None,
             Token=user_data.token,

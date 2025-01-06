@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean
 
 from . import Base
 
+
 class Notification(Base):
     __tablename__ = "notifications"
 
@@ -19,5 +20,5 @@ class Notification(Base):
             "description": self.description,
             "status": self.status,
             "created_at": self.created_at,
-            "is_error": self.is_error
+            "is_error": self.is_error,
         }

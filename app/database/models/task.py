@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class Task(Base):
     __tablename__ = "tasks"
 
@@ -20,5 +21,5 @@ class Task(Base):
             "assigned_to": self.assigned_to,
             "risk_level": self.risk_level,
             "status": self.status,
-            "user": self.user.to_dict()
+            "user": self.user.to_dict(),
         }

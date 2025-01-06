@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class Finding(Base):
     __tablename__ = "findings"
 
@@ -16,5 +17,5 @@ class Finding(Base):
             "id": self.id,
             "code": self.code,
             "description": self.description,
-            "recommendation": self.recommendation
+            "recommendation": self.recommendation,
         }

@@ -45,31 +45,26 @@ async def GetRequirementObligation(
     """
 
     try:
-        
+
         pending, near_due, findings = await get_requerimiento_obligaciones(db_session)
 
         response = RequerementsObligationsResponse(
-            Pending=pending,
-            NearDue=near_due,
-            Findings=findings
+            Pending=pending, NearDue=near_due, Findings=findings
         )
 
         return ApiResponse(
             Status="200",
             Message="Fetched requirements obligations successfully",
             Data=response,
-            Token=user_data.token
+            Token=user_data.token,
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/requirements/get_obligations: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/dashboard/get_expediente_civa")
 @inject
@@ -93,23 +88,17 @@ async def getGetExpedienteCiva(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/get_expediente_civa: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/dashboard/get_total_request_revisor")
 @inject
@@ -133,21 +122,15 @@ async def getTotalSolicitudesRevisor(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/get_total_request_revisor: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -178,23 +161,17 @@ async def getNotificaciones(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/get_notifications: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/daschboard/get_donut_panel")
 @inject
@@ -235,23 +212,17 @@ async def getDonutPanel(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/get_donut_panel: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/dashboard/get_tasks_responsable")
 @inject
@@ -282,23 +253,13 @@ async def getTareasResponsable(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /dashboard/get_tasks_responsable: {e}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
-
-
-        

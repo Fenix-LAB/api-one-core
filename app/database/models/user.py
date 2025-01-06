@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 # Tabla de usuarios
 class User(Base):
     __tablename__ = "users"
@@ -18,5 +19,5 @@ class User(Base):
             "id": self.id,
             "username": self.username,
             "role_id": self.role_id,
-            "role": self.role.to_dict()
+            "role": self.role.to_dict(),
         }

@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class Requirement(Base):
     __tablename__ = "requirements"
 
@@ -22,5 +23,5 @@ class Requirement(Base):
             "critical": self.critical,
             "status": self.status,
             "due_date": self.due_date,
-            "evidences": [evidence.to_dict() for evidence in self.evidences]
+            "evidences": [evidence.to_dict() for evidence in self.evidences],
         }

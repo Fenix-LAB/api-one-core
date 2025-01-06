@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 
 from . import Base
 
+
 class Responsable(Base):
     __tablename__ = "responsables"
 
@@ -10,8 +11,4 @@ class Responsable(Base):
     area_code = Column(String, nullable=False)  # Ejemplo: "admin", "finance", etc.
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "area_code": self.area_code
-        }
+        return {"id": self.id, "name": self.name, "area_code": self.area_code}

@@ -19,6 +19,7 @@ from config.logger_config import logger
 app = APIRouter()
 security = HTTPBearer()
 
+
 @app.post("/company_data/get_section_list")
 @inject
 async def getSectionList(
@@ -44,22 +45,17 @@ async def getSectionList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_section_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
+
 
 @app.post("/company_data/get_social_reason_list")
 @inject
@@ -99,23 +95,17 @@ async def getRazonSocialHistoricoList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_section_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_social_reason")
 @inject
@@ -154,21 +144,15 @@ async def saveRazonSocial(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/save_social_reason: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -195,23 +179,17 @@ async def getHallazgosList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_findings_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/get_evidence_by_id")
 @inject
@@ -258,23 +236,17 @@ async def getEvidenciaID(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_evidence_by_id: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_evidence")
 @inject
@@ -308,23 +280,18 @@ async def saveEvidencia(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/save_evidence: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("/company_data/get_country_list")
 @inject
 async def getPaises(
@@ -347,23 +314,18 @@ async def getPaises(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_country_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("/company_data/get_country_states")
 @inject
 async def getPaisEstados(
@@ -388,23 +350,18 @@ async def getPaisEstados(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_country_states: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("/company_data/get_customer_provider_list")
 @inject
 async def getClienteProveedorList(
@@ -446,23 +403,18 @@ async def getClienteProveedorList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_customer_provider_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("/company_data/save_customer_provider")
 @inject
 async def saveClienteProveedor(
@@ -506,23 +458,17 @@ async def saveClienteProveedor(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_customer_provider_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/get_provider_national_list")
 @inject
@@ -554,23 +500,17 @@ async def getProveedorNacionalList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_provider_national_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_provider_national")
 @inject
@@ -605,23 +545,17 @@ async def saveProveedorNacional(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/save_provider_national: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/get_type_caracter_list")
 @inject
@@ -645,23 +579,18 @@ async def getCaracterTipos(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_type_caracter_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
+
 @app.post("/company_data/get_shareholder_partner_list")
 @inject
 async def getSocioAccionistaList(
@@ -699,23 +628,17 @@ async def getSocioAccionistaList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_shareholder_partner_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_shareholder_partner")
 @inject
@@ -756,21 +679,15 @@ async def saveSocioAccionista(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_shareholder_partner_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -833,24 +750,18 @@ async def getLegalUsoList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_legal_use_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
-    
+
+
 @app.post("/company_data/save_legal_use")
 @inject
 async def saveLegalUso(
@@ -912,23 +823,17 @@ async def saveLegalUso(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_legal_use: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/get_operative_links_list")
 @inject
@@ -952,23 +857,17 @@ async def getEnlacesOperativosList(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/get_operative_links_list: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_operative_link")
 @inject
@@ -995,23 +894,17 @@ async def saveEnlaceOperativo(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/save_operative_link: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
+
 
 @app.post("/company_data/save_operative_link")
 @inject
@@ -1038,21 +931,13 @@ async def saveEnlaceOperativo(
     """
 
     try:
-        
+
         return ApiResponse(
-            Status="200",
-            Message="Not Implemented",
-            Data=None,
-            Token=user_data.token
+            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
         )
-    
+
     except Exception as e:
         logger.error(f"ENDPOINT /company_data/save_operative_link: {str(e)}")
         return ApiResponse(
-            Status="500",
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
-    
-

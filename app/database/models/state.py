@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from . import Base
 
+
 class State(Base):
     __tablename__ = "states"
 
@@ -16,5 +17,5 @@ class State(Base):
             "id": self.id,
             "name": self.name,
             "country_code": self.country_code,
-            "country": self.country.to_dict()
+            "country": self.country.to_dict(),
         }

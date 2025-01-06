@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, Float
 
 from . import Base
 
+
 class Provider(Base):
     __tablename__ = "providers"
 
@@ -19,5 +20,5 @@ class Provider(Base):
             "rfc": self.rfc,
             "value_operations": self.value_operations,
             "positive_opinion": self.positive_opinion,
-            "virtual_operations": self.virtual_operations
+            "virtual_operations": self.virtual_operations,
         }

@@ -1,8 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 # from sqlalchemy.orm import selectinload
 from app.database.models.responsable import Responsable
 from sqlalchemy.sql import func
+
 
 async def fetch_responsables(session: AsyncSession, page: int, page_size: int):
     """
@@ -13,7 +15,7 @@ async def fetch_responsables(session: AsyncSession, page: int, page_size: int):
     :param page_size: int
     :return: Tuple[List[Responsable], int]
     """
-    
+
     offset = (page - 1) * page_size
 
     # query = select(Responsable).options(selectinload(Responsable.id)).offset(offset).limit(page_size)
