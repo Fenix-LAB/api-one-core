@@ -1,4 +1,5 @@
-from app.database.models import Base
+# from app.database.models import Base
+from app.database.models.models import Base
 from config.logger_config import logger
 
 
