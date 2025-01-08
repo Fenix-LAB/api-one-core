@@ -13,7 +13,7 @@ class Config(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
-    ROUTE_PATH: str = "/app/v1"
+    ROUTE_PATH: str = "/api"
 
 
 with open("config.json") as f:
