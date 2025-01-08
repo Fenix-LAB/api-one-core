@@ -19,7 +19,7 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("/company_data/get_section_list")
+@app.post("/getSectionList")
 @inject
 async def getSectionList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -50,13 +50,13 @@ async def getSectionList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_section_list: {str(e)}")
+        logger.error(f"ENDPOINT /getSectionList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_social_reason_list")
+@app.post("/getRazonSocialHistoricoList")
 @inject
 async def getRazonSocialHistoricoList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -100,13 +100,13 @@ async def getRazonSocialHistoricoList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_section_list: {str(e)}")
+        logger.error(f"ENDPOINT /getRazonSocialHistoricoList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_social_reason")
+@app.post("/getRazonSocial")
 @inject
 async def saveRazonSocial(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -149,13 +149,13 @@ async def saveRazonSocial(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/save_social_reason: {str(e)}")
+        logger.error(f"ENDPOINT /getRazonSocial: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_findings_list")
+@app.post("/getHallazgosList")
 @inject
 async def getHallazgosList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -184,13 +184,13 @@ async def getHallazgosList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_findings_list: {str(e)}")
+        logger.error(f"ENDPOINT /getHallazgosList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_evidence_by_id")
+@app.post("/getEvidenciaID")
 @inject
 async def getEvidenciaID(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -241,13 +241,13 @@ async def getEvidenciaID(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_evidence_by_id: {str(e)}")
+        logger.error(f"ENDPOINT /getEvidenciaID: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_evidence")
+@app.post("/saveEvidencia")
 @inject
 async def saveEvidencia(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -285,13 +285,13 @@ async def saveEvidencia(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/save_evidence: {str(e)}")
+        logger.error(f"ENDPOINT /saveEvidencia: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_country_list")
+@app.post("/getRequerimientoObligacion")
 @inject
 async def getPaises(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -319,13 +319,13 @@ async def getPaises(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_country_list: {str(e)}")
+        logger.error(f"ENDPOINT /getRequerimientoObligacion: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_country_states")
+@app.post("/getPaisEstados")
 @inject
 async def getPaisEstados(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -361,7 +361,7 @@ async def getPaisEstados(
         )
 
 
-@app.post("/company_data/get_customer_provider_list")
+@app.post("/getClienteProveedorList")
 @inject
 async def getClienteProveedorList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -408,13 +408,13 @@ async def getClienteProveedorList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_customer_provider_list: {str(e)}")
+        logger.error(f"ENDPOINT /getClienteProveedorList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_customer_provider")
+@app.post("/saveClienteProveedor")
 @inject
 async def saveClienteProveedor(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -463,13 +463,13 @@ async def saveClienteProveedor(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_customer_provider_list: {str(e)}")
+        logger.error(f"ENDPOINT /saveClienteProveedor: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_provider_national_list")
+@app.post("/getProveedorNacionalList")
 @inject
 async def getProveedorNacionalList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -505,13 +505,13 @@ async def getProveedorNacionalList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_provider_national_list: {str(e)}")
+        logger.error(f"ENDPOINT /getProveedorNacionalList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_provider_national")
+@app.post("/saveProveedorNacional")
 @inject
 async def saveProveedorNacional(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -550,13 +550,13 @@ async def saveProveedorNacional(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/save_provider_national: {str(e)}")
+        logger.error(f"ENDPOINT /saveProveedorNacional: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_type_caracter_list")
+@app.post("/getCaracterTipos")
 @inject
 async def getCaracterTipos(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -584,13 +584,13 @@ async def getCaracterTipos(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_type_caracter_list: {str(e)}")
+        logger.error(f"ENDPOINT /getCaracterTipos: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_shareholder_partner_list")
+@app.post("/getSocioAccionistaList")
 @inject
 async def getSocioAccionistaList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -633,13 +633,13 @@ async def getSocioAccionistaList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_shareholder_partner_list: {str(e)}")
+        logger.error(f"ENDPOINT /getSocioAccionistaList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_shareholder_partner")
+@app.post("/saveSocioAccionista")
 @inject
 async def saveSocioAccionista(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -684,13 +684,13 @@ async def saveSocioAccionista(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_shareholder_partner_list: {str(e)}")
+        logger.error(f"ENDPOINT /saveSocioAccionista: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_legal_use_list")
+@app.post("/getLegalUsoList")
 @inject
 async def getLegalUsoList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -755,13 +755,13 @@ async def getLegalUsoList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_legal_use_list: {str(e)}")
+        logger.error(f"ENDPOINT /getLegalUsoList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_legal_use")
+@app.post("/saveLegalUso")
 @inject
 async def saveLegalUso(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -828,13 +828,13 @@ async def saveLegalUso(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_legal_use: {str(e)}")
+        logger.error(f"ENDPOINT /saveLegalUso: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/get_operative_links_list")
+@app.post("/getEnlacesOperativosList")
 @inject
 async def getEnlacesOperativosList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -862,13 +862,13 @@ async def getEnlacesOperativosList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/get_operative_links_list: {str(e)}")
+        logger.error(f"ENDPOINT /getEnlacesOperativosList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_operative_link")
+@app.post("/saveEnlaceOperativo")
 @inject
 async def saveEnlaceOperativo(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -899,13 +899,13 @@ async def saveEnlaceOperativo(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/save_operative_link: {str(e)}")
+        logger.error(f"ENDPOINT /saveEnlaceOperativo: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/company_data/save_operative_link")
+@app.post("/saveEnlaceOperativo")
 @inject
 async def saveEnlaceOperativo(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -936,7 +936,7 @@ async def saveEnlaceOperativo(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /company_data/save_operative_link: {str(e)}")
+        logger.error(f"ENDPOINT /saveEnlaceOperativo: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
