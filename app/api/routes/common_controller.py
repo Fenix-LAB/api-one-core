@@ -23,7 +23,7 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("/get_responsable")
+@app.post("/GetResponsable")
 @inject
 async def GetResponsable(
     request: ResponsableRequest,
