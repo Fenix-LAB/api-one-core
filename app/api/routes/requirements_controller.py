@@ -20,7 +20,7 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("requirements/get_section_list")
+@app.post("getSectionList")
 @inject
 async def getSectionList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -53,13 +53,13 @@ async def getSectionList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_section_list: {str(e)}")
+        logger.error(f"ENDPOINT /getSectionList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_requerimientos_list")
+@app.post("getRequerimientosList")
 @inject
 async def getRequerimientosList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -94,13 +94,13 @@ async def getRequerimientosList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_requerments_list: {str(e)}")
+        logger.error(f"ENDPOINT /getRequerimientosList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_evidence_id")
+@app.post("getEvidenciaID")
 @inject
 async def getEvidenciaID(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -141,13 +141,13 @@ async def getEvidenciaID(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_evience_id: {str(e)}")
+        logger.error(f"ENDPOINT /getEvidenciaID: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_finding_list")
+@app.post("getHallazgosList")
 @inject
 async def getHallazgosList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -176,13 +176,13 @@ async def getHallazgosList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_finding_list: {str(e)}")
+        logger.error(f"ENDPOINT /getHallazgosList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/save_evidence")
+@app.post("saveEvidencia")
 @inject
 async def saveEvidencia(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -218,13 +218,13 @@ async def saveEvidencia(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/save_evidence: {str(e)}")
+        logger.error(f"ENDPOINT /saveEvidencia: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/save_finding")
+@app.post("saveHallazgo")
 @inject
 async def saveHallazgo(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -261,13 +261,13 @@ async def saveHallazgo(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/save_finding: {str(e)}")
+        logger.error(f"ENDPOINT /saveHallazgo: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_section_request_list")
+@app.post("getSolicitudesSectionList")
 @inject
 async def getSolicitudesSectionList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -298,13 +298,13 @@ async def getSolicitudesSectionList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_section_request_list: {str(e)}")
+        logger.error(f"ENDPOINT /getSolicitudesSectionList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_request_list")
+@app.post("getSolicitudesList")
 @inject
 async def getSolicitudesList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -339,13 +339,13 @@ async def getSolicitudesList(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_request_list: {str(e)}")
+        logger.error(f"ENDPOINT /getSolicitudesList: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_request_by_id")
+@app.post("getSolicitudID")
 @inject
 async def getSolicitudID(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -380,13 +380,13 @@ async def getSolicitudID(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_request_by_id: {str(e)}")
+        logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/=save_request")
+@app.post("saveSolicitud")
 @inject
 async def saveSolicitud(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -420,13 +420,13 @@ async def saveSolicitud(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/gsave_request: {str(e)}")
+        logger.error(f"ENDPOINT /saveSolicitud: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("requirements/get_request_by_id")
+@app.post("getSolicitudID")
 @inject
 async def getSolicitudID(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -461,7 +461,7 @@ async def getSolicitudID(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /requirements/get_request_by_id: {str(e)}")
+        logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
