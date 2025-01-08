@@ -8,7 +8,7 @@ from app.services.auth import create_access_token, verify_token
 auth_router = APIRouter()
 
 
-@auth_router.post("/auth/login")
+@auth_router.post("/login")
 @inject
 async def Login(
     request: LoginTokenRequest,
