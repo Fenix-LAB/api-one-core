@@ -26,7 +26,7 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("dashboard/requirements_get_obligations")
+@app.post("/GetRequirementObligation")
 @inject
 async def GetRequirementObligation(
     request: DateRequest,
@@ -66,13 +66,13 @@ async def GetRequirementObligation(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/requirements/get_obligations: {e}")
+        logger.error(f"ENDPOINT /GetRequirementObligation: {e}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/dashboard/get_expediente_civa")
+@app.post("/getGetExpedienteCiva")
 @inject
 async def getGetExpedienteCiva(
     request: DateRequest,
@@ -101,13 +101,13 @@ async def getGetExpedienteCiva(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/get_expediente_civa: {e}")
+        logger.error(f"ENDPOINT /getGetExpedienteCiva: {e}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/dashboard/get_total_request_revisor")
+@app.post("/getTotalSolicitudesRevisor")
 @inject
 async def getTotalSolicitudesRevisor(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -135,13 +135,13 @@ async def getTotalSolicitudesRevisor(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/get_total_request_revisor: {e}")
+        logger.error(f"ENDPOINT /GetRequirementObligation: {e}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/dashboard/get_notifications")
+@app.post("/getNotificaciones")
 @inject
 async def getNotificaciones(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -180,7 +180,7 @@ async def getNotificaciones(
         )
 
 
-@app.post("/daschboard/get_donut_panel")
+@app.post("/getDonutPanel")
 @inject
 async def getDonutPanel(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -225,13 +225,13 @@ async def getDonutPanel(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/get_donut_panel: {e}")
+        logger.error(f"ENDPOINT /getDonutPanel: {e}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
-@app.post("/dashboard/get_tasks_responsable")
+@app.post("/getTareasResponsable")
 @inject
 async def getTareasResponsable(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -266,7 +266,7 @@ async def getTareasResponsable(
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/get_tasks_responsable: {e}")
+        logger.error(f"ENDPOINT /getTareasResponsable: {e}")
         return ApiResponse(
             Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
         )
