@@ -1,5 +1,5 @@
-from .expediente_civa_response import ExpedienteCivaResponse
-from .requeriment_obligation_response import RequirementObligationsResponse
+from .response.expediente_civa import ExpedienteCivaResponse
+from .response.requeriment_obligation import RequirementObligationsResponse
 
 __all__ = [
     "ExpedienteCivaResponse",
