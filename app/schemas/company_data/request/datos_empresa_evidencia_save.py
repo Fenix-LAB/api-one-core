@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from typing import List
 from app.schemas.enums.iva_section_option_code import IvaSectionOptionCode
-from app.schemas.models.area_rol_model import AreaRolModel
-from app.schemas.models.responsable_model import ResponsableModel
+from app.schemas.models import AreaRolModel
+from app.schemas.models import ResponsableModel
 from app.schemas.models.hallazgo_option_model import HallazgoOptionModel
 
 class DatosEmpresaEvidenciaSaveRequest(BaseModel):
