@@ -14,6 +14,10 @@ from app.schemas.generic_response import ApiResponse
 from app.schemas.dashboard import (
     ExpedienteCivaResponse,
     RequirementObligationsResponse,
+    NotificationResponse,
+    DonutPanelResponse,
+    TareaResponsableResponse,
+    TotalSolicitudesRevisorResponse,
 )
 
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
@@ -52,14 +56,12 @@ async def GetRequirementObligation(
 
     try:
 
-        pending, near_due, findings = await get_requerimiento_obligaciones(db_session)
-
         response = RequirementObligationsResponse(
-            Pending=pending, NearDue=near_due, Findings=findings
+            Pendientes=10, Proximos=5, Hallazgos=3
         )
 
         return ApiResponse(
-            Status="200",
+            Success=True,
             Message="Fetched requirements obligations successfully",
             Data=response,
             Token=user_data.token,
@@ -68,7 +70,7 @@ async def GetRequirementObligation(
     except Exception as e:
         logger.error(f"ENDPOINT /GetRequirementObligation: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -83,7 +85,7 @@ async def getGetExpedienteCiva(
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to get a count of expediente civa.
+    ### Endpoint to get expediente civa details.
 
     ## REQUEST
     - DateIni
@@ -96,14 +98,19 @@ async def getGetExpedienteCiva(
 
     try:
 
+        response = ExpedienteCivaResponse(Actualizacion="2023-12-01T12:00:00")
+
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="Fetched expediente civa successfully",
+            Data=response,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getGetExpedienteCiva: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -117,7 +124,7 @@ async def getTotalSolicitudesRevisor(
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to get a count of expediente civa.
+    ### Endpoint to get total solicitudes revisor.
 
     ## REQUEST
     - DateIni
@@ -130,14 +137,19 @@ async def getTotalSolicitudesRevisor(
 
     try:
 
+        response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
+
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="Fetched total solicitudes successfully",
+            Data=response,
+            Token=user_data.token,
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /GetRequirementObligation: {e}")
+        logger.error(f"ENDPOINT /getTotalSolicitudesRevisor: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -151,7 +163,7 @@ async def getNotificaciones(
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to get a count of expediente civa.
+    ### Endpoint to get notifications.
 
     ## REQUEST
     - Empty Request
@@ -169,14 +181,36 @@ async def getNotificaciones(
 
     try:
 
+        data = [
+            NotificationResponse(
+                Titulo="Subject",
+                Referencia="0000000001",
+                Estado="Hallazgo",
+                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+                Fecha="2023-12-01T11:00:00",
+                EsError=True,
+            ),
+            NotificationResponse(
+                Titulo="Subject",
+                Referencia="0000000002",
+                Estado="Solicitud Aprobada",
+                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+                Fecha="2023-12-01T10:00:00",
+                EsError=False,
+            ),
+        ]
+
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="Fetched notifications successfully",
+            Data=data,
+            Token=user_data.token,
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /dashboard/get_notifications: {e}")
+        logger.error(f"ENDPOINT /getNotificaciones: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -190,29 +224,16 @@ async def getDonutPanel(
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to get a count of expediente civa.
+    ### Endpoint to get donut panel data.
 
     ## REQUEST
     - DateIni
     - DateEnd
     - Type
-        - Expediente
-        - Requerimiento
-        - Verificacion
-        - TareasPendientes
 
     ## RESPONSE
     - ColorCode
-        - Green
-        - Red
-        - Orange
     - NombreCode
-        - Completado
-        - Pendiente
-        - Hallazgos
-        - Bajo
-        - Medio
-        - Alto
     - Porcentaje
     - Cantidad
 
@@ -220,14 +241,32 @@ async def getDonutPanel(
 
     try:
 
+        data = [
+            DonutPanelResponse(
+                NombreCode="Completado",
+                Porcentaje=5,
+                Cantidad=45,
+                ColorCode="Green",
+            ),
+            DonutPanelResponse(
+                NombreCode="Pendiente",
+                Porcentaje=95,
+                Cantidad=920,
+                ColorCode="Red",
+            ),
+        ]
+
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="Fetched donut panel successfully",
+            Data=data,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getDonutPanel: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
 
 
@@ -241,7 +280,7 @@ async def getTareasResponsable(
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to get a count of expediente civa.
+    ### Endpoint to get tareas responsables data.
 
     ## REQUEST
     - DateIni
@@ -253,20 +292,37 @@ async def getTareasResponsable(
     - Asignadas
     - Completadas
     - RiesgoCode
-        - Alto
-        - Medio
-        - Bajo
 
     """
 
     try:
 
+        data = [
+            TareaResponsableResponse(
+                Area="Rrhh",
+                Usuario="Nombre Usuario",
+                Asignadas=10,
+                Completadas=10,
+                RiesgoCode="Medio",
+            ),
+            TareaResponsableResponse(
+                Area="Finanzas",
+                Usuario="Nombre Usuario",
+                Asignadas=10,
+                Completadas=10,
+                RiesgoCode="Alto",
+            ),
+        ]
+
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="Fetched tareas responsables successfully",
+            Data=data,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getTareasResponsable: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
         )
