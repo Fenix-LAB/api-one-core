@@ -14,6 +14,9 @@ from .caracter_tipos import CaracterTiposRequest
 from .socio_accionista_historico import SocioAccionistaHistoricoRequest
 from .socio_accionista_save import SocioAccionistaSaveRequest
 from .legal_uso_historico import LegalUsoHistoricoRequest
+from .legal_uso_save import LegalUsoSaveRequest
+from .enlaces_operativos_historico import EnlacesOperativosHistoricoRequest
+from .enlace_operativo_save import EnlaceOperativoSaveRequest
 
 __all__ = [
     "SectionDatosEmpresaListRequest",
@@ -32,4 +35,7 @@ __all__ = [
     "SocioAccionistaHistoricoRequest",
     "SocioAccionistaSaveRequest",
     "LegalUsoHistoricoRequest",
+    "LegalUsoSaveRequest",
+    "EnlacesOperativosHistoricoRequest",
+    "EnlaceOperativoSaveRequest",
 ]

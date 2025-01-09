@@ -1421,6 +1421,7 @@ async def getLegalUsoList(
 @app.post("/saveLegalUso")
 @inject
 async def saveLegalUso(
+    request: LegalUsoSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1478,6 +1479,8 @@ async def saveLegalUso(
 
     """
 
+    logger.info(f"ENDPOINT /saveLegalUso: {request}")
+
     try:
         return ApiResponse(
             Success=True,
@@ -1498,6 +1501,7 @@ async def saveLegalUso(
 @app.post("/getEnlacesOperativosList")
 @inject
 async def getEnlacesOperativosList(
+    request: EnlacesOperativosHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1524,17 +1528,12 @@ async def getEnlacesOperativosList(
             Data=EnlaceOperativoResponse(
                 ID=1,
                 CaseNumber=1,
-                EstadoCode="cod1",
-                EstadoNombre="Estado 1",
-                PaisCode="MX",
-                TipoMovimiento="Alta",
-                Aviso="Aviso 1",
-                Email="mail1@correo.com",
-                FechaAviso="2025-01-07T00:00:00",
-                FechaMovimiento="2025-01-07T00:00:00",
-                Telefono="+52 123456",
                 Nombre="Nombre 1",
-                Puesto="Puesto 1",
+                RFC="RFC 1",
+                TipoRelacion="Relación 1",
+                FechaInicio="2025-01-07T00:00:00",
+                FechaFin="2025-01-07T00:00:00",
+                Observaciones="Observaciones 1",
             ),
         ),
         HistoricoResponse(
@@ -1544,17 +1543,12 @@ async def getEnlacesOperativosList(
             Data=EnlaceOperativoResponse(
                 ID=2,
                 CaseNumber=2,
-                EstadoCode="cod2",
-                EstadoNombre="Estado 2",
-                PaisCode="US",
-                TipoMovimiento="Baja",
-                Aviso="Aviso 2",
-                Email="mail2@correo.com",
-                FechaAviso="2025-01-07T00:00:00",
-                FechaMovimiento="2025-01-07T00:00:00",
-                Telefono="+1 123456",
                 Nombre="Nombre 2",
-                Puesto="Puesto 2",
+                RFC="RFC 2",
+                TipoRelacion="Relación 2",
+                FechaInicio="2025-01-07T00:00:00",
+                FechaFin="2025-01-07T00:00:00",
+                Observaciones="Observaciones 2",
             ),
         ),
     ]
@@ -1587,6 +1581,7 @@ async def getEnlacesOperativosList(
 @app.post("/saveEnlaceOperativo")
 @inject
 async def saveEnlaceOperativo(
+    request: EnlaceOperativoSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1608,46 +1603,7 @@ async def saveEnlaceOperativo(
 
     """
 
-    try:
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
-        )
-    except Exception as e:
-        logger.error(f"ENDPOINT /saveEnlaceOperativo: {e}")
-        return ApiResponse(
-            Success=False,
-            Message="Se presentó un error",
-            Data=False,
-            Token=user_data.token,
-        )
-
-
-@app.post("/saveEnlaceOperativo")
-@inject
-async def saveEnlaceOperativo(
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
-):
-    """
-    ## DESCRIPTION
-    ### Endpoint to save an operative link.
-
-    ## REQUEST
-    - ID
-
-    ## RESPONSE
-    - 200: Success
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 500: Internal Server Error
-
-    """
+    logger.info(f"ENDPOINT /saveEnlaceOperativo: {request}")
 
     try:
         return ApiResponse(
@@ -1664,3 +1620,44 @@ async def saveEnlaceOperativo(
             Data=False,
             Token=user_data.token,
         )
+
+
+# @app.post("/saveEnlaceOperativo")
+# @inject
+# async def saveEnlaceOperativo(
+#     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+#     credentials: HTTPAuthorizationCredentials = Depends(security),
+#     user_data: BaseData = Depends(get_current_user),
+#     db_session: AsyncSession = Depends(get_db_session),
+# ):
+#     """
+#     ## DESCRIPTION
+#     ### Endpoint to save an operative link.
+
+#     ## REQUEST
+#     - ID
+
+#     ## RESPONSE
+#     - 200: Success
+#     - 400: Bad Request
+#     - 401: Unauthorized
+#     - 403: Forbidden
+#     - 500: Internal Server Error
+
+#     """
+
+#     try:
+#         return ApiResponse(
+#             Success=True,
+#             Message="OK",
+#             Data=True,
+#             Token=user_data.token,
+#         )
+#     except Exception as e:
+#         logger.error(f"ENDPOINT /saveEnlaceOperativo: {e}")
+#         return ApiResponse(
+#             Success=False,
+#             Message="Se presentó un error",
+#             Data=False,
+#             Token=user_data.token,
+#         )

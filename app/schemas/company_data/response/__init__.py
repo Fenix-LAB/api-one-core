@@ -6,7 +6,7 @@ from .cliente_proveedor import ClienteProveedorResponse
 from .provedor_nacional import ProveedorNacionalResponse
 from .socio_accionista import SocioAccionistaResponse
 from .legal_uso import LegalUsoResponse
-
+from .enlace_operativo import EnlaceOperativoResponse
 
 __all__ = [
     "SectionOptionDatosEmpresaResponse",
@@ -17,4 +17,5 @@ __all__ = [
     "ProveedorNacionalResponse",
     "SocioAccionistaResponse",
     "LegalUsoResponse",
+    "EnlaceOperativoResponse",
 ]
