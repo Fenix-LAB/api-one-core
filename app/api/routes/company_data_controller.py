@@ -20,7 +20,6 @@ from app.schemas.company_data.response import (
     DatosEmpresaEvidenciaResponse,
     ClienteProveedorResponse,
     ProveedorNacionalResponse,
-    DatosEmpresaSocioAccionistaCaracterModel,
     SocioAccionistaResponse,
     LegalUsoResponse,
     EnlaceOperativoResponse,
@@ -50,6 +49,7 @@ from app.schemas.company_data.request import (
 from app.schemas.models import (
     HallazgoOptionModel,
     AreaRolModel,
+    DatosEmpresaSocioAccionistaCaracterModel,
     PaisModel,
     PaisEstadoModel,
     DatosEmpresaLegalUsoModel,
