@@ -68,6 +68,7 @@ security = HTTPBearer()
 @app.post("/getSectionList")
 @inject
 async def getSectionList(
+    request: SectionOptionDatosEmpresaResponse,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -88,6 +89,8 @@ async def getSectionList(
     - Selected
 
     """
+
+    logger.info(f"ENDPOINT /getSectionList: {request}")
 
     data = [
         SectionOptionDatosEmpresaResponse(Code="RazonSocial", Cantidad=0, Total=11, Selected=False),
