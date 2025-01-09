@@ -363,6 +363,7 @@ async def getHallazgosList(
 @app.post("/getEvidenciaID")
 @inject
 async def getEvidenciaID(
+    request: DatosempresaEvidenciaIDRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -403,6 +404,8 @@ async def getEvidenciaID(
     - HallazgoComentarios
 
     """
+
+    logger.info(f"ENDPOINT /getEvidenciaID: {request}")
 
     try:
         evidencia = DatosEmpresaEvidenciaResponse(
