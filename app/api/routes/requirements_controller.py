@@ -10,6 +10,30 @@ from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
 
+from app.schemas.requerimientos.response import (
+    PaginationBase,
+    SectionOptionRequerimientosResponse,
+    RequerimientoElementResponse,
+    RequerimientosEvidenciaResponse,
+    HallazgoOptionModel,
+    SolicitudesSectionRequerimientosOptionResponse,
+    SolicitudResponse,
+    AreaRolModel,
+    ResponsableModel,
+    FileInfoModel,
+)
+
+from app.schemas.requerimientos.request import (
+    SectionRequerimientosListRequest,
+    RequerimientosListRequest,
+    RequerimientosEvidenciaIDRequest,
+    RequerimientosHallazgosListRequest,
+    RequerimientosEvidenciaSaveRequest,
+    HallazgoSaveRequest,
+    SolicitudIDRequest,
+    SolicitudSaveRequest,
+)
+
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -47,19 +71,83 @@ async def getSectionList(
     """
 
     try:
+        data = [
+            SectionOptionRequerimientosResponse(
+                Code="Personal",
+                Cantidad=5,
+                Total=10,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="Domicilios",
+                Cantidad=6,
+                Total=12,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="SociosAccionistas",
+                Cantidad=3,
+                Total=15,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="Aduanero",
+                Cantidad=7,
+                Total=10,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="ABM",
+                Cantidad=2,
+                Total=8,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="Fiscal",
+                Cantidad=9,
+                Total=20,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+            SectionOptionRequerimientosResponse(
+                Code="Societario",
+                Cantidad=4,
+                Total=4,
+                ProximosVencer=5,
+                Selected=False,
+                Enable=True,
+            ),
+        ]
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=List(Data=data),
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSectionList: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
-@app.post("getRequerimientosList")
+@app.post("/getRequerimientosList")
 @inject
 async def getRequerimientosList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
@@ -88,15 +176,33 @@ async def getRequerimientosList(
     """
 
     try:
+        data = [
+            RequerimientoElementResponse(ID=1, Verificacion="Pendiente", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-01T10:00:00"),
+            RequerimientoElementResponse(ID=2, Verificacion="Pendiente", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días", EsCritico=True, FechaEnvio="2024-01-02T10:00:00"),
+            RequerimientoElementResponse(ID=3, Verificacion="Pendiente", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-03T10:00:00"),
+            RequerimientoElementResponse(ID=4, Verificacion="Pendiente", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días", EsCritico=False, FechaEnvio="2024-01-04T10:00:00"),
+        ]
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=PaginationBase(
+                Data=data,
+                CurrentPage=1,
+                PageSize=10,
+                TotalPages=1,
+                TotalRecords=4,
+            ),
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getRequerimientosList: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
@@ -135,15 +241,48 @@ async def getEvidenciaID(
     """
 
     try:
+        evidencia = RequerimientosEvidenciaResponse(
+            ID=1,
+            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+            CaseNumber=1,
+            Status="Pendiente",
+            FechaInicio="2024-01-01T00:00:00",
+            FechaVencimiento="2024-07-02T00:00:00",
+            ProximoVencer=True,
+            AreaRols=[
+                AreaRolModel(Code="Comex"),
+                AreaRolModel(Code="Legal")
+            ],
+            Responsables=[
+                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
+            ],
+            Archivos=[
+                FileInfoModel(ID=1, Tamano=12345, Extension="jpg", Nombre="Archivo 1", Url="_content/OneCore.CertificacionIVA/filesDemo/file1.jpg"),
+                FileInfoModel(ID=2, Tamano=12345, Extension="pdf", Nombre="Archivo 2", Url="_content/OneCore.CertificacionIVA/filesDemo/file2.pdf"),
+                FileInfoModel(ID=3, Tamano=12345, Extension="xlsx", Nombre="Archivo 3", Url="_content/OneCore.CertificacionIVA/filesDemo/file3.xlsx"),
+                FileInfoModel(ID=4, Tamano=12345, Extension="txt", Nombre="Archivo 4", Url="_content/OneCore.CertificacionIVA/filesDemo/file4.txt"),
+            ],
+            Ubicacion="",
+            Comentarios="",
+            HallazgoComentarios="",
+            HallazgoRecomendaciones=""
+        )
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=evidencia,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getEvidenciaID: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
@@ -170,15 +309,26 @@ async def getHallazgosList(
     """
 
     try:
-
+        data = [
+            HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
+            HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
+            HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
+            HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
+        ]
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=data,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getHallazgosList: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
@@ -212,15 +362,21 @@ async def saveEvidencia(
     """
 
     try:
-
+        # Simulate a successful operation
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=True,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /saveEvidencia: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=False,
+            Token=user_data.token,
         )
 
 
@@ -255,15 +411,21 @@ async def saveHallazgo(
     """
 
     try:
-
+        # Simulate a successful operation
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=True,
+            Token=user_data.token,
         )
-
+    
     except Exception as e:
         logger.error(f"ENDPOINT /saveHallazgo: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=False,
+            Token=user_data.token,
         )
 
 
@@ -292,15 +454,30 @@ async def getSolicitudesSectionList(
     """
 
     try:
+        data = [
+            SolicitudesSectionRequerimientosOptionResponse(Code="Personal", Cantidad=5, Total=10, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="Domicilios", Cantidad=6, Total=12, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="SociosAccionistas", Cantidad=3, Total=15, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="Aduanero", Cantidad=7, Total=10, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="ABM", Cantidad=2, Total=8, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="Fiscal", Cantidad=9, Total=20, CantidadSolicitudes=5),
+            SolicitudesSectionRequerimientosOptionResponse(Code="Societario", Cantidad=4, Total=4, CantidadSolicitudes=5),
+        ]
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=PaginationBase(Data=data),
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudesSectionList: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
@@ -333,16 +510,28 @@ async def getSolicitudesList(
     """
 
     try:
-
+        data = [
+            RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
+            RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
+            RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
+            RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
+        ]
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=PaginationBase(Data=data),
+            Token=user_data.token,
         )
 
     except Exception as e:
-        logger.error(f"ENDPOINT /getSolicitudesList: {str(e)}")
+        logger.error(f"ENDPOINT /getSolicitudesList: {e}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
+
 
 
 @app.post("getSolicitudID")
@@ -373,16 +562,89 @@ async def getSolicitudID(
 
     """
 
+    from fastapi import APIRouter, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+from sqlalchemy.ext.asyncio import AsyncSession
+from dependency_injector.wiring import inject
+
+from app.middleware.authentication import BaseData
+
+from app.database.session import get_db_session
+
+from app.schemas.generic_response import ApiResponse
+from app.schemas.requerimientos.response import (
+    SolicitudResponse,
+    AreaRolModel,
+    ResponsableModel,
+)
+from app.services.role_checker import RoleChecker, get_current_user
+
+from config.logger_config import logger
+
+app = APIRouter()
+security = HTTPBearer()
+
+@app.post("/getSolicitudID")
+@inject
+async def getSolicitudID(
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    user_data: BaseData = Depends(get_current_user),
+    db_session: AsyncSession = Depends(get_db_session),
+):
+    """
+    ## DESCRIPTION
+    ### Endpoint to get a request by ID.
+
+    ## REQUEST
+    - ID
+    - CodeSection
+
+    ## RESPONSE
+    - ID
+    - Elemento
+    - CaseNumber
+    - Cliente
+    - Status
+    - FechaRevision
+    - AreaRols
+    - Responsables
+
+    """
+
     try:
+        solicitud = SolicitudResponse(
+            ID=1,
+            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+            CaseNumber=123,
+            Cliente="Cliente 1",
+            Status="RevisionPendiente",
+            FechaRevision="2024-01-01T00:00:00",
+            AreaRols=[
+                AreaRolModel(Code="Comex"),
+                AreaRolModel(Code="Legal"),
+            ],
+            Responsables=[
+                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
+            ],
+        )
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=solicitud,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
 
 
@@ -414,15 +676,21 @@ async def saveSolicitud(
     """
 
     try:
-
+        # Simulate a successful operation
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=True,
+            Token=user_data.token,
         )
-
+    
     except Exception as e:
         logger.error(f"ENDPOINT /saveSolicitud: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=False,
+            Token=user_data.token,
         )
 
 
@@ -455,13 +723,35 @@ async def getSolicitudID(
     """
 
     try:
+        solicitud = SolicitudResponse(
+            ID=1,
+            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+            CaseNumber=1,
+            Status="RevisionPendiente",
+            FechaRevision="2024-01-01",
+            Cliente="Cliente 1",
+            AreaRols=[
+                AreaRolModel(Code="Comex"),
+                AreaRolModel(Code="Legal")
+            ],
+            Responsables=[
+                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
+            ]
+        )
 
         return ApiResponse(
-            Status="200", Message="Not Implemented", Data=None, Token=user_data.token
+            Success=True,
+            Message="OK",
+            Data=solicitud,
+            Token=user_data.token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
         return ApiResponse(
-            Status="500", Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False,
+            Message="Internal Server Error",
+            Data=None,
+            Token=user_data.token,
         )
