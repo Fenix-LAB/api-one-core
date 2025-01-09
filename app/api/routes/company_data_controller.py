@@ -964,7 +964,7 @@ async def getProveedorNacionalList(
     """
 
     logger.info(f"ENDPOINT /getProveedorNacionalList: {request}")
-    
+
     try:
         data = [
             ProveedorNacionalResponse(
@@ -1003,6 +1003,7 @@ async def getProveedorNacionalList(
 @app.post("/saveProveedorNacional")
 @inject
 async def saveProveedorNacional(
+    request: ProveedorNacionalSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1032,6 +1033,8 @@ async def saveProveedorNacional(
 
     """
 
+    logger.info(f"ENDPOINT /saveProveedorNacional: {request}")
+
     try:
         return ApiResponse(
             Success=True,  # Corregido de "Status" a "Success"
@@ -1052,6 +1055,7 @@ async def saveProveedorNacional(
 @app.post("/getCaracterTipos")
 @inject
 async def getCaracterTipos(
+    request: CaracterTiposRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1069,6 +1073,8 @@ async def getCaracterTipos(
     - Description
 
     """
+
+    logger.info(f"ENDPOINT /getCaracterTipos: {request}")
 
     try:
         data = [
@@ -1096,6 +1102,7 @@ async def getCaracterTipos(
 @app.post("/getSocioAccionistaList")
 @inject
 async def getSocioAccionistaList(
+    request: SocioAccionistaHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1129,6 +1136,8 @@ async def getSocioAccionistaList(
 
     """
 
+    logger.info(f"ENDPOINT /getSocioAccionistaList: {request}")
+
     data = [
         HistoricoResponse(
             Status="Modificado",
@@ -1137,21 +1146,16 @@ async def getSocioAccionistaList(
             Data=SocioAccionistaResponse(
                 ID=1,
                 CaseNumber=1,
-                Aviso="Aviso 1",
-                FechaAviso="2024-01-01T00:00:00",
                 RFC="RFC 1",
                 CaracterCode="socio",
                 CaracterDescripcion="Socio",
                 TipoMovimiento="Agregar",
-                EfectoEscrituraPublica="Fusion",
                 EscrituraPublica=11,
                 FechaEscritura="2024-01-01T00:00:00",
-                Fedatario="Fedatario 1",
                 IsCompany=True,
                 IsObligadoTributar=False,
                 Nombre="Nombre 1",
                 NombreEmpresa="Empresa 1",
-                NumeroNotario=12,
             ),
         ),
         HistoricoResponse(
@@ -1161,21 +1165,16 @@ async def getSocioAccionistaList(
             Data=SocioAccionistaResponse(
                 ID=2,
                 CaseNumber=3,
-                Aviso="Aviso 3",
-                FechaAviso="2024-01-01T00:00:00",
                 RFC="RFC 3",
                 CaracterCode="accionista",
                 CaracterDescripcion="Accionista",
                 TipoMovimiento="Ratificar",
-                EfectoEscrituraPublica="CambioObjeto",
                 EscrituraPublica=110,
                 FechaEscritura="2024-01-01T00:00:00",
-                Fedatario="Fedatario 3",
                 IsCompany=False,
                 IsObligadoTributar=True,
                 Nombre="Nombre 3",
                 NombreEmpresa="Empresa 3",
-                NumeroNotario=120,
             ),
         ),
     ]
@@ -1184,7 +1183,7 @@ async def getSocioAccionistaList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(
+            Data=ListResponse(
                 Data=data,
                 TotalRecords=len(data),
                 CurrentPage=1,
