@@ -11,7 +11,7 @@ from app.database.session import get_db_session
 from app.schemas.generic.date_request import DateRequest
 
 from app.schemas.generic_response import ApiResponse
-from app.schemas.dashboard import (
+from app.schemas.dashboard.response import (
     ExpedienteCivaResponse,
     RequirementObligationsResponse,
     NotificationResponse,
