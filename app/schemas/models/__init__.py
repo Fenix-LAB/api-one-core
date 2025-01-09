@@ -5,6 +5,8 @@ from .hallazgo_option import HallazgoOptionModel
 from .pais import PaisModel
 from .pais_estado import PaisEstadoModel
 from .area_rol import AreaRolModel
+from .responsable import ResponsableModel   
+from .datos_empresa_enlace_operativo  import DatosEmpresaEnlaceOperativoModel
 
 __all__ = [
     "HallazgoOptionModel",
@@ -13,4 +15,6 @@ __all__ = [
     "DatosEmpresaSocioAccionistaCaracterModel",
     "DatosEmpresaLegalUsoModel",
     "AreaRolModel",
+    "ResponsableModel",
+    "DatosEmpresaEnlaceOperativoModel",
 ]
