@@ -68,7 +68,7 @@ security = HTTPBearer()
 @app.post("/getSectionList")
 @inject
 async def getSectionList(
-    request: SectionOptionDatosEmpresaResponse,
+    request: SectionDatosEmpresaListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
