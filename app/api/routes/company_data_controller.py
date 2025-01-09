@@ -439,6 +439,7 @@ async def getEvidenciaID(
 @app.post("/saveEvidencia")
 @inject
 async def saveEvidencia(
+    request: DatosEmpresaEvidenciaSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -488,6 +489,7 @@ async def saveEvidencia(
 @app.post("/getPaises")
 @inject
 async def getPaises(
+    request: PaisesRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -716,6 +718,7 @@ async def getPaises(
 @app.post("/getPaisEstados")
 @inject
 async def getPaisEstados(
+    request: EstadosRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -733,48 +736,6 @@ async def getPaisEstados(
     - PaisCode
     - EstadoCode
     - EstadoName
-
-    """
-
-    from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-from sqlalchemy.ext.asyncio import AsyncSession
-from dependency_injector.wiring import inject
-
-from app.middleware.authentication import BaseData
-
-from app.database.session import get_db_session
-
-from app.schemas.generic_response import ApiResponse
-from app.schemas.company_data.response import PaisEstadoModel
-from app.services.role_checker import RoleChecker, get_current_user
-
-from config.logger_config import logger
-
-app = APIRouter()
-security = HTTPBearer()
-
-@app.post("/getPaisEstados")
-@inject
-async def getPaisEstados(
-    request: dict,  # Replace with the specific request model if available
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
-):
-    """
-    ## DESCRIPTION
-    ### Endpoint to get a list of states by country.
-
-    ## REQUEST
-    - PaisCode: str
-
-    ## RESPONSE
-    - PaisCode: str
-    - EstadoCode: str
-    - EstadoName: str
 
     """
 
@@ -806,6 +767,7 @@ async def getPaisEstados(
 @app.post("/getClienteProveedorList")
 @inject
 async def getClienteProveedorList(
+    requwst: ClienteProveedorHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -852,23 +814,18 @@ async def getClienteProveedorList(
                 Data=ClienteProveedorResponse(
                     ID=1,
                     CaseNumber=1,
-                    Name="Razón Social 1",
                     IsCompany=True,
+                    Name="Razón Social 1",
+                    Tipo="Cliente",
+                    ApellidoPaterno="Apellido Paterno 1",
+                    ApellidoMaterno="Apellido Materno 1",
+                    TipoMovimiento="Alta",
                     Aviso="Aviso 1",
-                    Calle="Calle 1",
-                    Colonia="Colonia 1",
-                    CP="12345",
                     Municipio="Municipio 1",
-                    Telefono="+52 123456",
                     EstadoCode="cod1",
                     EstadoNombre="Estado 1",
                     PaisCode="MX",
                     FechaMovimiento="2025-01-07T00:00:00",
-                    Localidad="Localidad 1",
-                    NumeroExterior="Numero Exterior 1",
-                    NumeroInterior="Numero Interior 1",
-                    Tipo="Cliente",
-                    TipoMovimiento="Alta",
                 ),
             ),
             HistoricoResponse(
@@ -877,26 +834,19 @@ async def getClienteProveedorList(
                 Fecha="2025-01-07T00:00:00",
                 Data=ClienteProveedorResponse(
                     ID=2,
-                    CaseNumber=3,
-                    Name="Razón Social 2",
+                    CaseNumber=2,
                     IsCompany=False,
+                    Name="Razón Social 2",
+                    Tipo="Proveedor",
+                    ApellidoPaterno="Apellido Paterno 2",
+                    ApellidoMaterno="Apellido Materno 2",
+                    TipoMovimiento="Baja",
                     Aviso="Aviso 2",
-                    Calle="Calle 2",
-                    Colonia="Colonia 2",
-                    CP="54321",
                     Municipio="Municipio 2",
-                    Telefono="+1 123456",
                     EstadoCode="cod2",
                     EstadoNombre="Estado 2",
                     PaisCode="MX",
                     FechaMovimiento="2025-01-07T00:00:00",
-                    Localidad="Localidad 2",
-                    NumeroExterior="Numero Exterior 2",
-                    NumeroInterior="Numero Interior 2",
-                    Tipo="Proveedor",
-                    TipoMovimiento="Baja",
-                    ApellidoMaterno="Apellido Materno 2",
-                    ApellidoPaterno="Apellido Paterno 2",
                 ),
             ),
         ]
@@ -923,6 +873,7 @@ async def getClienteProveedorList(
 @app.post("/saveClienteProveedor")
 @inject
 async def saveClienteProveedor(
+    request: ClienteProveedorSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -962,6 +913,8 @@ async def saveClienteProveedor(
 
     """
 
+    logger.info(f"ENDPOINT /saveClienteProveedor: {request}")
+
     try:
         return ApiResponse(
             Success=True,
@@ -983,6 +936,7 @@ async def saveClienteProveedor(
 @app.post("/getProveedorNacionalList")
 @inject
 async def getProveedorNacionalList(
+    request: ProveedorNacionalHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1009,6 +963,8 @@ async def getProveedorNacionalList(
 
     """
 
+    logger.info(f"ENDPOINT /getProveedorNacionalList: {request}")
+    
     try:
         data = [
             ProveedorNacionalResponse(
