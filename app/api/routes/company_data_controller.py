@@ -129,6 +129,7 @@ async def getSectionList(
 @app.post("/getRazonSocialHistoricoList")
 @inject
 async def getRazonSocialHistoricoList(
+    request: RazonSocialHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -162,6 +163,8 @@ async def getRazonSocialHistoricoList(
     - NoticeDate
 
     """
+
+    logger.info(f"ENDPOINT /getRazonSocialHistoricoList: {request}")
 
     data = [
         HistoricoResponse(
@@ -233,6 +236,7 @@ async def getRazonSocialHistoricoList(
 @app.post("/getRazonSocial")
 @inject
 async def saveRazonSocial(
+    request: RazonSocialSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -265,6 +269,8 @@ async def saveRazonSocial(
     - 500: Internal Server Error
 
     """
+
+    logger.info(f"ENDPOINT /saveRazonSocial: {request}")
 
     data = RazonSocialResponse(
         ID=1,
@@ -302,6 +308,7 @@ async def saveRazonSocial(
 @app.post("/getHallazgosList")
 @inject
 async def getHallazgosList(
+    request: DatosEmpresaHallazgosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -320,6 +327,8 @@ async def getHallazgosList(
     - Nombre
 
     """
+
+    logger.info(f"ENDPOINT /getHallazgosList: {request}")
 
     try:
         data = [
