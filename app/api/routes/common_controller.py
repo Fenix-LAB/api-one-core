@@ -59,28 +59,40 @@ async def GetResponsable(
     page_size = request.page_size
 
     try:
-        responsables, total_records = await fetch_responsables(db_session, page, page_size)
+        # responsables, total_records = await fetch_responsables(db_session, page, page_size)
 
-        responsable_responses = [
-            ResponsableResponse(
-                id=responsables.id,
-                name=responsables.name,
-                area_code=responsables.area_code,
-            )
-            for responsables in responsables
-        ]
+        # responsable_responses = [
+        #     ResponsableResponse(
+        #         id=responsables.id,
+        #         name=responsables.name,
+        #         area_code=responsables.area_code,
+        #     )
+        #     for responsables in responsables
+        # ]
 
-        total_pages = (total_records + page_size - 1) // page_size
+        # total_pages = (total_records + page_size - 1) // page_size
 
         return ApiResponse(
-            Status="200",
-            Message="Success",
+            Success=True,
+            Message="Ok",
             Data=ListResponse(
-                current_page=page,
-                page_size=page_size,
-                total_pages=total_pages,
-                total_records=total_records,
-                data=responsable_responses,
+                CurrentPage=0,
+                PageSize=0,
+                TotalPages=0,
+                TotalRecords=0,
+                Data = [
+                    ResponsableResponse(ID=1, Nombre="Responsable 1", AreaCode="Administrador"),
+                    ResponsableResponse(ID=2, Nombre="Responsable 2", AreaCode="Fiscal"),
+                    ResponsableResponse(ID=3, Nombre="Responsable 3", AreaCode="Legal"),
+                    ResponsableResponse(ID=4, Nombre="Responsable 4", AreaCode="Finanzas"),
+                    ResponsableResponse(ID=5, Nombre="Responsable 5", AreaCode="Rrhh"),
+                    ResponsableResponse(ID=6, Nombre="Responsable 6", AreaCode="Administrador"),
+                    ResponsableResponse(ID=7, Nombre="Responsable 7", AreaCode="Legal"),
+                    ResponsableResponse(ID=8, Nombre="Responsable 8", AreaCode="Fiscal"),
+                    ResponsableResponse(ID=9, Nombre="Responsable 9", AreaCode="Finanzas"),
+                    ResponsableResponse(ID=10, Nombre="Responsable 10", AreaCode="Rrhh"),
+                ]
+                
             ),
             Token=user_data.token,
         )
