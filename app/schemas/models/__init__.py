@@ -1,5 +1,5 @@
 from .area_rol import
-from .datos_empresa_legal_uso import
+from .datos_empresa_legal_uso import DatosEmpresaLegalUsoModel
 from .datos_empresa_socio_accionista_caracter import DatosEmpresaSocioAccionistaCaracterModel
 from .hallazgo_option import HallazgoOptionModel
 from .pais import PaisModel
@@ -10,4 +10,5 @@ __all__ = [
     "PaisModel",
     "PaisEstadoModel",
     "DatosEmpresaSocioAccionistaCaracterModel",
+    "DatosEmpresaLegalUsoModel",
 ]

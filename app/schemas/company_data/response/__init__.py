@@ -5,6 +5,7 @@ from .datos_empresa_evidencia import DatosEmpresaEvidenciaResponse
 from .cliente_proveedor import ClienteProveedorResponse
 from .provedor_nacional import ProveedorNacionalResponse
 from .socio_accionista import SocioAccionistaResponse
+from .legal_uso import LegalUsoResponse
 
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     "ClienteProveedorResponse",
     "ProveedorNacionalResponse",
     "SocioAccionistaResponse",
+    "LegalUsoResponse",
 ]

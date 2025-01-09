@@ -12,6 +12,8 @@ from .proveedor_nacional_historico import ProveedorNacionalHistoricoRequest
 from .proveedor_nacional_save import ProveedorNacionalSaveRequest
 from .caracter_tipos import CaracterTiposRequest
 from .socio_accionista_historico import SocioAccionistaHistoricoRequest
+from .socio_accionista_save import SocioAccionistaSaveRequest
+from .legal_uso_historico import LegalUsoHistoricoRequest
 
 __all__ = [
     "SectionDatosEmpresaListRequest",
@@ -28,4 +30,6 @@ __all__ = [
     "ProveedorNacionalSaveRequest",
     "CaracterTiposRequest",
     "SocioAccionistaHistoricoRequest",
+    "SocioAccionistaSaveRequest",
+    "LegalUsoHistoricoRequest",
 ]

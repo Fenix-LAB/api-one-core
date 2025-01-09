@@ -1205,6 +1205,7 @@ async def getSocioAccionistaList(
 @app.post("/saveSocioAccionista")
 @inject
 async def saveSocioAccionista(
+    request: SocioAccionistaSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1240,6 +1241,8 @@ async def saveSocioAccionista(
 
     """
 
+    logger.info(f"ENDPOINT /saveSocioAccionista: {request}")
+
     try:
         success = True
         message = "OK"
@@ -1264,6 +1267,7 @@ async def saveSocioAccionista(
 @app.post("/getLegalUsoList")
 @inject
 async def getLegalUsoList(
+    request: LegalUsoHistoricoRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -1319,6 +1323,8 @@ async def getLegalUsoList(
 
     """
 
+    logger.info(f"ENDPOINT /getLegalUsoList: {request}")
+
     try:
         data = [
             HistoricoResponse(
@@ -1329,8 +1335,6 @@ async def getLegalUsoList(
                     ID=1,
                     CaseNumber=1,
                     DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
-                        Arrendador="Arrendador 1",
-                        Aviso="Aviso 1",
                         Calle="Calle 1",
                         Colonia="Colonia 1",
                         CP="12345",
@@ -1341,14 +1345,9 @@ async def getLegalUsoList(
                         Localidad="Localidad 1",
                         NumeroExterior="Numero Exterior 1",
                         NumeroInterior="Numero Interior 1",
-                        Arrendatario="Arrendatario 1",
-                        FechaAviso="2024-01-01T12:00:00",
                         FechaInicioVigencia="2024-01-01T12:00:00",
-                        FechaVencimiento="2024-12-31T12:00:00"
                     ),
                     DomicilioNuevo=DatosEmpresaLegalUsoModel(
-                        Arrendador="Nuevo Arrendador 1",
-                        Aviso="Nuevo Aviso 1",
                         Calle="Nuevo Calle 1",
                         Colonia="Nuevo Colonia 1",
                         CP="123",
@@ -1358,13 +1357,7 @@ async def getLegalUsoList(
                         PaisCode="CO",
                         Localidad="Nuevo Localidad 1",
                         NumeroExterior="Nuevo Numero Exterior 1",
-                        NumeroInterior="Nuevo Numero Interior 1",
-                        Arrendatario="Nuevo Arrendatario 1",
-                        FechaAviso="2024-01-01T12:00:00",
                         FechaInicioVigencia="2024-01-01T12:00:00",
-                        FechaVencimiento="2024-12-31T12:00:00",
-                        RatificarDomicilio=False,
-                        RFC="Nuevo RFC 1",
                         TipoDocumento=2
                     )
                 )
@@ -1377,8 +1370,6 @@ async def getLegalUsoList(
                     ID=2,
                     CaseNumber=3,
                     DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
-                        Arrendador="Arrendador 2",
-                        Aviso="Aviso 2",
                         Calle="Calle 2",
                         Colonia="Colonia 2",
                         CP="12345",
@@ -1389,14 +1380,9 @@ async def getLegalUsoList(
                         Localidad="Localidad 2",
                         NumeroExterior="Numero Exterior 2",
                         NumeroInterior="Numero Interior 2",
-                        Arrendatario="Arrendatario 2",
-                        FechaAviso="2024-01-02T12:00:00",
                         FechaInicioVigencia="2024-01-02T12:00:00",
-                        FechaVencimiento="2024-12-31T12:00:00"
                     ),
                     DomicilioNuevo=DatosEmpresaLegalUsoModel(
-                        Arrendador="Nuevo Arrendador 2",
-                        Aviso="Nuevo Aviso 2",
                         Calle="Nuevo Calle 2",
                         Colonia="Nuevo Colonia 2",
                         CP="1232",
@@ -1407,12 +1393,7 @@ async def getLegalUsoList(
                         Localidad="Nuevo Localidad 2",
                         NumeroExterior="Nuevo Numero Exterior 2",
                         NumeroInterior="Nuevo Numero Interior 2",
-                        Arrendatario="Nuevo Arrendatario 2",
-                        FechaAviso="2024-01-02T12:00:00",
                         FechaInicioVigencia="2024-01-02T12:00:00",
-                        FechaVencimiento="2024-12-31T12:00:00",
-                        RatificarDomicilio=True,
-                        RFC="Nuevo RFC 2",
                         TipoDocumento=4
                     )
                 )
