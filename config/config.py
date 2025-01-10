@@ -47,7 +47,7 @@ class LocalConfig(Config):
     ONE_CORE_DB_PASSWORD: str = "onecore77"
     ONE_CORE_DB_HOST: str = "localhost"
     ONE_CORE_DB_PORT: int = 5432
-    EXCLUDED_URLS: list[str] = ["/app/v1/auth/login", "/docs", "/redoc", "/openapi.json"]
+    EXCLUDED_URLS: list[str] = ["/api/login", "/docs", "/redoc", "/openapi.json"]
 
 
 def get_config():

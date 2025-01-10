@@ -38,5 +38,5 @@ async def Login(
 
     token = create_access_token(data={"sub": "1", "role": "admin"})
     return ApiResponseNoToken[LoginResponse](
-        Data=LoginResponse(Token=token), Message="Login successful", Status="200"
+        Data=LoginResponse(Token=token), Message="Login successful", Success=True
     )

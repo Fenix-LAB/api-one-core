@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from app.schemas.models.datos_empresa_legal_uso_model import DatosEmpresaLegalUsoModel
+from app.schemas.models.datos_empresa_legal_uso import DatosEmpresaLegalUsoModel
 
 class LegalUsoResponse(BaseModel):
     ID: int = Field(..., description="ID")

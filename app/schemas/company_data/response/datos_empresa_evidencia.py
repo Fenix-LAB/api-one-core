@@ -1,9 +1,9 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import List, Optional
-from app.schemas.models.area_rol_model import AreaRolModel
-from app.schemas.models.responsable_model import ResponsableModel
-from app.schemas.models.hallazgo_option_model import HallazgoOptionModel
+from app.schemas.models.area_rol import AreaRolModel
+from app.schemas.models.responsable import ResponsableModel
+from app.schemas.models.hallazgo_option import HallazgoOptionModel
 
 class DatosEmpresaEvidenciaResponse(BaseModel):
     ID: int = Field(..., description="ID")
