@@ -23,7 +23,7 @@ from app.schemas.dashboard.request import (
 
 from app.schemas.dashboard.response import (
     ExpedienteCivaResponse,
-    RequirementObligationsResponse,
+    RequerimientoObligacionesResponse,
     NotificationResponse,
     DonutPanelResponse,
     TareaResponsableResponse,
@@ -43,7 +43,7 @@ security = HTTPBearer()
 @app.post("/GetRequirementObligation")
 @inject
 async def GetRequirementObligation(
-    request: DateRequest,
+    request: RequerimientoObligacionesRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -64,9 +64,11 @@ async def GetRequirementObligation(
 
     """
 
+    logger.info(f"ENDPOINT /GetRequirementObligation: {request}")
+
     try:
 
-        response = RequirementObligationsResponse(
+        response = RequerimientoObligacionesResponse(
             Pendientes=10, Proximos=5, Hallazgos=3
         )
 
@@ -87,7 +89,7 @@ async def GetRequirementObligation(
 @app.post("/getGetExpedienteCiva")
 @inject
 async def getGetExpedienteCiva(
-    request: DateRequest,
+    request: ExpedienteCivaRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -105,6 +107,8 @@ async def getGetExpedienteCiva(
     - Actualizacion (datetime)
 
     """
+
+    logger.info(f"ENDPOINT /getGetExpedienteCiva: {request}")
 
     try:
 
@@ -127,6 +131,7 @@ async def getGetExpedienteCiva(
 @app.post("/getTotalSolicitudesRevisor")
 @inject
 async def getTotalSolicitudesRevisor(
+    request: TotalSolicitudesRevisorRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -144,6 +149,8 @@ async def getTotalSolicitudesRevisor(
     - Solicitudes
 
     """
+
+    logger.info(f"ENDPOINT /getTotalSolicitudesRevisor: {request}")
 
     try:
 
@@ -166,6 +173,7 @@ async def getTotalSolicitudesRevisor(
 @app.post("/getNotificaciones")
 @inject
 async def getNotificaciones(
+    request: NotificacionesRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -188,6 +196,8 @@ async def getNotificaciones(
     - EsError
 
     """
+
+    logger.info(f"ENDPOINT /getNotificaciones: {request}")
 
     try:
 
@@ -227,6 +237,7 @@ async def getNotificaciones(
 @app.post("/getDonutPanel")
 @inject
 async def getDonutPanel(
+    request: DonutPanelRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -248,6 +259,8 @@ async def getDonutPanel(
     - Cantidad
 
     """
+
+    logger.info(f"ENDPOINT /getDonutPanel: {request}")
 
     try:
 
@@ -283,6 +296,7 @@ async def getDonutPanel(
 @app.post("/getTareasResponsable")
 @inject
 async def getTareasResponsable(
+    request: TareaResponsableRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -304,6 +318,8 @@ async def getTareasResponsable(
     - RiesgoCode
 
     """
+
+    logger.info(f"ENDPOINT /getTareasResponsable: {request}")
 
     try:
 
