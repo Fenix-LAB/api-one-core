@@ -10,7 +10,7 @@ from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
 
-from app.schemas.requerimientos.response import (
+from app.schemas..response import (
     PaginationBase,
     SectionOptionRequerimientosResponse,
     RequerimientoElementResponse,
