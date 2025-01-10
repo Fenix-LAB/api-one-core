@@ -9,8 +9,9 @@ from app.middleware.authentication import BaseData
 from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
+from app.schemas.generic_list import ListResponse
 
-from app.schemas..response import (
+from app.schemas.requirements.response import (
     PaginationBase,
     SectionOptionRequerimientosResponse,
     RequerimientoElementResponse,
@@ -23,7 +24,7 @@ from app.schemas..response import (
     FileInfoModel,
 )
 
-from app.schemas.requerimientos.request import (
+from app.schemas.requirements.request import (
     SectionRequerimientosListRequest,
     RequerimientosListRequest,
     RequerimientosEvidenciaIDRequest,
@@ -33,6 +34,11 @@ from app.schemas.requerimientos.request import (
     SolicitudIDRequest,
     SolicitudSaveRequest,
 )
+
+from app.schemas.models.area_rol import AreaRolModel
+from app.schemas.models.responsable import ResponsableModel
+from app.schemas.models.file_info import FileInfoModel  
+from app.schemas.models.hallazgo_option import HallazgoOptionModel
 
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
@@ -47,6 +53,7 @@ security = HTTPBearer()
 @app.post("getSectionList")
 @inject
 async def getSectionList(
+    request: SectionRequerimientosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -69,6 +76,8 @@ async def getSectionList(
     - Enable
 
     """
+
+    logger.info(f"ENDPOINT /getSectionList: {request}")
 
     try:
         data = [
@@ -150,6 +159,7 @@ async def getSectionList(
 @app.post("/getRequerimientosList")
 @inject
 async def getRequerimientosList(
+    request: RequerimientosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -175,6 +185,8 @@ async def getRequerimientosList(
 
     """
 
+    logger.info(f"ENDPOINT /getRequerimientosList: {request}")
+
     try:
         data = [
             RequerimientoElementResponse(ID=1, Verificacion="Pendiente", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-01T10:00:00"),
@@ -186,7 +198,7 @@ async def getRequerimientosList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(
+            Data=ListResponse(
                 Data=data,
                 CurrentPage=1,
                 PageSize=10,
@@ -209,6 +221,7 @@ async def getRequerimientosList(
 @app.post("getEvidenciaID")
 @inject
 async def getEvidenciaID(
+    request: RequerimientosEvidenciaIDRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -239,6 +252,8 @@ async def getEvidenciaID(
     - HallazgoRecomendaciones
 
     """
+
+    logger.info(f"ENDPOINT /getEvidenciaID: {request}")
 
     try:
         evidencia = RequerimientosEvidenciaResponse(
@@ -289,6 +304,7 @@ async def getEvidenciaID(
 @app.post("getHallazgosList")
 @inject
 async def getHallazgosList(
+    request: RequerimientosHallazgosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -307,6 +323,8 @@ async def getHallazgosList(
     - Nombre
 
     """
+
+    logger.info(f"ENDPOINT /getHallazgosList: {request}")
 
     try:
         data = [
@@ -335,6 +353,7 @@ async def getHallazgosList(
 @app.post("saveEvidencia")
 @inject
 async def saveEvidencia(
+    request: RequerimientosEvidenciaSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -361,6 +380,8 @@ async def saveEvidencia(
 
     """
 
+    logger.info(f"ENDPOINT /saveEvidencia: {request}")
+
     try:
         # Simulate a successful operation
         return ApiResponse(
@@ -383,6 +404,7 @@ async def saveEvidencia(
 @app.post("saveHallazgo")
 @inject
 async def saveHallazgo(
+    request: HallazgoSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -410,6 +432,8 @@ async def saveHallazgo(
 
     """
 
+    logger.info(f"ENDPOINT /saveHallazgo: {request}")
+
     try:
         # Simulate a successful operation
         return ApiResponse(
@@ -432,6 +456,7 @@ async def saveHallazgo(
 @app.post("getSolicitudesSectionList")
 @inject
 async def getSolicitudesSectionList(
+    request: SectionRequerimientosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -452,6 +477,8 @@ async def getSolicitudesSectionList(
     - CantidadSolicitudes
 
     """
+
+    logger.info(f"ENDPOINT /getSolicitudesSectionList: {request}")
 
     try:
         data = [
@@ -484,6 +511,7 @@ async def getSolicitudesSectionList(
 @app.post("getSolicitudesList")
 @inject
 async def getSolicitudesList(
+    request: RequerimientosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -508,6 +536,8 @@ async def getSolicitudesList(
     - EsCritico
 
     """
+
+    logger.info(f"ENDPOINT /getSolicitudesList: {request}")
 
     try:
         data = [
@@ -537,6 +567,7 @@ async def getSolicitudesList(
 @app.post("getSolicitudID")
 @inject
 async def getSolicitudID(
+    request: SolicitudIDRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -562,56 +593,7 @@ async def getSolicitudID(
 
     """
 
-    from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-from sqlalchemy.ext.asyncio import AsyncSession
-from dependency_injector.wiring import inject
-
-from app.middleware.authentication import BaseData
-
-from app.database.session import get_db_session
-
-from app.schemas.generic_response import ApiResponse
-from app.schemas.requerimientos.response import (
-    SolicitudResponse,
-    AreaRolModel,
-    ResponsableModel,
-)
-from app.services.role_checker import RoleChecker, get_current_user
-
-from config.logger_config import logger
-
-app = APIRouter()
-security = HTTPBearer()
-
-@app.post("/getSolicitudID")
-@inject
-async def getSolicitudID(
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
-):
-    """
-    ## DESCRIPTION
-    ### Endpoint to get a request by ID.
-
-    ## REQUEST
-    - ID
-    - CodeSection
-
-    ## RESPONSE
-    - ID
-    - Elemento
-    - CaseNumber
-    - Cliente
-    - Status
-    - FechaRevision
-    - AreaRols
-    - Responsables
-
-    """
+    logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
     try:
         solicitud = SolicitudResponse(
@@ -651,6 +633,7 @@ async def getSolicitudID(
 @app.post("saveSolicitud")
 @inject
 async def saveSolicitud(
+    request: SolicitudSaveRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -675,6 +658,8 @@ async def saveSolicitud(
 
     """
 
+    logger.info(f"ENDPOINT /saveSolicitud: {request}")
+
     try:
         # Simulate a successful operation
         return ApiResponse(
@@ -697,6 +682,7 @@ async def saveSolicitud(
 @app.post("getSolicitudID")
 @inject
 async def getSolicitudID(
+    request: SolicitudIDRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
@@ -721,6 +707,8 @@ async def getSolicitudID(
     - Responsables
 
     """
+
+    logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
     try:
         solicitud = SolicitudResponse(
