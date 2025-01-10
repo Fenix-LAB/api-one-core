@@ -12,16 +12,11 @@ from app.schemas.generic_response import ApiResponse
 from app.schemas.generic_list import ListResponse
 
 from app.schemas.requirements.response import (
-    PaginationBase,
     SectionOptionRequerimientosResponse,
     RequerimientoElementResponse,
     RequerimientosEvidenciaResponse,
-    HallazgoOptionModel,
     SolicitudesSectionRequerimientosOptionResponse,
     SolicitudResponse,
-    AreaRolModel,
-    ResponsableModel,
-    FileInfoModel,
 )
 
 from app.schemas.requirements.request import (
@@ -494,7 +489,7 @@ async def getSolicitudesSectionList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(Data=data),
+            Data=ListResponse(Data=data),
             Token=user_data.token,
         )
 
@@ -549,7 +544,7 @@ async def getSolicitudesList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(Data=data),
+            Data=ListResponse(Data=data),
             Token=user_data.token,
         )
 

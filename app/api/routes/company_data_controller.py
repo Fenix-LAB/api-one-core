@@ -13,7 +13,6 @@ from app.schemas.generic_response import ApiResponse
 from app.schemas.generic_list import ListResponse
 
 from app.schemas.company_data.response import (
-    PaginationBase,
     SectionOptionDatosEmpresaResponse,
     HistoricoResponse,
     RazonSocialResponse,
@@ -341,7 +340,7 @@ async def getHallazgosList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(
+            Data=ListResponse(
                 Data=data,
                 CurrentPage=1,
                 PageSize=len(data),
@@ -854,7 +853,7 @@ async def getClienteProveedorList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(
+            Data=ListResponse(
                 Data=data
             ),
             Token=user_data.token,
@@ -1403,7 +1402,7 @@ async def getLegalUsoList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(Data=data),
+            Data=ListResponse(Data=data),
             Token=user_data.token
         )
 
@@ -1557,7 +1556,7 @@ async def getEnlacesOperativosList(
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=PaginationBase(
+            Data=ListResponse(
                 Data=data,
                 CurrentPage=1,
                 PageSize=10,
