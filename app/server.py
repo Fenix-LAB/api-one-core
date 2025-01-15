@@ -9,6 +9,7 @@ from config.config import config
 from app.api.api_router import router
 from app.database.session import engine
 from app.database.seeder import seed_database
+from app.database.procedures.stores_procedures import stored_prcedures_populate
 
 from app.middleware import (
     OneAuthBackend,
@@ -56,10 +57,11 @@ def create_app() -> FastAPI:
     # app_.add_event_handler("startup", create_tables)
     logger.info("SERVER: Event 'start up'")
 
-    # @app_.on_event("startup")
-    # async def on_startup():
-    #     await create_tables(engine)
+    @app_.on_event("startup")
+    async def on_startup():
+        await create_tables(engine)
         # await seed_database(engine)
+        await stored_prcedures_populate(engine)
 
     logger.info("SERVER: App created")
     # await create_tables(engine)

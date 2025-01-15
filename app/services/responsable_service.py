@@ -1,28 +1,23 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-
-# from sqlalchemy.orm import selectinload
-from app.database.models.responsable import Responsable
-from sqlalchemy.sql import func
+from sqlalchemy import text
+from app.schemas.models.area_rol import AreaRolType
 
 
-async def fetch_responsables(session: AsyncSession, page: int, page_size: int):
+async def fetch_responsables(session: AsyncSession):
     """
-    Fetches
+    Method to fetch all responsables.
 
-    :param session: AsyncSession
-    :param page: int
-    :param page_size: int
-    :return: Tuple[List[Responsable], int]
+    :param session: Session to connect to the database.
+    :return: List of responsables.
     """
 
-    offset = (page - 1) * page_size
-
-    # query = select(Responsable).options(selectinload(Responsable.id)).offset(offset).limit(page_size)
-    query = select(Responsable).offset(offset).limit(page_size)
-    result = await session.execute(query)
-    users = result.scalars().all()
-
-    total_records = await session.scalar(select(func.count()).select_from(Responsable))
-
-    return users, total_records
+    result = await session.execute(text("SELECT * FROM GetResponsables()"))
+    responsables = result.fetchall()
+    return [
+        {
+            "ID": responsable[0],
+            "Nombre": responsable[1],
+            "AreaCode": AreaRolType[responsable[2]],
+        }
+        for responsable in responsables
+    ]
