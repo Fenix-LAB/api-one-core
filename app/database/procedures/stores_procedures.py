@@ -30,6 +30,18 @@ BEGIN
     WHERE fecha_vencimiento BETWEEN DateIni AND DateEnd;
 END;
 $$ LANGUAGE plpgsql;
+                  
+CREATE OR REPLACE FUNCTION GetExpedienteCiva(DateIni TIMESTAMP, DateEnd TIMESTAMP)
+RETURNS TABLE(ID INT, Actualizacion TIMESTAMP) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        id AS ID,
+        actualizacion AS Actualizacion
+    FROM expedientes_civa
+    WHERE actualizacion BETWEEN DateIni AND DateEnd;
+END;
+$$ LANGUAGE plpgsql;
 """)
 
 async def stored_prcedures_populate(engine):

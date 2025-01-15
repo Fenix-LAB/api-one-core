@@ -33,6 +33,7 @@ from app.schemas.dashboard.response import (
 
 from app.services.dashboard import (
     fetch_requirement_obligation,
+    fetch_expediente_civa,
 )
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -123,7 +124,15 @@ async def getGetExpedienteCiva(
 
     try:
 
-        response = ExpedienteCivaResponse(Actualizacion="2023-12-01T12:00:00")
+        # response = ExpedienteCivaResponse(Actualizacion="2023-12-01T12:00:00")
+
+        logger.info(f"Fetching expediente civa ...")
+
+        response = await fetch_expediente_civa(
+            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        )
+
+        logger.info(f"Expediente civa fetched successfully")
 
         return ApiResponse(
             Success=True,
