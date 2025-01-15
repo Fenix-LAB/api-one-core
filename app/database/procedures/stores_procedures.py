@@ -17,6 +17,19 @@ BEGIN
     INNER JOIN areas a ON r.area_id = a.id;
 END;
 $$ LANGUAGE plpgsql;
+                  
+CREATE OR REPLACE FUNCTION GetRequirementObligation(DateIni DATE, DateEnd DATE)
+RETURNS TABLE(Pendientes INT, Proximos INT, Hallazgos INT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        COUNT(*) FILTER (WHERE is_aprobado = FALSE AND fecha_vencimiento > CURRENT_DATE) AS Pendientes,
+        COUNT(*) FILTER (WHERE fecha_vencimiento BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days') AS Proximos,
+        COUNT(*) FILTER (WHERE es_critico = TRUE) AS Hallazgos
+    FROM requirements
+    WHERE fecha_vencimiento BETWEEN DateIni AND DateEnd;
+END;
+$$ LANGUAGE plpgsql;
 """)
 
 async def stored_prcedures_populate(engine):

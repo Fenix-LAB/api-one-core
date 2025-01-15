@@ -30,7 +30,10 @@ from app.schemas.dashboard.response import (
     TotalSolicitudesRevisorResponse,
 )
 
-from app.services.get_requirement_obligation import get_requerimiento_obligaciones
+
+from app.services.dashboard import (
+    fetch_requirement_obligation,
+)
 from app.services.role_checker import RoleChecker, get_current_user
 
 from config.logger_config import logger
@@ -68,9 +71,17 @@ async def GetRequirementObligation(
 
     try:
 
-        response = RequerimientoObligacionesResponse(
-            Pendientes=10, Proximos=5, Hallazgos=3
+        # response = RequerimientoObligacionesResponse(
+        #     Pendientes=10, Proximos=5, Hallazgos=3
+        # )
+
+        logger.info(f"Fetching requirement obligations ...")
+
+        response = await fetch_requirement_obligation(
+            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
         )
+
+        logger.info(f"Requirement obligations fetched successfully")
 
         return ApiResponse(
             Success=True,
