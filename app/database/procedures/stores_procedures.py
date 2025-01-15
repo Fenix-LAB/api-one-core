@@ -4,7 +4,7 @@ from sqlalchemy import text
 
 
 
-get_responsable = text("""
+procedures = text("""
 CREATE OR REPLACE FUNCTION GetResponsables()
 RETURNS TABLE(ID INT, Nombre VARCHAR, AreaCode VARCHAR) AS $$
 BEGIN
@@ -27,7 +27,7 @@ async def stored_prcedures_populate(engine):
 
     logger.info("SQL: Creating stored procedures ...")
     async with engine.begin() as conn:
-        await conn.execute(get_responsable)
+        await conn.execute(procedures)
         logger.info("SQL: Stored procedures created successfully!!!")
     await engine.dispose()
     logger.info("SQL: Engine disposed")
