@@ -37,6 +37,7 @@ from app.services.dashboard import (
     fetch_total_solicitudes_revisor,
     fetch_notificaciones,
     fetch_donut_panel,
+    fetch_tareas_responsable,
 )
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -368,22 +369,30 @@ async def getTareasResponsable(
 
     try:
 
-        data = [
-            TareaResponsableResponse(
-                Area="Rrhh",
-                Usuario="Nombre Usuario",
-                Asignadas=10,
-                Completadas=10,
-                RiesgoCode="Medio",
-            ),
-            TareaResponsableResponse(
-                Area="Finanzas",
-                Usuario="Nombre Usuario",
-                Asignadas=10,
-                Completadas=10,
-                RiesgoCode="Alto",
-            ),
-        ]
+        # data = [
+        #     TareaResponsableResponse(
+        #         Area="Rrhh",
+        #         Usuario="Nombre Usuario",
+        #         Asignadas=10,
+        #         Completadas=10,
+        #         RiesgoCode="Medio",
+        #     ),
+        #     TareaResponsableResponse(
+        #         Area="Finanzas",
+        #         Usuario="Nombre Usuario",
+        #         Asignadas=10,
+        #         Completadas=10,
+        #         RiesgoCode="Alto",
+        #     ),
+        # ]
+
+        logger.info(f"Fetching tareas responsables ...")
+
+        data = await fetch_tareas_responsable(
+            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        )
+
+        logger.info(f"Tareas responsables fetched successfully")
 
         return ApiResponse(
             Success=True,

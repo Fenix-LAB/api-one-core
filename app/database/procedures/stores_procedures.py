@@ -98,6 +98,29 @@ BEGIN
     GROUP BY r.is_aprobado;
 END;
 $$ LANGUAGE plpgsql;
+                  
+CREATE OR REPLACE FUNCTION GetTareasResponsable(DateIni DATE, DateEnd DATE)
+RETURNS TABLE(Area VARCHAR, Usuario VARCHAR, Asignadas INT, Completadas INT, RiesgoCode VARCHAR) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        a.name AS Area,
+        u.username AS Usuario,
+        COUNT(r.id) AS Asignadas,
+        COUNT(CASE WHEN r.is_aprobado THEN 1 END) AS Completadas,
+        CASE 
+            WHEN COUNT(CASE WHEN r.is_aprobado THEN 1 END) < COUNT(r.id) THEN 'Alto'
+            ELSE 'Medio'
+        END AS RiesgoCode
+    FROM responsables r
+    INNER JOIN areas a ON r.area_id = a.id
+    INNER JOIN user_roles ur ON ur.user_id = r.id
+    INNER JOIN users u ON u.id = ur.user_id
+    WHERE r.fecha_envio BETWEEN DateIni AND DateEnd
+    GROUP BY a.name, u.username;
+END;
+$$ LANGUAGE plpgsql;
+
 """)
 
 async def stored_prcedures_populate(engine):
