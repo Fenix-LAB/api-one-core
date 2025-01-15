@@ -52,6 +52,28 @@ BEGIN
     WHERE fecha_revision BETWEEN DateIni AND DateEnd;
 END;
 $$ LANGUAGE plpgsql;
+                  
+CREATE OR REPLACE FUNCTION GetNotificaciones()
+RETURNS TABLE(
+    ID INT,
+    Titulo VARCHAR,
+    Referencia VARCHAR,
+    Estado VARCHAR,
+    Descripcion TEXT,
+    Fecha TIMESTAMP,
+    EsError BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        n.id AS ID,
+        n.title AS Titulo,
+        n.id::TEXT AS Referencia,
+        n.state AS Estado,
+        n.description AS Descripcion,
+        n.date AS Fecha,
+        n.is_error AS EsError
+    FROM notifications n;
 """)
 
 async def stored_prcedures_populate(engine):

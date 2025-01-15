@@ -35,6 +35,7 @@ from app.services.dashboard import (
     fetch_requirement_obligation,
     fetch_expediente_civa,
     fetch_total_solicitudes_revisor,
+    fetch_notificaciones,
 )
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -230,24 +231,30 @@ async def getNotificaciones(
 
     try:
 
-        data = [
-            NotificationResponse(
-                Titulo="Subject",
-                Referencia="0000000001",
-                Estado="Hallazgo",
-                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
-                Fecha="2023-12-01T11:00:00",
-                EsError=True,
-            ),
-            NotificationResponse(
-                Titulo="Subject",
-                Referencia="0000000002",
-                Estado="Solicitud Aprobada",
-                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
-                Fecha="2023-12-01T10:00:00",
-                EsError=False,
-            ),
-        ]
+        # data = [
+        #     NotificationResponse(
+        #         Titulo="Subject",
+        #         Referencia="0000000001",
+        #         Estado="Hallazgo",
+        #         Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+        #         Fecha="2023-12-01T11:00:00",
+        #         EsError=True,
+        #     ),
+        #     NotificationResponse(
+        #         Titulo="Subject",
+        #         Referencia="0000000002",
+        #         Estado="Solicitud Aprobada",
+        #         Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+        #         Fecha="2023-12-01T10:00:00",
+        #         EsError=False,
+        #     ),
+        # ]
+
+        logger.info(f"Fetching notifications ...")
+
+        data = await fetch_notificaciones(session=db_session)
+
+        logger.info(f"Notifications fetched successfully")
 
         return ApiResponse(
             Success=True,
