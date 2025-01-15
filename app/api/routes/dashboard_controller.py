@@ -36,6 +36,7 @@ from app.services.dashboard import (
     fetch_expediente_civa,
     fetch_total_solicitudes_revisor,
     fetch_notificaciones,
+    fetch_donut_panel,
 )
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -300,20 +301,28 @@ async def getDonutPanel(
 
     try:
 
-        data = [
-            DonutPanelResponse(
-                NombreCode="Completado",
-                Porcentaje=5,
-                Cantidad=45,
-                ColorCode="Green",
-            ),
-            DonutPanelResponse(
-                NombreCode="Pendiente",
-                Porcentaje=95,
-                Cantidad=920,
-                ColorCode="Red",
-            ),
-        ]
+        # data = [
+        #     DonutPanelResponse(
+        #         NombreCode="Completado",
+        #         Porcentaje=5,
+        #         Cantidad=45,
+        #         ColorCode="Green",
+        #     ),
+        #     DonutPanelResponse(
+        #         NombreCode="Pendiente",
+        #         Porcentaje=95,
+        #         Cantidad=920,
+        #         ColorCode="Red",
+        #     ),
+        # ]
+
+        logger.info(f"Fetching donut panel ...")
+
+        data = await fetch_donut_panel(
+            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
+        )
+
+        logger.info(f"Donut panel fetched successfully")
 
         return ApiResponse(
             Success=True,

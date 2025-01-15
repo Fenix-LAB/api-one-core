@@ -43,7 +43,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
                   
-                  CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
+CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
 RETURNS TABLE(Solicitudes INT) AS $$
 BEGIN
     RETURN QUERY
@@ -74,6 +74,30 @@ BEGIN
         n.date AS Fecha,
         n.is_error AS EsError
     FROM notifications n;
+END;
+$$ LANGUAGE plpgsql;
+                  
+CREATE OR REPLACE FUNCTION GetDonutPanel(DateIni TIMESTAMP, DateEnd TIMESTAMP, Type VARCHAR)
+RETURNS TABLE(ColorCode VARCHAR, NombreCode VARCHAR, Porcentaje INT, Cantidad INT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        CASE 
+            WHEN r.is_aprobado THEN 'Green'
+            ELSE 'Red'
+        END AS ColorCode,
+        CASE 
+            WHEN r.is_aprobado THEN 'Completado'
+            ELSE 'Pendiente'
+        END AS NombreCode,
+        COUNT(r.id) * 100 / NULLIF(SUM(COUNT(r.id)) OVER (), 0) AS Porcentaje,
+        COUNT(r.id) AS Cantidad
+    FROM requirements r
+    WHERE r.fecha_inicio BETWEEN DateIni AND DateEnd
+    AND r.comentarios LIKE '%' || Type || '%'
+    GROUP BY r.is_aprobado;
+END;
+$$ LANGUAGE plpgsql;
 """)
 
 async def stored_prcedures_populate(engine):
