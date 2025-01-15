@@ -34,6 +34,7 @@ from app.schemas.dashboard.response import (
 from app.services.dashboard import (
     fetch_requirement_obligation,
     fetch_expediente_civa,
+    fetch_total_solicitudes_revisor,
 )
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -174,7 +175,15 @@ async def getTotalSolicitudesRevisor(
 
     try:
 
-        response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
+        # response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
+
+        logger.info(f"Fetching total solicitudes revisor ...")
+
+        response = await fetch_total_solicitudes_revisor(
+            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        )
+
+        logger.info(f"Total solicitudes revisor fetched successfully")
 
         return ApiResponse(
             Success=True,

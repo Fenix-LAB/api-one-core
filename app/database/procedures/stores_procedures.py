@@ -42,6 +42,16 @@ BEGIN
     WHERE actualizacion BETWEEN DateIni AND DateEnd;
 END;
 $$ LANGUAGE plpgsql;
+                  
+                  CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
+RETURNS TABLE(Solicitudes INT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT COUNT(*)
+    FROM solicitations
+    WHERE fecha_revision BETWEEN DateIni AND DateEnd;
+END;
+$$ LANGUAGE plpgsql;
 """)
 
 async def stored_prcedures_populate(engine):
