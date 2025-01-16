@@ -4,124 +4,145 @@ from sqlalchemy import text
 
 
 
-procedures = text("""
-CREATE OR REPLACE FUNCTION GetResponsables()
-RETURNS TABLE(ID INT, Nombre VARCHAR, AreaCode VARCHAR) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        r.id AS ID,
-        r.name AS Nombre,
-        a.name AS AreaCode
-    FROM responsables r
-    INNER JOIN areas a ON r.area_id = a.id;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetRequirementObligation(DateIni DATE, DateEnd DATE)
-RETURNS TABLE(Pendientes INT, Proximos INT, Hallazgos INT) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        COUNT(*) FILTER (WHERE is_aprobado = FALSE AND fecha_vencimiento > CURRENT_DATE) AS Pendientes,
-        COUNT(*) FILTER (WHERE fecha_vencimiento BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days') AS Proximos,
-        COUNT(*) FILTER (WHERE es_critico = TRUE) AS Hallazgos
-    FROM requirements
-    WHERE fecha_vencimiento BETWEEN DateIni AND DateEnd;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetExpedienteCiva(DateIni TIMESTAMP, DateEnd TIMESTAMP)
-RETURNS TABLE(ID INT, Actualizacion TIMESTAMP) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        id AS ID,
-        actualizacion AS Actualizacion
-    FROM expedientes_civa
-    WHERE actualizacion BETWEEN DateIni AND DateEnd;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
-RETURNS TABLE(Solicitudes INT) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT COUNT(*)
-    FROM solicitations
-    WHERE fecha_revision BETWEEN DateIni AND DateEnd;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetNotificaciones()
-RETURNS TABLE(
-    ID INT,
-    Titulo VARCHAR,
-    Referencia VARCHAR,
-    Estado VARCHAR,
-    Descripcion TEXT,
-    Fecha TIMESTAMP,
-    EsError BOOLEAN
-) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        n.id AS ID,
-        n.title AS Titulo,
-        n.id::TEXT AS Referencia,
-        n.state AS Estado,
-        n.description AS Descripcion,
-        n.date AS Fecha,
-        n.is_error AS EsError
-    FROM notifications n;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetDonutPanel(DateIni TIMESTAMP, DateEnd TIMESTAMP, Type VARCHAR)
-RETURNS TABLE(ColorCode VARCHAR, NombreCode VARCHAR, Porcentaje INT, Cantidad INT) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        CASE 
-            WHEN r.is_aprobado THEN 'Green'
-            ELSE 'Red'
-        END AS ColorCode,
-        CASE 
-            WHEN r.is_aprobado THEN 'Completado'
-            ELSE 'Pendiente'
-        END AS NombreCode,
-        COUNT(r.id) * 100 / NULLIF(SUM(COUNT(r.id)) OVER (), 0) AS Porcentaje,
-        COUNT(r.id) AS Cantidad
-    FROM requirements r
-    WHERE r.fecha_inicio BETWEEN DateIni AND DateEnd
-    AND r.comentarios LIKE '%' || Type || '%'
-    GROUP BY r.is_aprobado;
-END;
-$$ LANGUAGE plpgsql;
-                  
-CREATE OR REPLACE FUNCTION GetTareasResponsable(DateIni DATE, DateEnd DATE)
-RETURNS TABLE(Area VARCHAR, Usuario VARCHAR, Asignadas INT, Completadas INT, RiesgoCode VARCHAR) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        a.name AS Area,
-        u.username AS Usuario,
-        COUNT(r.id) AS Asignadas,
-        COUNT(CASE WHEN r.is_aprobado THEN 1 END) AS Completadas,
-        CASE 
-            WHEN COUNT(CASE WHEN r.is_aprobado THEN 1 END) < COUNT(r.id) THEN 'Alto'
-            ELSE 'Medio'
-        END AS RiesgoCode
-    FROM responsables r
-    INNER JOIN areas a ON r.area_id = a.id
-    INNER JOIN user_roles ur ON ur.user_id = r.id
-    INNER JOIN users u ON u.id = ur.user_id
-    WHERE r.fecha_envio BETWEEN DateIni AND DateEnd
-    GROUP BY a.name, u.username;
-END;
-$$ LANGUAGE plpgsql;
+procedures = [
+    text(
+    """
+    CREATE OR REPLACE FUNCTION GetResponsables()
+    RETURNS TABLE(ID INT, Nombre VARCHAR, AreaCode VARCHAR) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT 
+            r.id AS ID,
+            r.name AS Nombre,
+            a.name AS AreaCode
+        FROM responsables r
+        INNER JOIN areas a ON r.area_id = a.id;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
 
-""")
+    text(
+    """        
+    CREATE OR REPLACE FUNCTION GetRequirementObligation(DateIni DATE, DateEnd DATE)
+    RETURNS TABLE(Pendientes INT, Proximos INT, Hallazgos INT) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT
+            COUNT(*) FILTER (WHERE is_aprobado = FALSE AND fecha_vencimiento > CURRENT_DATE) AS Pendientes,
+            COUNT(*) FILTER (WHERE fecha_vencimiento BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days') AS Proximos,
+            COUNT(*) FILTER (WHERE es_critico = TRUE) AS Hallazgos
+        FROM requirements
+        WHERE fecha_vencimiento BETWEEN DateIni AND DateEnd;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
+
+    text(
+    """           
+    CREATE OR REPLACE FUNCTION GetExpedienteCiva(DateIni TIMESTAMP, DateEnd TIMESTAMP)
+    RETURNS TABLE(ID INT, Actualizacion TIMESTAMP) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT 
+            id AS ID,
+            actualizacion AS Actualizacion
+        FROM expedientes_civa
+        WHERE actualizacion BETWEEN DateIni AND DateEnd;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
+
+    text(
+    """           
+    CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
+    RETURNS TABLE(Solicitudes INT) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT COUNT(*)
+        FROM solicitations
+        WHERE fecha_revision BETWEEN DateIni AND DateEnd;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
+
+    text(
+    """                    
+    CREATE OR REPLACE FUNCTION GetNotificaciones()
+    RETURNS TABLE(
+        ID INT,
+        Titulo VARCHAR,
+        Referencia VARCHAR,
+        Estado VARCHAR,
+        Descripcion TEXT,
+        Fecha TIMESTAMP,
+        EsError BOOLEAN
+    ) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT 
+            n.id AS ID,
+            n.title AS Titulo,
+            n.id::TEXT AS Referencia,
+            n.state AS Estado,
+            n.description AS Descripcion,
+            n.date AS Fecha,
+            n.is_error AS EsError
+        FROM notifications n;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
+
+    text(
+    """                
+    CREATE OR REPLACE FUNCTION GetDonutPanel(DateIni TIMESTAMP, DateEnd TIMESTAMP, Type VARCHAR)
+    RETURNS TABLE(ColorCode VARCHAR, NombreCode VARCHAR, Porcentaje INT, Cantidad INT) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT 
+            CASE 
+                WHEN r.is_aprobado THEN 'Green'
+                ELSE 'Red'
+            END AS ColorCode,
+            CASE 
+                WHEN r.is_aprobado THEN 'Completado'
+                ELSE 'Pendiente'
+            END AS NombreCode,
+            COUNT(r.id) * 100 / NULLIF(SUM(COUNT(r.id)) OVER (), 0) AS Porcentaje,
+            COUNT(r.id) AS Cantidad
+        FROM requirements r
+        WHERE r.fecha_inicio BETWEEN DateIni AND DateEnd
+        AND r.comentarios LIKE '%' || Type || '%'
+        GROUP BY r.is_aprobado;
+    END;
+    $$ LANGUAGE plpgsql;
+    """),
+
+    text(
+    """                 
+    CREATE OR REPLACE FUNCTION GetTareasResponsable(DateIni DATE, DateEnd DATE)
+    RETURNS TABLE(Area VARCHAR, Usuario VARCHAR, Asignadas INT, Completadas INT, RiesgoCode VARCHAR) AS $$
+    BEGIN
+        RETURN QUERY
+        SELECT 
+            a.name AS Area,
+            u.username AS Usuario,
+            COUNT(r.id) AS Asignadas,
+            COUNT(CASE WHEN r.is_aprobado THEN 1 END) AS Completadas,
+            CASE 
+                WHEN COUNT(CASE WHEN r.is_aprobado THEN 1 END) < COUNT(r.id) THEN 'Alto'
+                ELSE 'Medio'
+            END AS RiesgoCode
+        FROM responsables r
+        INNER JOIN areas a ON r.area_id = a.id
+        INNER JOIN user_roles ur ON ur.user_id = r.id
+        INNER JOIN users u ON u.id = ur.user_id
+        WHERE r.fecha_envio BETWEEN DateIni AND DateEnd
+        GROUP BY a.name, u.username;
+    END;
+    $$ LANGUAGE plpgsql;
+    """
+    )
+]
 
 async def stored_prcedures_populate(engine):
     """
@@ -131,7 +152,11 @@ async def stored_prcedures_populate(engine):
 
     logger.info("SQL: Creating stored procedures ...")
     async with engine.begin() as conn:
-        await conn.execute(procedures)
-        logger.info("SQL: Stored procedures created successfully!!!")
+        for procedure in procedures:
+            try:
+                await conn.execute(procedure)
+                logger.info("SQL: Stored procedure created successfully.")
+            except Exception as e:
+                logger.error(f"SQL: Error creating stored procedure: {e}")
     await engine.dispose()
     logger.info("SQL: Engine disposed")
