@@ -24,10 +24,10 @@ procedures = [
     text(
     """        
     CREATE OR REPLACE FUNCTION GetRequirementObligation(DateIni DATE, DateEnd DATE)
-    RETURNS TABLE(Pendientes INT, Proximos INT, Hallazgos INT) AS $$
+    RETURNS TABLE(Pendientes BIGINT, Proximos BIGINT, Hallazgos BIGINT) AS $$
     BEGIN
         RETURN QUERY
-        SELECT
+        SELECT 
             COUNT(*) FILTER (WHERE is_aprobado = FALSE AND fecha_vencimiento > CURRENT_DATE) AS Pendientes,
             COUNT(*) FILTER (WHERE fecha_vencimiento BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days') AS Proximos,
             COUNT(*) FILTER (WHERE es_critico = TRUE) AS Hallazgos
@@ -39,15 +39,15 @@ procedures = [
 
     text(
     """           
-    CREATE OR REPLACE FUNCTION GetExpedienteCiva(DateIni TIMESTAMP, DateEnd TIMESTAMP)
+    CREATE OR REPLACE FUNCTION GetExpedienteCiva(DateIni DATE, DateEnd DATE)
     RETURNS TABLE(ID INT, Actualizacion TIMESTAMP) AS $$
     BEGIN
         RETURN QUERY
         SELECT 
-            id AS ID,
-            actualizacion AS Actualizacion
+            expedientes_civa.id AS ID,
+            expedientes_civa.actualizacion AS Actualizacion
         FROM expedientes_civa
-        WHERE actualizacion BETWEEN DateIni AND DateEnd;
+        WHERE expedientes_civa.actualizacion::DATE BETWEEN DateIni AND DateEnd;
     END;
     $$ LANGUAGE plpgsql;
     """),
@@ -55,12 +55,13 @@ procedures = [
     text(
     """           
     CREATE OR REPLACE FUNCTION GetTotalSolicitudesRevisor(DateIni DATE, DateEnd DATE)
-    RETURNS TABLE(Solicitudes INT) AS $$
+    RETURNS TABLE(Solicitudes BIGINT) AS $$
     BEGIN
         RETURN QUERY
-        SELECT COUNT(*)
-        FROM solicitations
-        WHERE fecha_revision BETWEEN DateIni AND DateEnd;
+        SELECT 
+            COUNT(*) AS Solicitudes
+        FROM solicitudes_revisor
+        WHERE fecha BETWEEN DateIni AND DateEnd;
     END;
     $$ LANGUAGE plpgsql;
     """),
@@ -158,5 +159,33 @@ async def stored_prcedures_populate(engine):
                 logger.info("SQL: Stored procedure created successfully.")
             except Exception as e:
                 logger.error(f"SQL: Error creating stored procedure: {e}")
+    await engine.dispose()
+    logger.info("SQL: Engine disposed")
+
+
+async def drop_procedures(engine):
+    """
+    Method to drop the stored procedures.
+    """
+    function_definitions = [
+        "GetResponsables()",
+        "GetRequirementObligation(DATE, DATE)",
+        "GetExpedienteCiva(TIMESTAMP, TIMESTAMP)",
+        "GetTotalSolicitudesRevisor(DATE, DATE)",
+        "GetNotificaciones()",
+        "GetDonutPanel(TIMESTAMP, TIMESTAMP, VARCHAR)",
+        "GetTareasResponsable(DATE, DATE)"
+    ]
+
+    logger.info("SQL: Dropping stored procedures ...")
+    async with engine.begin() as conn:
+        for function_name in function_definitions:
+            query = text(f"DROP FUNCTION IF EXISTS {function_name} CASCADE;")
+            try:
+                await conn.execute(query)
+                logger.info(f"SQL: Stored procedure {function_name} dropped successfully.")
+            except Exception as e:
+                logger.error(f"SQL: Error dropping stored procedure {function_name}: {e}")
+
     await engine.dispose()
     logger.info("SQL: Engine disposed")

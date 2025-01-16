@@ -15,4 +15,9 @@ async def fetch_expediente_civa(session: AsyncSession, date_ini: str, date_end: 
     result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
     expedientes = result.fetchall()
 
-    return [ExpedienteCivaResponse(**expediente) for expediente in expedientes]
+    logger.info(f"Expediente civa details fetched successfully: {expedientes}")
+
+    return [ExpedienteCivaResponse(
+        Actualizacion=expediente[0].strftime("%Y-%m-%d %H:%M:%S")
+    ) for expediente in expedientes]
+        

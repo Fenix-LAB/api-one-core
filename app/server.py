@@ -9,7 +9,7 @@ from config.config import config
 from app.api.api_router import router
 from app.database.session import engine
 from app.database.seeder import seed_database
-from app.database.procedures.stores_procedures import stored_prcedures_populate
+from app.database.procedures.stores_procedures import stored_prcedures_populate, drop_procedures
 
 from app.middleware import (
     OneAuthBackend,
@@ -61,6 +61,7 @@ def create_app() -> FastAPI:
     async def on_startup():
         await create_tables(engine)
         # await seed_database(engine)
+        await drop_procedures(engine)
         await stored_prcedures_populate(engine)
 
     logger.info("SERVER: App created")

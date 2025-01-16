@@ -1,6 +1,7 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.dashboard.response import RequerimientoObligacionesResponse
+from config.logger_config import logger
 
 async def fetch_requirement_obligation(session: AsyncSession, date_ini: str, date_end: str):
     """
@@ -16,7 +17,7 @@ async def fetch_requirement_obligation(session: AsyncSession, date_ini: str, dat
     obligation = result.fetchone()
 
     return RequerimientoObligacionesResponse(
-        Pendientes=obligation.Pendientes,
-        Proximos=obligation.Proximos,
-        Hallazgos=obligation.Hallazgos,
+        Pendientes=obligation[0],
+        Proximos=obligation[1],
+        Hallazgos=obligation[2],
     )
