@@ -48,6 +48,7 @@ class LocalConfig(Config):
     ONE_CORE_DB_HOST: str = "localhost"
     ONE_CORE_DB_PORT: int = 5432
     EXCLUDED_URLS: list[str] = ["/api/login", "/docs", "/redoc", "/openapi.json"]
+    BQ_JSON_CREDENTIALS: str = r"app\database\nifty-jet-448016-c5-390f2244173c.json"
 
 
 def get_config():

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "nifty-jet-448016-c5",
+  "private_key_id": "390f2244173c2e2dfa8b97496c953eb7821d2c1b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtSXuZDXTa31F+\nEUl35KNC2rCvSdHVgFt5VrXNFba6JmqC3bd+G9BsSc8r0UJCBc+GYPdCzKxM4Zyw\n6qsjvb6/lZIrYRBJLaG3FONXrBwqdhrgrwp5yjFXxcGurFGdh0TbvshYhjIM7VUA\ns+dMZB5cD+0J3LsyCbIEv7grinsxSAkEIuywrJwwK4dNDLgewhc0YCh+QCXPwxkW\npg9Jf284z9JXKfqeMXFLAU2aFsS1FSSg7A00peVDajDeYkczIX/EdaA19k8Mx10u\n6cqlPFX67VamSdlhrXmP7GneOQNmV8dReMqzk1SJmig8XgFk4BkU2VjlxL4qkMyx\nNiBfp9oxAgMBAAECggEAHsOj+MklzNHG0v3YsDtcLLtMkOInKaNPGhylzBIlzaiS\nUkdwkyf2+bKk4B+XhscnT7EZVLeng0Kuoc4XshG2sqaoO6FQ1d0PD8Tak68PlQ5A\nuVD6KCMYXX/TYeJf3vqr4+NcCDNS4W6lH6nQz4Qay7dcGtsgNML54tPyq3A7bMUV\nVJr04pixmy7hJV9845jz9GftJ7AU7zfZb+8lUzhoo2P6QKWjdCOKuxYYHnUfalF6\nCov+mCv4QmlLMiegIJaxwpZUe2PJkKcq5SE5FGFWmEtWQAmm4ShZppY/Rgd537TS\nxOh04iCP6bcV2cjmNbaWfPzL+x63piMjI4TrP4AznQKBgQDbGXYKH0MjhymIqB4E\n/CcZ0utA+pBiaNTcGEcNxHY1nDIVC5lpNlrK0JKDPaHewbtUBKq2zGQwf/p5FXY2\nfLPZAO8Kg7s+dmt04Z2g7Z2ilj6HzN7xfMuto+SZsWS+JBbMPvatyBF7oo/HO0yl\n8ZfDhv/9iwbAeg4GbicdjTOL6wKBgQDKeM5AjQVPpmw85/A2UAtSof4qhU8/DMpy\nmMAY/QWepuv9C37gLgQLY+fuoZr8zTNj9gwFrRcfIzOSTfnERVxqbS+E3tLzGB01\nxDgGp2UTmL4Q2UmpaTNSAdC4x8E9jcubyPh9znQ6D04oCteqpWisbfuo2XCMBwH3\nHX+8QCY3UwKBgG04bg1xtChb0qqbFAvsHxnSeQ/1WFCWbbYiLBmC3GKxMI4pMBqw\ny+Xav47JBI5lCRtDEE776N38jkIaHsnetFDzFDaroIXsxniHl+qHSVOpjhZoXKMJ\nUQeIcgbj1ZKrrum2YYYT/BMj4ISy3OzEWKFSBP7BdWYx8hfmhX1HzHBtAoGAGg8w\nZKiB3X2LAs/LYAIvYuRMpUZhK7lGuTclylGOjpvnVbtMCiiCBsFGEbWlEBKNIbmC\nVJyxlCVgttzoX7WZrmz9J7nSJs2cvNXTbC/RV5NaKyr8SxyqKUzog0/adESyxws3\nyGFxHiPoKEk09taxQTgqotHRpYQlYZvfW+hZwtcCgYAT9ivopJ6NlqRctpX7rHhf\nwOb2QqYU/7Y7Mdv8zk/ygQnnu+rm1EJJ8Izy+Rd/tNOLisjK97L1SNsxo0w6+XCI\n7lcZHcglq09+UeQ96roUwzsbJz3B4fksYIU6bRKhA2IPsdEAeLODrDopTWCZwzrI\n9+BiGwsJrkRdyzSXw+yhMA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "civa-940@nifty-jet-448016-c5.iam.gserviceaccount.com",
+  "client_id": "101901863207762695757",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/civa-940%40nifty-jet-448016-c5.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

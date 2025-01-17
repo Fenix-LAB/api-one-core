@@ -1,39 +1,18 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends
-from contextlib import asynccontextmanager
+from google.cloud import bigquery
 from config.config import config
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
-from typing import AsyncIterator
+import os
 
-from config.config import config
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = config.BQ_JSON_CREDENTIALS
 
-# Cadena de conexión a PostgreSQL
-POSTGRES_STRING_CONNECTION = (
-    f"postgresql+asyncpg://{config.ONE_CORE_DB_USER}:{config.ONE_CORE_DB_PASSWORD}"
-    f"@{config.ONE_CORE_DB_HOST}:{config.ONE_CORE_DB_PORT}/{config.ONE_CORE_DB_NAME}"
-)
+def get_db_session():
+    """
+    Get a session to the BigQuery database
 
-# Crear motores de lectura y escritura
-engine = create_async_engine(POSTGRES_STRING_CONNECTION, pool_recycle=3600)
-
-# Crear una fábrica de sesiones
-async_session_factory = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
-
-
-# Base para modelos declarativos
-class Base(DeclarativeBase):
-    pass
-
-
-# Proveer sesiones como dependencia de FastAPI
-async def get_db_session() -> AsyncIterator[AsyncSession]:
-    session = async_session_factory()
+    Returns:
+    bigquery.client.Client: A session to the BigQuery database
+    """
+    client = bigquery.Client()
     try:
-        yield session
+        yield client
     finally:
-        await session.close()
+        client.close()
