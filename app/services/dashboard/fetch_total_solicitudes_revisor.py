@@ -12,7 +12,7 @@ async def fetch_total_solicitudes_revisor(bq_client: bigquery.Client, date_ini: 
     :return: Total solicitudes.
     """
     
-    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetTotalSolicitudesRevisor`('{date_ini}', '{date_end}')"
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.getTotalSolicitudesRevisor`('{date_ini}', '{date_end}')"
 
     query_job = await run_in_threadpool(bq_client.query, query)
     rows = await run_in_threadpool(query_job.result)

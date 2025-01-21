@@ -13,7 +13,7 @@ async def fetch_donut_panel(bq_client: bigquery.Client, date_ini: str, date_end:
     :return: List of donut panel data.
     """
     
-    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetDonutPanel`('{date_ini}', '{date_end}', '{panel_type}')"
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.getDonutPanel`('{date_ini}', '{date_end}', '{panel_type}')"
 
     query_job = await run_in_threadpool(bq_client.query, query)
     rows = await run_in_threadpool(query_job.result)
@@ -27,3 +27,5 @@ async def fetch_donut_panel(bq_client: bigquery.Client, date_ini: str, date_end:
                 Cantidad=row["Cantidad"],
             )
         )
+
+    return data

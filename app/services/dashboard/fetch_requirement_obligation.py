@@ -13,7 +13,7 @@ async def fetch_requirement_obligation(bq_client: bigquery.Client, date_ini: str
     :return: Dictionary with counts of Pendientes, Proximos, and Hallazgos.
     """
     
-    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetRequerimientoObligaciones`('{date_ini}', '{date_end}')"
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetRequirementObligation`('{date_ini}', '{date_end}')"
 
     query_job = await run_in_threadpool(bq_client.query, query)
     rows = await run_in_threadpool(query_job.result)
@@ -28,3 +28,5 @@ async def fetch_requirement_obligation(bq_client: bigquery.Client, date_ini: str
                 Hallazgos=row['Hallazgos']
             )
         )
+
+    return obligation

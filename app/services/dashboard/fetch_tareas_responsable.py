@@ -12,7 +12,7 @@ async def fetch_tareas_responsable(bq_client: bigquery.Client, date_ini: str, da
     :return: List of tareas responsables.
     """
     
-    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetTareasResponsable`('{date_ini}', '{date_end}')"
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.getTareasResponsable`('{date_ini}', '{date_end}')"
 
     query_job = await run_in_threadpool(bq_client.query, query)
     rows = await run_in_threadpool(query_job.result)

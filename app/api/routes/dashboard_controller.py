@@ -83,7 +83,7 @@ async def GetRequirementObligation(
         logger.info(f"Fetching requirement obligations ...")
 
         response = await fetch_requirement_obligation(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+            bq_client=db_session, date_ini=request.DateIni, date_end=request.DateEnd
         )
 
         logger.info(f"Requirement obligations fetched successfully")
@@ -133,7 +133,7 @@ async def getGetExpedienteCiva(
         logger.info(f"Fetching expediente civa ...")
 
         response = await fetch_expediente_civa(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+            bq_client=db_session, date_ini=request.DateIni, date_end=request.DateEnd
         )
 
         logger.info(f"Expediente civa fetched successfully")
@@ -183,7 +183,7 @@ async def getTotalSolicitudesRevisor(
         logger.info(f"Fetching total solicitudes revisor ...")
 
         response = await fetch_total_solicitudes_revisor(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+            bq_client=db_session, date_ini=request.DateIni, date_end=request.DateEnd
         )
 
         logger.info(f"Total solicitudes revisor fetched successfully")
@@ -254,7 +254,7 @@ async def getNotificaciones(
 
         logger.info(f"Fetching notifications ...")
 
-        data = await fetch_notificaciones(session=db_session)
+        data = await fetch_notificaciones(bq_client=db_session)
 
         logger.info(f"Notifications fetched successfully")
 
@@ -320,7 +320,7 @@ async def getDonutPanel(
         logger.info(f"Fetching donut panel ...")
 
         data = await fetch_donut_panel(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
+            bq_client=db_session, date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
         )
 
         logger.info(f"Donut panel fetched successfully")
@@ -389,7 +389,7 @@ async def getTareasResponsable(
         logger.info(f"Fetching tareas responsables ...")
 
         data = await fetch_tareas_responsable(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+            bq_client=db_session, date_ini=request.DateIni, date_end=request.DateEnd
         )
 
         logger.info(f"Tareas responsables fetched successfully")

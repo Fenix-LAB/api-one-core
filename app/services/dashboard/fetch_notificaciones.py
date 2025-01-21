@@ -10,7 +10,7 @@ async def fetch_notificaciones(bq_client: bigquery.Client):
     :return: List of notifications.
     """
     
-    query = "CALL `nifty-jet-448016-c5.CIVA_QAS.GetNotificaciones`()"
+    query = "CALL `nifty-jet-448016-c5.CIVA_QAS.getNotificaciones`()"
 
     query_job = await run_in_threadpool(bq_client.query, query)
     rows = await run_in_threadpool(query_job.result)
