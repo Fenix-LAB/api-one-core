@@ -31,18 +31,14 @@ from app.schemas.requirements.request import (
 )
 
 from app.services.requirements import(
-    get_section_list,
-    get_requerimientos_list,
-    get_evidencia_id,
-    get_hallazgos_list,
-    save_evidencia,
-    save_hallazgo,
-    get_solicitudes_section_list,
-    get_solicitudes_list,
-    get_solicitud_id,
-    save_solicitud,
-    # get_solicitud_id
-
+    fetch_evidencia_id,
+    fetch_requerimientos_list,
+    # fetch_evidencia_list,
+    fetch_hallazgos_list,
+    fetch_solicitudes_list,
+    fetch_solicitud_id,
+    fetch_section_list,
+    fetch_solicitudes_section_list,
 )
 
 from app.schemas.models.area_rol import AreaRolModel
@@ -90,64 +86,70 @@ async def getSectionList(
     logger.info(f"ENDPOINT /getSectionList: {request}")
 
     try:
-        data = [
-            SectionOptionRequerimientosResponse(
-                Code="Personal",
-                Cantidad=5,
-                Total=10,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="Domicilios",
-                Cantidad=6,
-                Total=12,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="SociosAccionistas",
-                Cantidad=3,
-                Total=15,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="Aduanero",
-                Cantidad=7,
-                Total=10,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="ABM",
-                Cantidad=2,
-                Total=8,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="Fiscal",
-                Cantidad=9,
-                Total=20,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-            SectionOptionRequerimientosResponse(
-                Code="Societario",
-                Cantidad=4,
-                Total=4,
-                ProximosVencer=5,
-                Selected=False,
-                Enable=True,
-            ),
-        ]
+        # data = [
+        #     SectionOptionRequerimientosResponse(
+        #         Code="Personal",
+        #         Cantidad=5,
+        #         Total=10,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="Domicilios",
+        #         Cantidad=6,
+        #         Total=12,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="SociosAccionistas",
+        #         Cantidad=3,
+        #         Total=15,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="Aduanero",
+        #         Cantidad=7,
+        #         Total=10,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="ABM",
+        #         Cantidad=2,
+        #         Total=8,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="Fiscal",
+        #         Cantidad=9,
+        #         Total=20,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        #     SectionOptionRequerimientosResponse(
+        #         Code="Societario",
+        #         Cantidad=4,
+        #         Total=4,
+        #         ProximosVencer=5,
+        #         Selected=False,
+        #         Enable=True,
+        #     ),
+        # ]
+
+        data = await fetch_section_list(
+            db_session=db_session,
+            date_ini=request.DateIni,
+            date_end=request.DateEnd,
+        )
 
         return ApiResponse(
             Success=True,
@@ -205,7 +207,7 @@ async def getRequerimientosList(
         #     RequerimientoElementResponse(ID=4, Verificacion="Pendiente", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días", EsCritico=False, FechaEnvio="2024-01-04T10:00:00"),
         # ]
 
-        data = await get_requerimientos_list(
+        data = await fetch_requerimientos_list(
             bq_client=db_session,
             code=request.Code,
             date_ini=request.DateIni,
@@ -301,7 +303,7 @@ async def getEvidenciaID(
         #     HallazgoRecomendaciones=""
         # )
 
-        evidencia = await get_evidencia_id(
+        evidencia = await fetch_evidencia_id(
             db_session=db_session,
             id=request.ID,
             code_section=request.CodeSection,
@@ -357,7 +359,7 @@ async def getHallazgosList(
         #     HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
         # ]
 
-        data = await get_hallazgos_list(
+        data = await fetch_hallazgos_list(
             bq_client=db_session,
             code_section=request.CodeSection,
         )
@@ -520,7 +522,7 @@ async def getSolicitudesSectionList(
         #     SolicitudesSectionRequerimientosOptionResponse(Code="Societario", Cantidad=4, Total=4, CantidadSolicitudes=5),
         # ]
 
-        data = await get_solicitudes_section_list(
+        data = await fetch_solicitudes_section_list(
             bq_client=db_session,
             date_ini=request.DateIni,
             date_end=request.DateEnd,
@@ -582,7 +584,7 @@ async def getSolicitudesList(
         #     RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
         # ]
 
-        data = await get_solicitudes_list(
+        data = await fetch_solicitudes_list(
             bq_client=db_session,
             code=request.Code,
             date_ini=request.DateIni,
@@ -656,7 +658,7 @@ async def getSolicitudID(
         #     ],
         # )
 
-        solicitud = await get_solicitud_id(
+        solicitud = await fetch_solicitud_id(
             db_session=db_session,
             id=request.ID,
             code_section=request.CodeSection,
