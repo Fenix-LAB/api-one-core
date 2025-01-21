@@ -1,8 +1,8 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from google.cloud import bigquery
+from fastapi.concurrency import run_in_threadpool
 from app.schemas.dashboard.response import TareaResponsableResponse
 
-async def fetch_tareas_responsable(session: AsyncSession, date_ini: str, date_end: str):
+async def fetch_tareas_responsable(bq_client: bigquery.Client, date_ini: str, date_end: str):
     """
     Method to fetch tareas responsables.
 
@@ -11,8 +11,23 @@ async def fetch_tareas_responsable(session: AsyncSession, date_ini: str, date_en
     :param date_end: End date for filtering tasks.
     :return: List of tareas responsables.
     """
-    query = text("SELECT * FROM GetTareasResponsable(:DateIni, :DateEnd)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
-    tareas = result.fetchall()
     
-    return [TareaResponsableResponse(**tarea) for tarea in tareas]
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetTareasResponsable`('{date_ini}', '{date_end}')"
+
+    query_job = await run_in_threadpool(bq_client.query, query)
+    rows = await run_in_threadpool(query_job.result)
+
+    tareas = []
+
+    for row in rows:
+        tareas.append(
+            TareaResponsableResponse(
+                Area=row["Area"],
+                Usuario=row["Usuario"],
+                Asignadas=row["Asignadas"],
+                Completadas=row["Completadas"],
+                RiegoCode=row["RiegoCode"],
+            )
+        )
+
+    return tareas

@@ -1,8 +1,8 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from google.cloud import bigquery
+from fastapi.concurrency import run_in_threadpool
 from app.schemas.dashboard.response import ExpedienteCivaResponse
 
-async def fetch_expediente_civa(session: AsyncSession, date_ini: str, date_end: str):
+async def fetch_expediente_civa(bq_client: bigquery.Client, date_ini: str, date_end: str):
     """
     Method to fetch expediente civa details.
 
@@ -11,13 +11,17 @@ async def fetch_expediente_civa(session: AsyncSession, date_ini: str, date_end: 
     :param date_end: End date (format: YYYY-MM-DDTHH:MM:SS).
     :return: List of expediente civa details.
     """
-    query = text("SELECT * FROM GetExpedienteCiva(:DateIni, :DateEnd)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
-    expedientes = result.fetchall()
 
-    logger.info(f"Expediente civa details fetched successfully: {expedientes}")
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetExpedienteCiva`('{date_ini}', '{date_end}')"
 
-    return [ExpedienteCivaResponse(
-        Actualizacion=expediente[0].strftime("%Y-%m-%d %H:%M:%S")
-    ) for expediente in expedientes]
-        
+    query_job = await run_in_threadpool(bq_client.query, query)
+    rows = await run_in_threadpool(query_job.result)
+
+    expedientes = []
+    
+    for row in rows:
+        expedientes.append(
+            ExpedienteCivaResponse(
+                Actualizacion=row['Actualizacion'],
+            )
+        )

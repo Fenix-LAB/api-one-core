@@ -1,8 +1,8 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from google.cloud import bigquery
+from fastapi.concurrency import run_in_threadpool
 from app.schemas.dashboard.response import DonutPanelResponse
 
-async def fetch_donut_panel(session: AsyncSession, date_ini: str, date_end: str, panel_type: str):
+async def fetch_donut_panel(bq_client: bigquery.Client, date_ini: str, date_end: str, panel_type: str):
     """
     Method to fetch donut panel data.
 
@@ -12,8 +12,18 @@ async def fetch_donut_panel(session: AsyncSession, date_ini: str, date_end: str,
     :param panel_type: Type for filtering.
     :return: List of donut panel data.
     """
-    query = text("SELECT * FROM GetDonutPanel(:DateIni, :DateEnd, :Type)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end, "Type": panel_type})
-    data = result.fetchall()
+    
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetDonutPanel`('{date_ini}', '{date_end}', '{panel_type}')"
 
-    return [DonutPanelResponse(**item) for item in data]
+    query_job = await run_in_threadpool(bq_client.query, query)
+    rows = await run_in_threadpool(query_job.result)
+
+    data = []
+
+    for row in rows:
+        data.append(
+            DonutPanelResponse(
+                Porcentaje=row["Porcentaje"],
+                Cantidad=row["Cantidad"],
+            )
+        )

@@ -1,8 +1,8 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from google.cloud import bigquery
+from fastapi.concurrency import run_in_threadpool
 from app.schemas.dashboard.response import TotalSolicitudesRevisorResponse
 
-async def fetch_total_solicitudes_revisor(session: AsyncSession, date_ini: str, date_end: str):
+async def fetch_total_solicitudes_revisor(bq_client: bigquery.Client, date_ini: str, date_end: str):
     """
     Method to fetch total solicitudes revisor.
 
@@ -11,8 +11,19 @@ async def fetch_total_solicitudes_revisor(session: AsyncSession, date_ini: str, 
     :param date_end: End date for filtering.
     :return: Total solicitudes.
     """
-    query = text("SELECT * FROM GetTotalSolicitudesRevisor(:DateIni, :DateEnd)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
-    total = result.fetchone()
     
-    return TotalSolicitudesRevisorResponse(**total)
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetTotalSolicitudesRevisor`('{date_ini}', '{date_end}')"
+
+    query_job = await run_in_threadpool(bq_client.query, query)
+    rows = await run_in_threadpool(query_job.result)
+
+    solicitudes = []
+
+    for row in rows:
+        solicitudes.append(
+            TotalSolicitudesRevisorResponse(
+                Solicitudes=row["Solicitudes"],
+            )
+        )
+
+    return solicitudes

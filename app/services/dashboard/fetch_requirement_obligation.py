@@ -1,9 +1,9 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from google.cloud import bigquery
+from fastapi.concurrency import run_in_threadpool
 from app.schemas.dashboard.response import RequerimientoObligacionesResponse
-from config.logger_config import logger
 
-async def fetch_requirement_obligation(session: AsyncSession, date_ini: str, date_end: str):
+
+async def fetch_requirement_obligation(bq_client: bigquery.Client, date_ini: str, date_end: str):
     """
     Method to fetch requirement obligations.
 
@@ -12,12 +12,19 @@ async def fetch_requirement_obligation(session: AsyncSession, date_ini: str, dat
     :param date_end: End date for the range.
     :return: Dictionary with counts of Pendientes, Proximos, and Hallazgos.
     """
-    query = text("SELECT * FROM GetRequirementObligation(:DateIni, :DateEnd)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
-    obligation = result.fetchone()
+    
+    query = f"CALL `nifty-jet-448016-c5.CIVA_QAS.GetRequerimientoObligaciones`('{date_ini}', '{date_end}')"
 
-    return RequerimientoObligacionesResponse(
-        Pendientes=obligation[0],
-        Proximos=obligation[1],
-        Hallazgos=obligation[2],
-    )
+    query_job = await run_in_threadpool(bq_client.query, query)
+    rows = await run_in_threadpool(query_job.result)
+
+    obligation = []
+
+    for row in rows:
+        obligation.append(
+            RequerimientoObligacionesResponse(
+                Pendientes=row['Pendientes'],
+                Proximos=row['Proximos'],
+                Hallazgos=row['Hallazgos']
+            )
+        )
