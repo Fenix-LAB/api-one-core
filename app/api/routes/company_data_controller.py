@@ -55,6 +55,19 @@ from app.schemas.models import (
 
 )
 
+from app.services.company_data import (
+    fetch_razon_social_historico_list,
+    fetch_evidencia_id,
+    fetch_hallazgos_list,
+    fetch_paises,
+    fetch_pais_estados,
+    fetch_cliente_proveedor_list,
+    fetch_proveedor_nacional_list,
+    fetch_socio_accionista_list,
+    fetch_legal_uso_list,
+    fetch_enlace_operativo_list,
+)
+
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
 
@@ -1066,7 +1079,7 @@ async def saveProveedorNacional(
 
     try:
         return ApiResponse(
-            Success=True,  # Corregido de "Status" a "Success"
+            Success=True,
             Message="OK",
             Data=True,
             Token=user_data.token,
@@ -1074,7 +1087,7 @@ async def saveProveedorNacional(
     except Exception as e:
         logger.error(f"ENDPOINT /saveProveedorNacional: {str(e)}")
         return ApiResponse(
-            Success=False,  # Corregido de "Status" a "Success"
+            Success=False,
             Message="Se presentó un error",
             Data=False,
             Token=user_data.token,
@@ -1593,7 +1606,7 @@ async def getEnlacesOperativosList(
     try:
 
         data = await fetch_enlaces_operativos_list(db_session)
-        
+
         return ApiResponse(
             Success=True,
             Message="OK",
