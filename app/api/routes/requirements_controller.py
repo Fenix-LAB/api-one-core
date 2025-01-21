@@ -30,6 +30,21 @@ from app.schemas.requirements.request import (
     SolicitudSaveRequest,
 )
 
+from app.services.requirements import(
+    get_section_list,
+    get_requerimientos_list,
+    get_evidencia_id,
+    get_hallazgos_list,
+    save_evidencia,
+    save_hallazgo,
+    get_solicitudes_section_list,
+    get_solicitudes_list,
+    get_solicitud_id,
+    save_solicitud,
+    # get_solicitud_id
+
+)
+
 from app.schemas.models.area_rol import AreaRolModel
 from app.schemas.models.responsable import ResponsableModel
 from app.schemas.models.file_info import FileInfoModel  
@@ -183,12 +198,19 @@ async def getRequerimientosList(
     logger.info(f"ENDPOINT /getRequerimientosList: {request}")
 
     try:
-        data = [
-            RequerimientoElementResponse(ID=1, Verificacion="Pendiente", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-01T10:00:00"),
-            RequerimientoElementResponse(ID=2, Verificacion="Pendiente", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días", EsCritico=True, FechaEnvio="2024-01-02T10:00:00"),
-            RequerimientoElementResponse(ID=3, Verificacion="Pendiente", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-03T10:00:00"),
-            RequerimientoElementResponse(ID=4, Verificacion="Pendiente", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días", EsCritico=False, FechaEnvio="2024-01-04T10:00:00"),
-        ]
+        # data = [
+        #     RequerimientoElementResponse(ID=1, Verificacion="Pendiente", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-01T10:00:00"),
+        #     RequerimientoElementResponse(ID=2, Verificacion="Pendiente", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días", EsCritico=True, FechaEnvio="2024-01-02T10:00:00"),
+        #     RequerimientoElementResponse(ID=3, Verificacion="Pendiente", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-03T10:00:00"),
+        #     RequerimientoElementResponse(ID=4, Verificacion="Pendiente", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días", EsCritico=False, FechaEnvio="2024-01-04T10:00:00"),
+        # ]
+
+        data = await get_requerimientos_list(
+            bq_client=db_session,
+            code=request.Code,
+            date_ini=request.DateIni,
+            date_end=request.DateEnd,
+        )
 
         return ApiResponse(
             Success=True,
@@ -251,32 +273,38 @@ async def getEvidenciaID(
     logger.info(f"ENDPOINT /getEvidenciaID: {request}")
 
     try:
-        evidencia = RequerimientosEvidenciaResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=1,
-            Status="Pendiente",
-            FechaInicio="2024-01-01T00:00:00",
-            FechaVencimiento="2024-07-02T00:00:00",
-            ProximoVencer=True,
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal")
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
-            ],
-            Archivos=[
-                FileInfoModel(ID=1, Tamano=12345, Extension="jpg", Nombre="Archivo 1", Url="_content/OneCore.CertificacionIVA/filesDemo/file1.jpg"),
-                FileInfoModel(ID=2, Tamano=12345, Extension="pdf", Nombre="Archivo 2", Url="_content/OneCore.CertificacionIVA/filesDemo/file2.pdf"),
-                FileInfoModel(ID=3, Tamano=12345, Extension="xlsx", Nombre="Archivo 3", Url="_content/OneCore.CertificacionIVA/filesDemo/file3.xlsx"),
-                FileInfoModel(ID=4, Tamano=12345, Extension="txt", Nombre="Archivo 4", Url="_content/OneCore.CertificacionIVA/filesDemo/file4.txt"),
-            ],
-            Ubicacion="",
-            Comentarios="",
-            HallazgoComentarios="",
-            HallazgoRecomendaciones=""
+        # evidencia = RequerimientosEvidenciaResponse(
+        #     ID=1,
+        #     Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+        #     CaseNumber=1,
+        #     Status="Pendiente",
+        #     FechaInicio="2024-01-01T00:00:00",
+        #     FechaVencimiento="2024-07-02T00:00:00",
+        #     ProximoVencer=True,
+        #     AreaRols=[
+        #         AreaRolModel(Code="Comex"),
+        #         AreaRolModel(Code="Legal")
+        #     ],
+        #     Responsables=[
+        #         ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+        #         ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
+        #     ],
+        #     Archivos=[
+        #         FileInfoModel(ID=1, Tamano=12345, Extension="jpg", Nombre="Archivo 1", Url="_content/OneCore.CertificacionIVA/filesDemo/file1.jpg"),
+        #         FileInfoModel(ID=2, Tamano=12345, Extension="pdf", Nombre="Archivo 2", Url="_content/OneCore.CertificacionIVA/filesDemo/file2.pdf"),
+        #         FileInfoModel(ID=3, Tamano=12345, Extension="xlsx", Nombre="Archivo 3", Url="_content/OneCore.CertificacionIVA/filesDemo/file3.xlsx"),
+        #         FileInfoModel(ID=4, Tamano=12345, Extension="txt", Nombre="Archivo 4", Url="_content/OneCore.CertificacionIVA/filesDemo/file4.txt"),
+        #     ],
+        #     Ubicacion="",
+        #     Comentarios="",
+        #     HallazgoComentarios="",
+        #     HallazgoRecomendaciones=""
+        # )
+
+        evidencia = await get_evidencia_id(
+            db_session=db_session,
+            id=request.ID,
+            code_section=request.CodeSection,
         )
 
         return ApiResponse(
@@ -322,12 +350,18 @@ async def getHallazgosList(
     logger.info(f"ENDPOINT /getHallazgosList: {request}")
 
     try:
-        data = [
-            HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
-            HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
-            HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
-            HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
-        ]
+        # data = [
+        #     HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
+        #     HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
+        #     HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
+        #     HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
+        # ]
+
+        data = await get_hallazgos_list(
+            bq_client=db_session,
+            code_section=request.CodeSection,
+        )
+
         return ApiResponse(
             Success=True,
             Message="OK",
@@ -476,15 +510,21 @@ async def getSolicitudesSectionList(
     logger.info(f"ENDPOINT /getSolicitudesSectionList: {request}")
 
     try:
-        data = [
-            SolicitudesSectionRequerimientosOptionResponse(Code="Personal", Cantidad=5, Total=10, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Domicilios", Cantidad=6, Total=12, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="SociosAccionistas", Cantidad=3, Total=15, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Aduanero", Cantidad=7, Total=10, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="ABM", Cantidad=2, Total=8, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Fiscal", Cantidad=9, Total=20, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Societario", Cantidad=4, Total=4, CantidadSolicitudes=5),
-        ]
+        # data = [
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="Personal", Cantidad=5, Total=10, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="Domicilios", Cantidad=6, Total=12, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="SociosAccionistas", Cantidad=3, Total=15, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="Aduanero", Cantidad=7, Total=10, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="ABM", Cantidad=2, Total=8, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="Fiscal", Cantidad=9, Total=20, CantidadSolicitudes=5),
+        #     SolicitudesSectionRequerimientosOptionResponse(Code="Societario", Cantidad=4, Total=4, CantidadSolicitudes=5),
+        # ]
+
+        data = await get_solicitudes_section_list(
+            bq_client=db_session,
+            date_ini=request.DateIni,
+            date_end=request.DateEnd,
+        )
 
         return ApiResponse(
             Success=True,
@@ -535,12 +575,20 @@ async def getSolicitudesList(
     logger.info(f"ENDPOINT /getSolicitudesList: {request}")
 
     try:
-        data = [
-            RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
-            RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
-            RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
-            RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
-        ]
+        # data = [
+        #     RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
+        #     RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
+        #     RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
+        #     RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
+        # ]
+
+        data = await get_solicitudes_list(
+            bq_client=db_session,
+            code=request.Code,
+            date_ini=request.DateIni,
+            date_end=request.DateEnd,
+        )
+
         return ApiResponse(
             Success=True,
             Message="OK",
@@ -591,21 +639,27 @@ async def getSolicitudID(
     logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
     try:
-        solicitud = SolicitudResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=123,
-            Cliente="Cliente 1",
-            Status="RevisionPendiente",
-            FechaRevision="2024-01-01T00:00:00",
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal"),
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
-            ],
+        # solicitud = SolicitudResponse(
+        #     ID=1,
+        #     Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+        #     CaseNumber=123,
+        #     Cliente="Cliente 1",
+        #     Status="RevisionPendiente",
+        #     FechaRevision="2024-01-01T00:00:00",
+        #     AreaRols=[
+        #         AreaRolModel(Code="Comex"),
+        #         AreaRolModel(Code="Legal"),
+        #     ],
+        #     Responsables=[
+        #         ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+        #         ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
+        #     ],
+        # )
+
+        solicitud = await get_solicitud_id(
+            db_session=db_session,
+            id=request.ID,
+            code_section=request.CodeSection,
         )
 
         return ApiResponse(
@@ -674,67 +728,73 @@ async def saveSolicitud(
         )
 
 
-@app.post("getSolicitudID")
-@inject
-async def getSolicitudID(
-    request: SolicitudIDRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
-):
-    """
-    ## DESCRIPTION
-    ### Endpoint to get a request by id.
+# @app.post("getSolicitudID")
+# @inject
+# async def getSolicitudID(
+#     request: SolicitudIDRequest,
+#     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+#     credentials: HTTPAuthorizationCredentials = Depends(security),
+#     user_data: BaseData = Depends(get_current_user),
+#     db_session: AsyncSession = Depends(get_db_session),
+# ):
+#     """
+#     ## DESCRIPTION
+#     ### Endpoint to get a request by id.
 
-    ## REQUEST
-    - ID
-    - CodeSection
+#     ## REQUEST
+#     - ID
+#     - CodeSection
 
-    ## RESPONSE
-    - ID
-    - Elemento
-    - CaseNumber
-    - Cliente
-    - Status
-    - FechaRevision
-    - AreaRols
-    - Responsables
+#     ## RESPONSE
+#     - ID
+#     - Elemento
+#     - CaseNumber
+#     - Cliente
+#     - Status
+#     - FechaRevision
+#     - AreaRols
+#     - Responsables
 
-    """
+#     """
 
-    logger.info(f"ENDPOINT /getSolicitudID: {request}")
+#     logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
-    try:
-        solicitud = SolicitudResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=1,
-            Status="RevisionPendiente",
-            FechaRevision="2024-01-01",
-            Cliente="Cliente 1",
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal")
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
-            ]
-        )
+#     try:
+#         # solicitud = SolicitudResponse(
+#         #     ID=1,
+#         #     Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+#         #     CaseNumber=1,
+#         #     Status="RevisionPendiente",
+#         #     FechaRevision="2024-01-01",
+#         #     Cliente="Cliente 1",
+#         #     AreaRols=[
+#         #         AreaRolModel(Code="Comex"),
+#         #         AreaRolModel(Code="Legal")
+#         #     ],
+#         #     Responsables=[
+#         #         ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+#         #         ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
+#         #     ]
+#         # )
 
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=solicitud,
-            Token=user_data.token,
-        )
+#         solicitud = await get_solicitud_id(
+#             db_session=db_session,
+#             id=request.ID,
+#             code_section=request.CodeSection,
+#         )
 
-    except Exception as e:
-        logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
-        return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
-        )
+#         return ApiResponse(
+#             Success=True,
+#             Message="OK",
+#             Data=solicitud,
+#             Token=user_data.token,
+#         )
+
+#     except Exception as e:
+#         logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
+#         return ApiResponse(
+#             Success=False,
+#             Message="Internal Server Error",
+#             Data=None,
+#             Token=user_data.token,
+#         )
