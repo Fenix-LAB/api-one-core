@@ -56,6 +56,7 @@ from app.schemas.models import (
 )
 
 from app.services.company_data import (
+    fetch_section_list,
     fetch_razon_social_historico_list,
     fetch_evidencia_id,
     fetch_hallazgos_list,
@@ -65,7 +66,8 @@ from app.services.company_data import (
     fetch_proveedor_nacional_list,
     fetch_socio_accionista_list,
     fetch_legal_uso_list,
-    fetch_enlace_operativo_list,
+    fetch_enlaces_operativos_list,
+    fetch_caracter_tipos
 )
 
 from app.services.get_requirement_obligation import get_requerimiento_obligaciones
@@ -114,7 +116,7 @@ async def getSectionList(
     #     SectionOptionDatosEmpresaResponse(Code="EnlacesOperativos", Cantidad=4, Total=4, Selected=False),
     # ]
 
-    data = await get_section_list(
+    data = await fetch_section_list(
         db_session,
         date_ini=request.DateIni,
         date_end=request.DateEnd,
