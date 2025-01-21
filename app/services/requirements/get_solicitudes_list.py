@@ -2,7 +2,7 @@ from google.cloud import bigquery
 from fastapi.concurrency import run_in_threadpool
 from app.schemas.requirements.response import RequerimientoElementResponse
 
-async def get_solicitudes_list(bq_client: bigquery.Client, code: str, date_ini: str, date_end: str):
+async def fetch_solicitudes_list(bq_client: bigquery.Client, code: str, date_ini: str, date_end: str):
     """
     Method to fetch solicitudes list.
 

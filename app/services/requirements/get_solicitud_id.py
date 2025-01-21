@@ -5,7 +5,7 @@ from app.schemas.models import AreaRolModel
 from app.schemas.models import ResponsableModel
 
 
-async def get_solicitud_id(bq_client: bigquery.Client, id: str, code_section: str):
+async def fetch_solicitud_id(bq_client: bigquery.Client, id: str, code_section: str):
     """
     Method to fetch solicitud by ID.
 

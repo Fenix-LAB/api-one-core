@@ -2,7 +2,7 @@ from google.cloud import bigquery
 from fastapi.concurrency import run_in_threadpool
 from app.schemas.models import HallazgoOptionModel
 
-async def get_hallazgos_list(bq_client: bigquery.Client, code_section: str):
+async def fetch_hallazgos_list(bq_client: bigquery.Client, code_section: str):
     """
     Method to fetch hallazgos list.
 

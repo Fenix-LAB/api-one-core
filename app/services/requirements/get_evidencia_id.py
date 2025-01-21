@@ -5,7 +5,7 @@ from app.schemas.models.area_rol import AreaRolModel
 from app.schemas.models.responsable import ResponsableModel
 from app.schemas.models.file_info import FileInfoModel
 
-async def get_evidencia_id(bq_client: bigquery.Client, id: str, code_section: str):
+async def fetch_evidencia_id(bq_client: bigquery.Client, id: str, code_section: str):
     """
     Method to fetch requirement evidences.
 
