@@ -31,14 +31,8 @@ from app.schemas.dashboard.response import (
 )
 
 
-from app.services.dashboard import (
-    fetch_requirement_obligation,
-    fetch_expediente_civa,
-    fetch_total_solicitudes_revisor,
-    fetch_notificaciones,
-    fetch_donut_panel,
-    fetch_tareas_responsable,
-)
+from app.database.civa_db_context import get_civa_db_context, DBContext
+
 from app.services.role_checker import RoleChecker, get_current_user
 
 from config.logger_config import logger
@@ -55,7 +49,7 @@ async def GetRequirementObligation(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -78,8 +72,12 @@ async def GetRequirementObligation(
 
         logger.info(f"Fetching requirement obligations ...")
 
-        response = await fetch_requirement_obligation(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        # response = await civa_db_context.fetch_requirement_obligation(
+        #     date_ini=request.DateIni, date_end=request.DateEnd
+        # )
+
+        response = RequerimientoObligacionesResponse(
+            Pendientes=10, Proximos=20, Hallazgos=30
         )
 
         logger.info(f"Requirement obligations fetched successfully")
@@ -105,7 +103,7 @@ async def getGetExpedienteCiva(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -124,13 +122,13 @@ async def getGetExpedienteCiva(
 
     try:
 
-        # response = ExpedienteCivaResponse(Actualizacion="2023-12-01T12:00:00")
-
         logger.info(f"Fetching expediente civa ...")
 
-        response = await fetch_expediente_civa(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
-        )
+        # response = await civa_db_context.fetch_expediente_civa(
+        #     date_ini=request.DateIni, date_end=request.DateEnd
+        # )
+
+        response = ExpedienteCivaResponse(Actualizacion="2023-12-01T12:00:00")
 
         logger.info(f"Expediente civa fetched successfully")
 
@@ -155,7 +153,7 @@ async def getTotalSolicitudesRevisor(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -174,13 +172,13 @@ async def getTotalSolicitudesRevisor(
 
     try:
 
-        # response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
-
         logger.info(f"Fetching total solicitudes revisor ...")
 
-        response = await fetch_total_solicitudes_revisor(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
-        )
+        # response = await civa_db_context.fetch_total_solicitudes_revisor(
+        #     date_ini=request.DateIni, date_end=request.DateEnd
+        # )
+
+        response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
 
         logger.info(f"Total solicitudes revisor fetched successfully")
 
@@ -205,7 +203,7 @@ async def getNotificaciones(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -229,28 +227,28 @@ async def getNotificaciones(
 
     try:
 
-        # data = [
-        #     NotificationResponse(
-        #         Titulo="Subject",
-        #         Referencia="0000000001",
-        #         Estado="Hallazgo",
-        #         Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
-        #         Fecha="2023-12-01T11:00:00",
-        #         EsError=True,
-        #     ),
-        #     NotificationResponse(
-        #         Titulo="Subject",
-        #         Referencia="0000000002",
-        #         Estado="Solicitud Aprobada",
-        #         Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
-        #         Fecha="2023-12-01T10:00:00",
-        #         EsError=False,
-        #     ),
-        # ]
-
         logger.info(f"Fetching notifications ...")
 
-        data = await fetch_notificaciones(session=db_session)
+        # data = await civa_db_context.fetch_notificaciones()
+
+        data = [
+            NotificationResponse(
+                Titulo="Subject",
+                Referencia="0000000001",
+                Estado="Hallazgo",
+                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+                Fecha="2023-12-01T11:00:00",
+                EsError=True,
+            ),
+            NotificationResponse(
+                Titulo="Subject",
+                Referencia="0000000002",
+                Estado="Solicitud Aprobada",
+                Descripcion="Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...",
+                Fecha="2023-12-01T10:00:00",
+                EsError=False,
+            ),
+        ]
 
         logger.info(f"Notifications fetched successfully")
 
@@ -275,7 +273,7 @@ async def getDonutPanel(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -315,8 +313,8 @@ async def getDonutPanel(
 
         logger.info(f"Fetching donut panel ...")
 
-        data = await fetch_donut_panel(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
+        data = await civa_db_context.fetch_donut_panel(
+            date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
         )
 
         logger.info(f"Donut panel fetched successfully")
@@ -342,7 +340,7 @@ async def getTareasResponsable(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
+    civa_db_context: DBContext = Depends(get_civa_db_context),
 ):
     """
     ## DESCRIPTION
@@ -365,28 +363,28 @@ async def getTareasResponsable(
 
     try:
 
-        # data = [
-        #     TareaResponsableResponse(
-        #         Area="Rrhh",
-        #         Usuario="Nombre Usuario",
-        #         Asignadas=10,
-        #         Completadas=10,
-        #         RiesgoCode="Medio",
-        #     ),
-        #     TareaResponsableResponse(
-        #         Area="Finanzas",
-        #         Usuario="Nombre Usuario",
-        #         Asignadas=10,
-        #         Completadas=10,
-        #         RiesgoCode="Alto",
-        #     ),
-        # ]
-
         logger.info(f"Fetching tareas responsables ...")
 
-        data = await fetch_tareas_responsable(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
-        )
+        # data = await civa_db_context.fetch_tareas_responsable(
+        #     date_ini=request.DateIni, date_end=request.DateEnd
+        # )
+
+        data = [
+            TareaResponsableResponse(
+                Area="Rrhh",
+                Usuario="Nombre Usuario",
+                Asignadas=10,
+                Completadas=10,
+                RiesgoCode="Medio",
+            ),
+            TareaResponsableResponse(
+                Area="Finanzas",
+                Usuario="Nombre Usuario",
+                Asignadas=10,
+                Completadas=10,
+                RiesgoCode="Alto",
+            ),
+        ]
 
         logger.info(f"Tareas responsables fetched successfully")
 
