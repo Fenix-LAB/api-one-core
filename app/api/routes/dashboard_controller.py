@@ -76,10 +76,6 @@ async def GetRequirementObligation(
 
     try:
 
-        # response = RequerimientoObligacionesResponse(
-        #     Pendientes=10, Proximos=5, Hallazgos=3
-        # )
-
         logger.info(f"Fetching requirement obligations ...")
 
         response = await fetch_requirement_obligation(
