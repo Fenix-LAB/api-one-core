@@ -1,14 +1,15 @@
-from fastapi import Depends, FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from app.database.populate import create_tables
-from config.logger_config import logger
 
+from config.logger_config import logger
 from config.config import config
+
 from app.api.api_router import router
+
 from app.database.session import engine
 from app.database.seeder import seed_database
+from app.database.populate import create_tables
 from app.database.procedures.stores_procedures import stored_prcedures_populate, drop_procedures
 
 from app.middleware import (
@@ -18,11 +19,8 @@ from app.middleware import (
 
 
 def init_routers(app_: FastAPI) -> None:
-    # container = Container()
-    # user_router.container = container
-    # auth_router.container = container
     app_.include_router(router, prefix=config.ROUTE_PATH)
-    # app_.include_router(auth_router)
+    # Add more routers here
 
 
 def make_middleware() -> list[Middleware]:
@@ -38,11 +36,17 @@ def make_middleware() -> list[Middleware]:
             AuthenticationMiddleware,
             backend=OneAuthBackend(excluded_urls=config.EXCLUDED_URLS),
         ),
+        # Add more middleware here
     ]
     return middleware
 
 
 def create_app() -> FastAPI:
+    """
+    Method to create the FastAPI application.
+    
+    """
+
     logger.info(f"SERVER: Application One Core - env: {config.ENV}")
     app_ = FastAPI(
         title="one-core",
@@ -50,25 +54,34 @@ def create_app() -> FastAPI:
         version="1.0.0",
         docs_url=None if config.ENV == "production" else "/docs",
         redoc_url=None if config.ENV == "production" else "/redoc",
-        # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
     )
+
     init_routers(app_=app_)
-    # app_.add_event_handler("startup", create_tables)
-    logger.info("SERVER: Event 'start up'")
+    logger.info("SERVER: Routers initialized")
 
     @app_.on_event("startup")
     async def on_startup():
+        """
+        Method to execute actions on application startup.
+        Only executed in development environment.
+        
+        """
+
+        if config.ENV == "production":
+            logger.info("SERVER: Production environment, skipping 'on_startup' event")
+            return
+        
         await create_tables(engine)
-        # await seed_database(engine)
+        await seed_database(engine)
         await drop_procedures(engine)
         await stored_prcedures_populate(engine)
+        # Add more actions here
 
-    logger.info("SERVER: App created")
-    # await create_tables(engine)
-    # init_listeners(app_=app_)
-    # init_cache()
-    # logger.info("App created")
+        logger.info("SERVER: On startup event completed")
+
+    logger.info("SERVER: App lunch completed")
+
     return app_
 
 
