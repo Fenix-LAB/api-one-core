@@ -28,7 +28,7 @@ async def Login(
     - 500: Internal Server Error
 
     """
-    #  decoded_token = await verify_token(token=request.token)
+    # decoded_token = await verify_token(token=request.token)
 
     # id_usuario_clente
 

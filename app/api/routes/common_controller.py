@@ -45,19 +45,6 @@ async def GetResponsable(
 
     """
 
-    # data = [
-    #         ResponsableModel(ID=1, Nombre="Responsable 1", AreaCode=AreaRolType.Administrador),
-    #         ResponsableModel(ID=2, Nombre="Responsable 2", AreaCode=AreaRolType.Rrhh),
-    #         ResponsableModel(ID=3, Nombre="Responsable 3", AreaCode=AreaRolType.Finanzas),
-    #         ResponsableModel(ID=4, Nombre="Responsable 4", AreaCode=AreaRolType.Fiscal),
-    #         ResponsableModel(ID=5, Nombre="Responsable 5", AreaCode=AreaRolType.Comex),
-    #         ResponsableModel(ID=6, Nombre="Responsable 6", AreaCode=AreaRolType.Legal),
-    #         ResponsableModel(ID=7, Nombre="Responsable 7", AreaCode=AreaRolType.Revisor),
-    #         ResponsableModel(ID=8, Nombre="Responsable 8", AreaCode=AreaRolType.Administrador),
-    #         ResponsableModel(ID=9, Nombre="Responsable 9", AreaCode=AreaRolType.Fiscal),
-    #         ResponsableModel(ID=10, Nombre="Responsable 10", AreaCode=AreaRolType.Comex),
-    #     ]
-
     try:
 
         logger.info(f"ENDPOINT /GetResponsable: request={request.dict()}")
