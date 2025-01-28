@@ -1,14 +1,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-from sqlalchemy.ext.asyncio import AsyncSession
 from dependency_injector.wiring import inject
 
 from app.middleware.authentication import BaseData
-
-from app.database.session import get_db_session
-
-from app.schemas.generic.date_request import DateRequest
 
 from app.schemas.generic_response import ApiResponse
 
@@ -296,27 +290,23 @@ async def getDonutPanel(
 
     try:
 
-        # data = [
-        #     DonutPanelResponse(
-        #         NombreCode="Completado",
-        #         Porcentaje=5,
-        #         Cantidad=45,
-        #         ColorCode="Green",
-        #     ),
-        #     DonutPanelResponse(
-        #         NombreCode="Pendiente",
-        #         Porcentaje=95,
-        #         Cantidad=920,
-        #         ColorCode="Red",
-        #     ),
-        # ]
 
         logger.info(f"Fetching donut panel ...")
 
-        data = await civa_db_context.fetch_donut_panel(
-            date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
-        )
+        # data = await civa_db_context.fetch_donut_panel(
+        #     date_ini=request.DateIni, date_end=request.DateEnd, panel_type=request.Type
+        # )
 
+        data = [
+            DonutPanelResponse(
+                Porcentaje=5,
+                Cantidad=45,
+            ),
+            DonutPanelResponse(
+                Porcentaje=95,
+                Cantidad=920,
+            ),
+        ]
         logger.info(f"Donut panel fetched successfully")
 
         return ApiResponse(
