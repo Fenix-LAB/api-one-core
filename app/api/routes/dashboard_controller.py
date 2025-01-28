@@ -227,6 +227,7 @@ async def getNotificaciones(
 
         data = [
             NotificationResponse(
+                ID=1,
                 Titulo="Subject",
                 Referencia="0000000001",
                 Estado="Hallazgo",
@@ -235,6 +236,7 @@ async def getNotificaciones(
                 EsError=True,
             ),
             NotificationResponse(
+                ID=2,
                 Titulo="Subject",
                 Referencia="0000000002",
                 Estado="Solicitud Aprobada",
@@ -365,14 +367,14 @@ async def getTareasResponsable(
                 Usuario="Nombre Usuario",
                 Asignadas=10,
                 Completadas=10,
-                RiesgoCode="Medio",
+                RiegoCode="Medio",
             ),
             TareaResponsableResponse(
                 Area="Finanzas",
                 Usuario="Nombre Usuario",
                 Asignadas=10,
                 Completadas=10,
-                RiesgoCode="Alto",
+                RiegoCode="Alto",
             ),
         ]
 

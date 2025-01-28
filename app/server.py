@@ -72,10 +72,10 @@ def create_app() -> FastAPI:
             logger.info("SERVER: Production environment, skipping 'on_startup' event")
             return
         
-        await create_tables(engine)
-        await seed_database(engine)
-        await drop_procedures(engine)
-        await stored_prcedures_populate(engine)
+        # await create_tables(engine)
+        # await seed_database(engine)
+        # await drop_procedures(engine)
+        # await stored_prcedures_populate(engine)
         # Add more actions here
 
         logger.info("SERVER: On startup event completed")
