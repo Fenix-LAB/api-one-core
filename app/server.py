@@ -59,10 +59,11 @@ def create_app() -> FastAPI:
 
     @app_.on_event("startup")
     async def on_startup():
-        await create_tables(engine)
+        # await create_tables(engine)
         # await seed_database(engine)
-        await drop_procedures(engine)
-        await stored_prcedures_populate(engine)
+        # await drop_procedures(engine)
+        # await stored_prcedures_populate(engine)
+        pass
 
     logger.info("SERVER: App created")
     # await create_tables(engine)
