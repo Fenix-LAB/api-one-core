@@ -29,10 +29,13 @@ class ProductionConfig(Config):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = production_conf["prod"]["jwt"]["api"][
         "access_token_expire_minutes"
     ]
-    # WRITER_DB_URL: str = production_conf["prod"]["db"]["writer"]
-    # READER_DB_URL: str = production_conf["prod"]["db"]["reader"]
     EXCLUDED_URLS: list[str] = production_conf["prod"]["excluded_urls"]
     ROUTE_PATH: str = production_conf["prod"]["route_path"]
+
+    # API CIVA
+    CIVA_API_URL: str = production_conf["prod"]["civa_api"]["url"]
+    CIVA_SECRET_KEY: str = production_conf["prod"]["civa_api"]["secret_key_token"]
+    CIVA_ALGORITHM: str = production_conf["prod"]["civa_api"]["algorithm"]
 
 
 class TestConfig(ProductionConfig):
@@ -47,8 +50,18 @@ class LocalConfig(Config):
     ONE_CORE_DB_PASSWORD: str = "onecore77"
     ONE_CORE_DB_HOST: str = "localhost"
     ONE_CORE_DB_PORT: int = 5432
-    EXCLUDED_URLS: list[str] = ["/api/login", "/docs", "/redoc", "/openapi.json"]
+    WT_SECRET: str = production_conf["prod"]["jwt"]["api"]["secret_key"]
+    JWT_ALGORITHM: str = production_conf["prod"]["jwt"]["api"]["algorithm"]
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = production_conf["prod"]["jwt"]["api"][
+        "access_token_expire_minutes"
+    ]
+    EXCLUDED_URLS: list[str] = production_conf["prod"]["excluded_urls"]
+    ROUTE_PATH: str = production_conf["prod"]["route_path"]
 
+    # API CIVA
+    CIVA_API_URL: str = production_conf["prod"]["civa_api"]["url"]
+    CIVA_SECRET_KEY: str = production_conf["prod"]["civa_api"]["secret_key_token"]
+    CIVA_ALGORITHM: str = production_conf["prod"]["civa_api"]["algorithm"]
 
 def get_config():
     env = os.getenv("ENV", "local")
