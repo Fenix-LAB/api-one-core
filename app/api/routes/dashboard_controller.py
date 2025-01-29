@@ -292,6 +292,11 @@ async def getDonutPanel(
 
     try:
 
+        # Crear PDF
+        # Crear Word
+        # Almacenar en DB
+        # Enviar por correo
+
 
         logger.info(f"Fetching donut panel ...")
 
