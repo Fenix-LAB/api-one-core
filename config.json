@@ -13,7 +13,7 @@
             "optionsSuccessStatus": 204
         },
         "civa_api": {
-            "url": "http://preproduccion.grupoei.com.mx/CIVAApiDemo/api/",
+            "url": "http://preproduccion.grupoei.com.mx/CIVAApiDemo/api",
             "secret_key_token": "y8SxYj_7TX7RHeKp5GQw9J5yMVzQZXv56MBgVQsXaTfU",
             "algorithm": "HS256"
         },
@@ -29,7 +29,7 @@
                 "access_token_expire_minutes": 15
             }
         },
-        "excluded_urls": ["/api/login", "/docs", "/redoc", "/openapi.json"],
+        "excluded_urls": ["/api/Account/login", "/docs", "/redoc", "/openapi.json"],
         "secret_keys": {
             "key1": "value1",
             "key2": "value2"

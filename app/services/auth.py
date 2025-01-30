@@ -1,53 +1,20 @@
-import jwt
-
-from datetime import datetime, timedelta
-from typing import Optional
+import requests
 from config.config import config
 
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+async def login_service(token: str) -> dict:
     """
-    Create access token
+    Login service to get a JWT token.
 
     Args:
-        data (dict): Payload data
-        expires_delta (Optional[timedelta], optional): Expiration time. Defaults to None.
+        token (str): JWT token.
 
     Returns:
-        str: Encoded JWT token
+        dict: Login response.
     """
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, config.JWT_SECRET, algorithm=config.JWT_ALGORITHM)
-    return encoded_jwt
 
+    url = f"{config.CIVA_API_URL}/Account/login"
+    body = {"token": token}
+    response = requests.post(url, json=body)
+    response.raise_for_status()
 
-def decode_token(token: str) -> tuple:
-    """
-    Verify token
-
-    Args:
-        token (str): JWT token
-
-    Returns:
-        tuple: Payload data
-     
-    """
-    try:
-        payload = jwt.decode(
-            token,
-            config.CIVA_SECRET_KEY,
-            algorithms=[config.CIVA_ALGORITHM],
-            options={"verify_aud": False}  # Desactiva la validación de "aud"
-        )
-        return True, payload
-    except jwt.ExpiredSignatureError:
-        return False, "Token has expired"
-    except jwt.InvalidTokenError:
-        return False, "Invalid token"
-    except Exception as e:
-        return False, f"An error occurred: {str(e)}"
+    return response.json()
