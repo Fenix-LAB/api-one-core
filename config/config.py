@@ -4,6 +4,9 @@ import json
 from pydantic_settings import BaseSettings
 
 
+with open("config.json") as f:
+    production_conf = json.load(f)
+
 class Config(BaseSettings):
     ENV: str = "development"
     DEBUG: bool = True
@@ -15,9 +18,10 @@ class Config(BaseSettings):
     EXCLUDED_URLS: list[str] = ["/api/auth/login", "/docs", "/redoc", "/openapi.json"]
     ROUTE_PATH: str = "/api"
 
-
-with open("config.json") as f:
-    production_conf = json.load(f)
+    # API CIVA
+    CIVA_API_URL: str = production_conf["prod"]["civa_api"]["url"]
+    CIVA_SECRET_KEY: str = production_conf["prod"]["civa_api"]["secret_key_token"]
+    CIVA_ALGORITHM: str = production_conf["prod"]["civa_api"]["algorithm"]
 
 
 class ProductionConfig(Config):

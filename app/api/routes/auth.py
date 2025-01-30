@@ -3,7 +3,9 @@ from dependency_injector.wiring import inject
 from app.schemas.auth.request import LoginTokenRequest
 from app.schemas.generic_response import ApiResponseNoToken
 from app.schemas.auth.response import LoginResponse
-from app.services.auth import create_access_token, verify_token
+from app.services.auth import create_access_token, decode_token
+
+from config.logger_config import logger
 
 auth_router = APIRouter()
 
@@ -28,15 +30,7 @@ async def Login(
     - 500: Internal Server Error
 
     """
-    #  decoded_token = await verify_token(token=request.token)
 
-    # id_usuario_clente
-
-    # Consultar usuario en base de datos (obetener roles)
-
-    # id_usuario_clente, role [admin, legal, RH, etc], tiempo de expiración
-
-    token = create_access_token(data={"sub": "1", "role": "admin"})
     return ApiResponseNoToken[LoginResponse](
-        Data=LoginResponse(Token=token), Message="Login successful", Success=True
+        Data=LoginResponse(Token=request.token), Message="Login successful", Success=True
     )

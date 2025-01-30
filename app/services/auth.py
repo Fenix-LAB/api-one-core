@@ -22,11 +22,11 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, config.JWT_SECRET, algorithm=config.JWT_ALGORITHM)
     return encoded_jwt
 
 
-def verify_token(token: str):
+def decode_token(token: str) -> tuple:
     """
     Verify token
 
@@ -34,17 +34,20 @@ def verify_token(token: str):
         token (str): JWT token
 
     Returns:
-        dict: Payload data
-
-    Raises:
-        Exception: [description]
+        tuple: Payload data
+     
     """
     try:
-        payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
-        return payload
+        payload = jwt.decode(
+            token,
+            config.CIVA_SECRET_KEY,
+            algorithms=[config.CIVA_ALGORITHM],
+            options={"verify_aud": False}  # Desactiva la validación de "aud"
+        )
+        return True, payload
     except jwt.ExpiredSignatureError:
-        return "Token has expired"
+        return False, "Token has expired"
     except jwt.InvalidTokenError:
-        return "Invalid token"
+        return False, "Invalid token"
     except Exception as e:
-        return e
+        return False, f"An error occurred: {str(e)}"

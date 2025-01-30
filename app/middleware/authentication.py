@@ -48,7 +48,7 @@ class OneAuthBackend(AuthenticationBackend):
         payload["exp"] = datetime.utcnow() + timedelta(
             minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
         )  # New expiration time
-        return jwt.encode(payload, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+        return jwt.encode(payload, config.CIVA_SECRET_KEY, algorithm=config.CIVA_ALGORITHM)
 
     async def authenticate(self, conn: HTTPConnection) -> Tuple[AuthCredentials, BaseData]:
         """
@@ -72,7 +72,7 @@ class OneAuthBackend(AuthenticationBackend):
         token = auth_header.split(" ")[1]
 
         try:
-            payload = jwt.decode(token, config.JWT_SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
+            payload = jwt.decode(token, config.CIVA_SECRET_KEY, algorithms=[config.CIVA_ALGORITHM])
             # Generate a new token
             new_token = self.generate_new_token(payload)
 

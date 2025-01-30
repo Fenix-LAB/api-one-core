@@ -1,27 +1,21 @@
 {
     "prod": {
         "debug": false,
+        "route_path": "/api",
         "app": {
             "host": "0.0.0.0",
             "port": "8000"
         },
-        "databases": { 
-            "perfiles": {
-                "engine": "postgres",
-                "name": "perfiles_db",
-                "user": "user",
-                "password": "password",
-                "host": "localhost",
-                "port": 5432
-            },
-            "database-one-core": {
-                "engine": "postgres",
-                "name": "one-core-db",
-                "user": "postgres",
-                "password": "onecore77",
-                "host": "localhost",
-                "port": 5432
-            }
+        "cors": {
+            "origin": "*",
+            "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+            "preflightContinue": false,
+            "optionsSuccessStatus": 204
+        },
+        "civa_api": {
+            "url": "http://preproduccion.grupoei.com.mx/CIVAApiDemo/api/",
+            "secret_key_token": "y8SxYj_7TX7RHeKp5GQw9J5yMVzQZXv56MBgVQsXaTfU",
+            "algorithm": "HS256"
         },
         "jwt": {
             "api": {
@@ -29,15 +23,13 @@
                 "algorithm": "HS256",
                 "access_token_expire_minutes": 15
             },
-
             "google": {
                 "secret_key": "your_secret_key",
                 "algorithm": "HS256",
                 "access_token_expire_minutes": 15
             }
         },
-        "excluded_urls": ["/api/auth/login", "/docs", "/redoc", "/openapi.json"],
-        "route_path": "/app/v1/routes",
+        "excluded_urls": ["/api/login", "/docs", "/redoc", "/openapi.json"],
         "secret_keys": {
             "key1": "value1",
             "key2": "value2"
