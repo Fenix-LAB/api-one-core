@@ -48,11 +48,11 @@ app = APIRouter()
 security = HTTPBearer()
 
 
-@app.post("/GetRequirementObligation")
+@app.post("/getRequirementoObligaciones")
 @inject
 async def GetRequirementObligation(
     request: RequerimientoObligacionesRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -76,29 +76,29 @@ async def GetRequirementObligation(
 
     try:
 
-        # response = RequerimientoObligacionesResponse(
-        #     Pendientes=10, Proximos=5, Hallazgos=3
-        # )
-
         logger.info(f"Fetching requirement obligations ...")
 
-        response = await fetch_requirement_obligation(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        data, token = await fetch_requirement_obligation(
+            date_ini=request.DateIni, date_end=request.DateEnd, token=user_data.token
         )
 
         logger.info(f"Requirement obligations fetched successfully")
 
+        data = RequerimientoObligacionesResponse(
+            Pendientes=data["pendientes"], Proximos=data["proximos"], Hallazgos=data["hallazgos"]
+        )
+
         return ApiResponse(
             Success=True,
             Message="Fetched requirements obligations successfully",
-            Data=response,
-            Token=user_data.token,
+            Data=data,
+            Token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /GetRequirementObligation: {e}")
         return ApiResponse(
-            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=None
         )
 
 
@@ -106,7 +106,7 @@ async def GetRequirementObligation(
 @inject
 async def getGetExpedienteCiva(
     request: ExpedienteCivaRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -132,9 +132,11 @@ async def getGetExpedienteCiva(
 
         logger.info(f"Fetching expediente civa ...")
 
-        response = await fetch_expediente_civa(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        data, token = await fetch_expediente_civa(
+            date_ini=request.DateIni, date_end=request.DateEnd, token=user_data.token
         )
+
+        response = ExpedienteCivaResponse(Actualizacion=data["actualizacion"])
 
         logger.info(f"Expediente civa fetched successfully")
 
@@ -142,13 +144,13 @@ async def getGetExpedienteCiva(
             Success=True,
             Message="Fetched expediente civa successfully",
             Data=response,
-            Token=user_data.token,
+            Token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getGetExpedienteCiva: {e}")
         return ApiResponse(
-            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=None
         )
 
 
@@ -156,7 +158,7 @@ async def getGetExpedienteCiva(
 @inject
 async def getTotalSolicitudesRevisor(
     request: TotalSolicitudesRevisorRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -178,13 +180,13 @@ async def getTotalSolicitudesRevisor(
 
     try:
 
-        # response = TotalSolicitudesRevisorResponse(Solicitudes=9998)
-
         logger.info(f"Fetching total solicitudes revisor ...")
 
-        response = await fetch_total_solicitudes_revisor(
-            session=db_session, date_ini=request.DateIni, date_end=request.DateEnd
+        response, token = await fetch_total_solicitudes_revisor(
+            date_ini=request.DateIni, date_end=request.DateEnd, token=user_data.token
         )
+
+        response = TotalSolicitudesRevisorResponse(Solicitudes=response["solicitudes"])
 
         logger.info(f"Total solicitudes revisor fetched successfully")
 
@@ -192,13 +194,13 @@ async def getTotalSolicitudesRevisor(
             Success=True,
             Message="Fetched total solicitudes successfully",
             Data=response,
-            Token=user_data.token,
+            Token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getTotalSolicitudesRevisor: {e}")
         return ApiResponse(
-            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=None
         )
 
 
@@ -206,7 +208,7 @@ async def getTotalSolicitudesRevisor(
 @inject
 async def getNotificaciones(
     request: NotificacionesRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -254,7 +256,11 @@ async def getNotificaciones(
 
         logger.info(f"Fetching notifications ...")
 
-        data = await fetch_notificaciones(session=db_session)
+        data, token = await fetch_notificaciones(page_size=request.pageSize, current_page=request.currentPage, token=user_data.token)
+
+        # {'data': [{'id': None, 'titulo': 'Subject', 'referencia': '0000000000', 'estado': 'Hallazgo', 'descripcion': 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...', 'fecha': '2025-02-03T18:51:06.8012549-06:00', 'esError': True}, {'id': None, 'titulo': 'Subject', 'referencia': '0000000001', 'estado': 'Solicitud Aprobada', 'descripcion': 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...', 'fecha': '2025-02-03T17:51:06.8012592-06:00', 'esError': False}, {'id': None, 'titulo': 'Subject', 'referencia': '0000000002', 'estado': 'Hallazgo', 'descripcion': 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur lorem ...', 'fecha': '2025-02-03T16:51:06.8012596-06:00', 'esError': False}], 'currentPage': 1, 'pageSize': 10, 'totalPages': 1, 'totalRecords': 3}
+
+        data = [NotificationResponse(**item) for item in data["data"]] # Change in the model NotificationResponse (verify the model)
 
         logger.info(f"Notifications fetched successfully")
 
@@ -262,13 +268,13 @@ async def getNotificaciones(
             Success=True,
             Message="Fetched notifications successfully",
             Data=data,
-            Token=user_data.token,
+            Token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getNotificaciones: {e}")
         return ApiResponse(
-            Success=False, Message="Internal Server Error", Data=None, Token=user_data.token
+            Success=False, Message="Internal Server Error", Data=None, Token=None
         )
 
 

@@ -1,0 +1,8 @@
+{'nameid': '39779', 
+'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': ',',
+ 'areas': 'Admin', 
+ 'cliente': '3636', 
+ 'nombrePersonal': 'sysadmin', 
+ 'exp': 1738624579, 
+ 'iss': 'tuAPI', 
+ 'aud': 'tuClienteWeb'}

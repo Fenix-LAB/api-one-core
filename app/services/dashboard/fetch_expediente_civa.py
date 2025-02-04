@@ -1,23 +1,28 @@
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.dashboard.response import ExpedienteCivaResponse
+import requests
+from config.config import config
 
-async def fetch_expediente_civa(session: AsyncSession, date_ini: str, date_end: str):
+async def fetch_expediente_civa(date_ini: str, date_end: str, token: str) -> tuple:
     """
     Method to fetch expediente civa details.
 
-    :param session: Session to connect to the database.
-    :param date_ini: Initial date (format: YYYY-MM-DDTHH:MM:SS).
-    :param date_end: End date (format: YYYY-MM-DDTHH:MM:SS).
-    :return: List of expediente civa details.
+    Args:
+        date_ini (str): Initial date.
+        date_end (str): End date.
+
+    Returns:
+        tuple: Expediente civa details.
     """
-    query = text("SELECT * FROM GetExpedienteCiva(:DateIni, :DateEnd)")
-    result = await session.execute(query, {"DateIni": date_ini, "DateEnd": date_end})
-    expedientes = result.fetchall()
+    
+    url = f"{config.CIVA_API_URL}/Dashboard/getGetExpedienteCiva"
+    body = {
+        "dateIni": date_ini.isoformat(),  # '2025-03-01T12:00:00'
+        "dateEnd": date_end.isoformat()   # '2025-03-05T18:30:00'
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
 
-    logger.info(f"Expediente civa details fetched successfully: {expedientes}")
+    data = response.json()
 
-    return [ExpedienteCivaResponse(
-        Actualizacion=expediente[0].strftime("%Y-%m-%d %H:%M:%S")
-    ) for expediente in expedientes]
+    return data["data"], data["token"]
         

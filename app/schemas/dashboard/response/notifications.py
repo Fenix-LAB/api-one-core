@@ -2,10 +2,10 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 class NotificationResponse(BaseModel):
-    ID: int = Field(..., description="ID")
-    Titulo: str = Field(..., description="Titulo")
-    Referencia: str = Field(..., description="Referencia")
-    Estado: str = Field(..., description="Estado")
-    Descripcion: str = Field(..., description="Descripcion")
-    Fecha: datetime = Field(..., description="Fecha")
-    EsError: bool = Field(..., description="Es error")
+    # id: int = Field(..., description="ID")
+    titulo: str = Field(..., description="Titulo")
+    referencia: str = Field(..., description="Referencia")
+    estado: str = Field(..., description="Estado")
+    descripcion: str = Field(..., description="Descripcion")
+    fecha: datetime = Field(..., description="Fecha")
+    esError: bool = Field(..., description="Es error")

@@ -5,4 +5,5 @@ from pydantic import BaseModel
 #     pass
 
 class NotificacionesRequest(BaseModel):
-    pass
+    pageSize: int
+    currentPage: int
