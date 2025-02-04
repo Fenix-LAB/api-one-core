@@ -245,4 +245,15 @@ async def fetch_domicilio_list(token: str) -> tuple:
     pass
 
 async def save_domicilio(data: dict, token: str) -> tuple:
+    """
+    Method to save domicilio.
+
+    Args:
+        data (dict): Domicilio data.
+
+    Returns:
+        tuple: Domicilio data.
+    """
+
+    pass
 
