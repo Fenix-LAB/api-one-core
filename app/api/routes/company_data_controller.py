@@ -45,6 +45,8 @@ from app.schemas.company_data.request import (
     EnlaceOperativoSaveRequest,
 )
 
+from app.services.company_data.company_data_services import *
+
 from app.schemas.models import (
     HallazgoOptionModel,
     AreaRolModel,
