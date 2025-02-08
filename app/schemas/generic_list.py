@@ -5,8 +5,8 @@ T = TypeVar("T")
 
 
 class ListResponse(BaseModel, Generic[T]):
-    CurrentPage: int
-    PageSize: int
-    TotalPages: int
-    TotalRecords: int
-    Data: List[T]
+    currentPage: int
+    pageSize: int
+    totalPages: int
+    totalRecords: int
+    data: List[T]

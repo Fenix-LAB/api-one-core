@@ -1,8 +1,17 @@
-{'nameid': '39779', 
-'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': ',',
- 'areas': 'Admin', 
- 'cliente': '3636', 
- 'nombrePersonal': 'sysadmin', 
- 'exp': 1738624579, 
- 'iss': 'tuAPI', 
- 'aud': 'tuClienteWeb'}
+{'data': [
+        {'code': 0, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 1, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 2, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 3, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 4, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 5, 'cantidad': 0, 'total': 0, 'selected': False
+        },
+        {'code': 6, 'cantidad': 0, 'total': 0, 'selected': False
+        }
+    ], 'currentPage': 0, 'pageSize': 0, 'totalPages': 0, 'totalRecords': 0
+}

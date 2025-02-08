@@ -1,10 +1,10 @@
 from enum import Enum
 
 class IvaSectionOptionCode(Enum):
-    RazonSocial = "RazonSocial"
-    Domicilio = "Domicilio"
-    ClienteExtranjero = "ClienteExtranjero"
-    ProveedorNacional = "ProveedorNacional"
-    SociosAccionistas = "SociosAccionistas"
-    LegalUso = "LegalUso"
-    EnlacesOperativos = "EnlacesOperativos"
+    RazonSocial = 0
+    Domicilio = 1
+    ClienteExtranjero = 2
+    ProveedorNacional = 3
+    SociosAccionistas = 4
+    LegalUso = 5
+    EnlacesOperativos = 6

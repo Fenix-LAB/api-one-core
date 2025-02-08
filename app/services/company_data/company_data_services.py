@@ -1,5 +1,17 @@
 import requests
 from config.config import config
+from app.schemas.company_data.response import (
+    SectionOptionDatosEmpresaResponse,
+    HistoricoResponse,
+    RazonSocialResponse,
+    DatosEmpresaEvidenciaResponse,
+    ClienteProveedorResponse,
+    ProveedorNacionalResponse,
+    SocioAccionistaResponse,
+    LegalUsoResponse,
+    EnlaceOperativoResponse,
+)
+from app.schemas.generic_list import ListResponse
 
 async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
     """
@@ -13,7 +25,7 @@ async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
         tuple: Section list.
     """
 
-    url = f"{config.CIVA_API_URL}/Dashboard/getSecciones"
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getSectionList"
     body = {
         "dateIni": date_ini.isoformat(),  # '2025-03-01T12:00:00'
         "dateEnd": date_end.isoformat()   # '2025-03-05T18:30:00'
@@ -22,9 +34,13 @@ async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
     response = requests.post(url, json=body, headers=headers)
     response.raise_for_status()
 
-    data = response.json()
+    res = response.json()
 
-    return data["data"], data["token"]
+    list_response = ListResponse[SectionOptionDatosEmpresaResponse](
+        **res["data"]
+    )
+
+    return list_response , res["token"]
 
 async def fetch_razon_social_historico_list(code_section: str, token: str) -> tuple:
     """

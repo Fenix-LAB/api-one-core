@@ -5,13 +5,13 @@ T = TypeVar("T")
 
 
 class ApiResponse(BaseModel, Generic[T]):
-    Success: bool
-    Message: Optional[str]
-    Data: Optional[T]
-    Token: Optional[str]
+    success: bool
+    message: Optional[str]
+    data: Optional[T]
+    token: Optional[str]
 
 
 class ApiResponseNoToken(BaseModel, Generic[T]):
-    Success: bool
-    Message: Optional[str]
-    Data: Optional[T]
+    success: bool
+    message: Optional[str]
+    data: Optional[T]

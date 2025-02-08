@@ -70,7 +70,7 @@ security = HTTPBearer()
 @inject
 async def getSectionList(
     request: SectionDatosEmpresaListRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -93,37 +93,40 @@ async def getSectionList(
 
     logger.info(f"ENDPOINT /getSectionList: {request}")
 
-    data = [
-        SectionOptionDatosEmpresaResponse(Code="RazonSocial", Cantidad=0, Total=11, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="Domicilio", Cantidad=0, Total=29, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="ClienteExtranjero", Cantidad=3, Total=15, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="ProveedorNacional", Cantidad=7, Total=10, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="SociosAccionistas", Cantidad=2, Total=8, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="LegalUso", Cantidad=9, Total=20, Selected=False),
-        SectionOptionDatosEmpresaResponse(Code="EnlacesOperativos", Cantidad=4, Total=4, Selected=False),
-    ]
+    # data = [
+    #     SectionOptionDatosEmpresaResponse(Code="RazonSocial", Cantidad=0, Total=11, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="Domicilio", Cantidad=0, Total=29, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="ClienteExtranjero", Cantidad=3, Total=15, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="ProveedorNacional", Cantidad=7, Total=10, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="SociosAccionistas", Cantidad=2, Total=8, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="LegalUso", Cantidad=9, Total=20, Selected=False),
+    #     SectionOptionDatosEmpresaResponse(Code="EnlacesOperativos", Cantidad=4, Total=4, Selected=False),
+    # ]
 
     try:
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(
-                CurrentPage=0,
-                PageSize=0,
-                TotalPages=0,
-                TotalRecords=0,
-                Data=data,
-            ),
-            Token=user_data.token,
+
+        logger.info("Fetching section list")
+
+        response, token = await fetch_section_list(
+            date_ini=request.DateIni,
+            date_end=request.DateEnd,
+            token=user_data.token,
         )
 
+        return ApiResponse(
+            success=True,
+            message="OK",
+            data=response,
+            token=token,
+        )
+    
     except Exception as e:
         logger.error(f"ENDPOINT /getSectionList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Se presentó un error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Se presentó un error",
+            data=None,
+            token=None,
         )
 
 
@@ -167,50 +170,57 @@ async def getRazonSocialHistoricoList(
 
     logger.info(f"ENDPOINT /getRazonSocialHistoricoList: {request}")
 
-    data = [
-        HistoricoResponse(
-            Status="Modificado",
-            Usuario="Usuario 1",
-            Fecha=datetime.utcnow(),
-            Data=RazonSocialResponse(
-                ID=1,
-                CaseNumber=1,
-                Name="Razón Social 1",
-                RFC="RFC 1",
-                Folio="Folio 1",
-                MovementDate=datetime.utcnow(),
-                DeedDate=datetime.utcnow(),
-                Fedatario="Fedatario 1",
-                Notary="Notario 1",
-                Effect="Estatutos",
-                Notice="Aviso 1",
-                NoticeDate=datetime.utcnow(),
-                IsCompany=True
-            )
-        ),
-        HistoricoResponse(
-            Status="Vigente",
-            Usuario="Usuario 2",
-            Fecha=datetime.utcnow(),
-            Data=RazonSocialResponse(
-                ID=2,
-                CaseNumber=2,
-                Name="Razón Social 2",
-                RFC="RFC 2",
-                Folio="Folio 2",
-                MovementDate=datetime.utcnow(),
-                DeedDate=datetime.utcnow(),
-                Fedatario="Fedatario 2",
-                Notary="Notario 2",
-                Effect="Fusion",
-                Notice="Aviso 2",
-                NoticeDate=datetime.utcnow(),
-                IsCompany=False
-            )
-        )
-    ]
+    # data = [
+    #     HistoricoResponse(
+    #         Status="Modificado",
+    #         Usuario="Usuario 1",
+    #         Fecha=datetime.utcnow(),
+    #         Data=RazonSocialResponse(
+    #             ID=1,
+    #             CaseNumber=1,
+    #             Name="Razón Social 1",
+    #             RFC="RFC 1",
+    #             Folio="Folio 1",
+    #             MovementDate=datetime.utcnow(),
+    #             DeedDate=datetime.utcnow(),
+    #             Fedatario="Fedatario 1",
+    #             Notary="Notario 1",
+    #             Effect="Estatutos",
+    #             Notice="Aviso 1",
+    #             NoticeDate=datetime.utcnow(),
+    #             IsCompany=True
+    #         )
+    #     ),
+    #     HistoricoResponse(
+    #         Status="Vigente",
+    #         Usuario="Usuario 2",
+    #         Fecha=datetime.utcnow(),
+    #         Data=RazonSocialResponse(
+    #             ID=2,
+    #             CaseNumber=2,
+    #             Name="Razón Social 2",
+    #             RFC="RFC 2",
+    #             Folio="Folio 2",
+    #             MovementDate=datetime.utcnow(),
+    #             DeedDate=datetime.utcnow(),
+    #             Fedatario="Fedatario 2",
+    #             Notary="Notario 2",
+    #             Effect="Fusion",
+    #             Notice="Aviso 2",
+    #             NoticeDate=datetime.utcnow(),
+    #             IsCompany=False
+    #         )
+    #     )
+    # ]
 
     try:
+
+        logger.info("Fetching social reason history list")
+
+        data, token = await fetch_razon_social_historico_list(
+            code_section=request.CodeSection,
+            token=user_data.token,
+        )
         return ApiResponse(
             Success=True,
             Message="OK",
@@ -221,7 +231,7 @@ async def getRazonSocialHistoricoList(
                 TotalRecords=len(data),
                 Data=data
             ),
-            Token=user_data.token,
+            Token=token,
         )
 
     except Exception as e:

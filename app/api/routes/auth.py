@@ -39,13 +39,13 @@ async def Login(
     if login_response.get("success") is False:
         logger.error("LOGIN: Login failed")
         return ApiResponseNoToken[LoginResponse](
-            Data=LoginResponse(Token="Error authenticating"),
-            Message="Login failed",
-            Success=False,
+            data=LoginResponse(Token="Error authenticating"),
+            message="Login failed",
+            success=False,
         )
 
     logger.info("LOGIN: Login successful")
 
     return ApiResponseNoToken[LoginResponse](
-        Data=LoginResponse(Token=login_response.get("data")), Message="Login successful", Success=True
+        data=LoginResponse(token=login_response.get("data")), message="Login successful", success=True
     )
