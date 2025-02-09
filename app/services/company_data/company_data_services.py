@@ -398,7 +398,15 @@ async def save_legal_uso(data: dict, token: str) -> tuple:
         tuple: Legal uso data.
     """
 
-    pass
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveLegalUso"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
+
+    return response
 
 async def fetch_enlaces_operativos_list(token: str) -> tuple:
     """
