@@ -416,7 +416,18 @@ async def fetch_enlaces_operativos_list(token: str) -> tuple:
         tuple: Enlaces operativos list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getEnlacesOperativosList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    res = response.json()
+
+    data = ListResponse[HistoricoResponse](**res["data"])
+
+    return data, res["token"]
 
 
 async def save_enlaces_operativos(data: dict, token: str) -> tuple:

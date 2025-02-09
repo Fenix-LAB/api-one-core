@@ -1326,7 +1326,7 @@ async def saveLegalUso(
 @inject
 async def getEnlacesOperativosList(
     request: EnlacesOperativosHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -1344,60 +1344,61 @@ async def getEnlacesOperativosList(
 
     """
 
-    data = [
-        HistoricoResponse(
-            Status="Modificado",
-            Usuario="Usuario 1",
-            Fecha="2025-01-07T00:00:00",
-            Data=EnlaceOperativoResponse(
-                ID=1,
-                CaseNumber=1,
-                Nombre="Nombre 1",
-                RFC="RFC 1",
-                TipoRelacion="Relación 1",
-                FechaInicio="2025-01-07T00:00:00",
-                FechaFin="2025-01-07T00:00:00",
-                Observaciones="Observaciones 1",
-            ),
-        ),
-        HistoricoResponse(
-            Status="Modificado",
-            Usuario="Usuario 2",
-            Fecha="2025-01-07T00:00:00",
-            Data=EnlaceOperativoResponse(
-                ID=2,
-                CaseNumber=2,
-                Nombre="Nombre 2",
-                RFC="RFC 2",
-                TipoRelacion="Relación 2",
-                FechaInicio="2025-01-07T00:00:00",
-                FechaFin="2025-01-07T00:00:00",
-                Observaciones="Observaciones 2",
-            ),
-        ),
-    ]
+    # data = [
+    #     HistoricoResponse(
+    #         Status="Modificado",
+    #         Usuario="Usuario 1",
+    #         Fecha="2025-01-07T00:00:00",
+    #         Data=EnlaceOperativoResponse(
+    #             ID=1,
+    #             CaseNumber=1,
+    #             Nombre="Nombre 1",
+    #             RFC="RFC 1",
+    #             TipoRelacion="Relación 1",
+    #             FechaInicio="2025-01-07T00:00:00",
+    #             FechaFin="2025-01-07T00:00:00",
+    #             Observaciones="Observaciones 1",
+    #         ),
+    #     ),
+    #     HistoricoResponse(
+    #         Status="Modificado",
+    #         Usuario="Usuario 2",
+    #         Fecha="2025-01-07T00:00:00",
+    #         Data=EnlaceOperativoResponse(
+    #             ID=2,
+    #             CaseNumber=2,
+    #             Nombre="Nombre 2",
+    #             RFC="RFC 2",
+    #             TipoRelacion="Relación 2",
+    #             FechaInicio="2025-01-07T00:00:00",
+    #             FechaFin="2025-01-07T00:00:00",
+    #             Observaciones="Observaciones 2",
+    #         ),
+    #     ),
+    # ]
 
     try:
+
+        logger.info("ENDPOINT /getEnlacesOperativosList")
+
+        data, token = await fetch_enlaces_operativos_list(
+            token=user_data.token,
+        )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(
-                Data=data,
-                CurrentPage=1,
-                PageSize=10,
-                TotalPages=1,
-                TotalRecords=2,
-            ),
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getEnlacesOperativosList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 
