@@ -1,4 +1,5 @@
 import requests
+import json
 from config.config import config
 from app.schemas.company_data.response import (
     SectionOptionDatosEmpresaResponse,
@@ -42,7 +43,7 @@ async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
 
     return list_response , res["token"]
 
-async def fetch_razon_social_historico_list(code_section: str, token: str) -> tuple:
+async def fetch_razon_social_historico_list(token: str) -> tuple:
     """
     Method to fetch razon social historico list.
 
@@ -55,12 +56,24 @@ async def fetch_razon_social_historico_list(code_section: str, token: str) -> tu
         tuple: Razon social historico list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getRazonSocialHistoricoList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
 
-async def fetch_razon_social(code_section: str, token: str) -> tuple:
+    res = response.json()
+
+    list_response = ListResponse[HistoricoResponse](
+        **res["data"]
+    )
+
+    return list_response , res["token"]
+
+async def save_razon_social(request: dict, token: str) -> tuple:
     """
     Method to fetch razon social.
-
+SS
     Args:
         code_section (str): Section code.
 
@@ -68,7 +81,22 @@ async def fetch_razon_social(code_section: str, token: str) -> tuple:
         tuple: Razon social.
     """
 
-    pass
+    request_dict = request.model_dump()
+    request_dict = json.loads(json.dumps(request_dict, default=str))
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveRazonSocial"
+    headers = {"Authorization": f"Bearer {token}"}
+    print(f'REQUEST: {request_dict}')
+
+    try:
+        response = requests.post(url, json=request_dict, headers=headers)
+        response.raise_for_status()
+
+        if response.status_code == 200:
+            return True
+
+    except Exception as e:
+        return False
 
 async def fetch_hallazgos_list(code_section: str, token: str) -> tuple:
     """

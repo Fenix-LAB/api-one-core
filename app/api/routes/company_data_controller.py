@@ -134,7 +134,7 @@ async def getSectionList(
 @inject
 async def getRazonSocialHistoricoList(
     request: RazonSocialHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -218,37 +218,31 @@ async def getRazonSocialHistoricoList(
         logger.info("Fetching social reason history list")
 
         data, token = await fetch_razon_social_historico_list(
-            code_section=request.CodeSection,
             token=user_data.token,
         )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(
-                CurrentPage=1,
-                PageSize=10,
-                TotalPages=1,
-                TotalRecords=len(data),
-                Data=data
-            ),
-            Token=token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getRazonSocialHistoricoList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Se presentó un error",
+            data=None,
+            token=None,
         )
 
 
-@app.post("/getRazonSocial")
+@app.post("/saveRazonSocial")
 @inject
 async def saveRazonSocial(
     request: RazonSocialSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -283,26 +277,32 @@ async def saveRazonSocial(
 
     logger.info(f"ENDPOINT /saveRazonSocial: {request}")
 
-    data = RazonSocialResponse(
-        ID=1,
-        CaseNumber=1,
-        Name="Razón Social 1",
-        RFC="RFC 1",
-        Folio="Folio 1",
-        MovementDate="2023-01-01T00:00:00",
-        DeedDate="2023-01-02T00:00:00",
-        Fedatario="Fedatario 1",
-        Notary="Notario 1",
-        Effect="Estatutos",
-        Notice="Aviso 1",
-        NoticeDate="2023-01-03T00:00:00",
-        IsCompany=True,
+    # data = RazonSocialResponse(
+    #     ID=1,
+    #     CaseNumber=1,
+    #     Name="Razón Social 1",
+    #     RFC="RFC 1",
+    #     Folio="Folio 1",
+    #     MovementDate="2023-01-01T00:00:00",
+    #     DeedDate="2023-01-02T00:00:00",
+    #     Fedatario="Fedatario 1",
+    #     Notary="Notario 1",
+    #     Effect="Estatutos",
+    #     Notice="Aviso 1",
+    #     NoticeDate="2023-01-03T00:00:00",
+    #     IsCompany=True,
+    # )
+
+    response = await save_razon_social(
+        request=request,
+        token=user_data.token,
     )
+
     try:
         return ApiResponse(
             Success=True,
             Message="OK",
-            Data=data,
+            Data=response,
             Token=user_data.token,
         )
 
