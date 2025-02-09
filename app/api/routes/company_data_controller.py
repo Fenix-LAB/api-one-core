@@ -578,7 +578,7 @@ async def getPaises(
 @inject
 async def getPaisEstados(
     request: EstadosRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -599,27 +599,28 @@ async def getPaisEstados(
     """
 
     try:
-        data = [
-            PaisEstadoModel(PaisCode=request.get("PaisCode"), EstadoCode="cod1", EstadoName=f"Estado 1 - {request.get('PaisCode')}"),
-            PaisEstadoModel(PaisCode=request.get("PaisCode"), EstadoCode="cod2", EstadoName=f"Estado 2 - {request.get('PaisCode')}"),
-            PaisEstadoModel(PaisCode=request.get("PaisCode"), EstadoCode="cod3", EstadoName=f"Estado 3 - {request.get('PaisCode')}"),
-            PaisEstadoModel(PaisCode=request.get("PaisCode"), EstadoCode="cod4", EstadoName=f"Estado 4 - {request.get('PaisCode')}"),
-        ]
+
+        logger.info("ENDPOINT /getPaisEstados")
+
+        data, token = await fetch_paises_estados(
+            iid_pais=request.idPais,
+            token=user_data.token,
+        )
 
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=data,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getPaisEstados: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

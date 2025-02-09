@@ -210,7 +210,20 @@ async def fetch_paises_estados(iid_pais: str, token: str) -> tuple:
         tuple: Paises estados.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getPaisEstados"
+    body = {
+        "idPais": str(iid_pais)
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    res = response.json()
+
+    data = [PaisEstadoModel(**item) for item in res["data"]]
+
+    return data, res["token"]
 
 async def get_cliente_proveedor_list(token: str) -> tuple:
     """

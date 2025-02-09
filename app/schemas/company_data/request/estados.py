@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 class EstadosRequest(BaseModel):
-    PaisCode: str = Field(..., description="Pais code")
+    idPais: UUID = Field(..., description="Id Pais")
