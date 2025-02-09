@@ -430,18 +430,23 @@ async def fetch_enlaces_operativos_list(token: str) -> tuple:
     return data, res["token"]
 
 
-async def save_enlaces_operativos(data: dict, token: str) -> tuple:
+async def save_enlace_operativo(data, token: str) -> tuple:
     """
-    Method to save enlaces operativos.
-
-    Args:
-        data (dict): Enlaces operativos data.
+    Method to save enlaces operativos list.
 
     Returns:
         tuple: Enlaces operativos data.
     """
 
-    pass
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveEnlaceOperativo"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
+
+    return response
 
 async def fetch_domicilio_list(token: str) -> tuple:
     """
