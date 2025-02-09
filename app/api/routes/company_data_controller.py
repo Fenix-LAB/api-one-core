@@ -293,26 +293,33 @@ async def saveRazonSocial(
     #     IsCompany=True,
     # )
 
-    response = await save_razon_social(
-        request=request,
-        token=user_data.token,
-    )
-
     try:
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=response,
-            Token=user_data.token,
+        response = await save_razon_social(
+            request=request,
+            token=user_data.token,
         )
 
+        if response.status_code == 200:
+            return ApiResponse(
+                success=True,
+                message="OK",
+                data=True,
+                token=user_data.token,
+            )
+        
+        return ApiResponse(
+            success=False,
+            message="Se presentó un error",
+            data=False,
+            token=user_data.token,
+        )
     except Exception as e:
         logger.error(f"ENDPOINT /getRazonSocial: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

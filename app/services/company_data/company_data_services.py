@@ -88,15 +88,10 @@ SS
     headers = {"Authorization": f"Bearer {token}"}
     print(f'REQUEST: {request_dict}')
 
-    try:
-        response = requests.post(url, json=request_dict, headers=headers)
-        response.raise_for_status()
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
 
-        if response.status_code == 200:
-            return True
-
-    except Exception as e:
-        return False
+    return response
 
 async def fetch_hallazgos_list(code_section: str, token: str) -> tuple:
     """
