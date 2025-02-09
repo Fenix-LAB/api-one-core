@@ -255,7 +255,16 @@ async def save_cliente_proveedor(data: dict, token: str) -> tuple:
         tuple: Cliente proveedor data.
     """
 
-    pass
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveClienteProveedor"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
+
+    return response
+
 
 async def fetch_provedor_nacional_list(token: str) -> tuple:
     """

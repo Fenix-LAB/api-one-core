@@ -666,50 +666,6 @@ async def getClienteProveedorList(
     """
 
     try:
-        # data = [
-        #     HistoricoResponse(
-        #         Status="Modificado",
-        #         Usuario="Usuario 1",
-        #         Fecha="2025-01-07T00:00:00",
-        #         Data=ClienteProveedorResponse(
-        #             ID=1,
-        #             CaseNumber=1,
-        #             IsCompany=True,
-        #             Name="Razón Social 1",
-        #             Tipo="Cliente",
-        #             ApellidoPaterno="Apellido Paterno 1",
-        #             ApellidoMaterno="Apellido Materno 1",
-        #             TipoMovimiento="Alta",
-        #             Aviso="Aviso 1",
-        #             Municipio="Municipio 1",
-        #             EstadoCode="cod1",
-        #             EstadoNombre="Estado 1",
-        #             PaisCode="MX",
-        #             FechaMovimiento="2025-01-07T00:00:00",
-        #         ),
-        #     ),
-        #     HistoricoResponse(
-        #         Status="Modificado",
-        #         Usuario="Usuario 2",
-        #         Fecha="2025-01-07T00:00:00",
-        #         Data=ClienteProveedorResponse(
-        #             ID=2,
-        #             CaseNumber=2,
-        #             IsCompany=False,
-        #             Name="Razón Social 2",
-        #             Tipo="Proveedor",
-        #             ApellidoPaterno="Apellido Paterno 2",
-        #             ApellidoMaterno="Apellido Materno 2",
-        #             TipoMovimiento="Baja",
-        #             Aviso="Aviso 2",
-        #             Municipio="Municipio 2",
-        #             EstadoCode="cod2",
-        #             EstadoNombre="Estado 2",
-        #             PaisCode="MX",
-        #             FechaMovimiento="2025-01-07T00:00:00",
-        #         ),
-        #     ),
-        # ]
 
         logger.info("ENDPOINT /getClienteProveedorList")
 
@@ -738,7 +694,7 @@ async def getClienteProveedorList(
 @inject
 async def saveClienteProveedor(
     request: ClienteProveedorSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -780,20 +736,35 @@ async def saveClienteProveedor(
     logger.info(f"ENDPOINT /saveClienteProveedor: {request}")
 
     try:
+
+        response = await save_cliente_proveedor(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code == 200:
+            logger.info(f"ENDPOINT /saveClienteProveedor: success response")
+            return ApiResponse(
+                success=True,
+                message="OK",
+                data=True,
+                token=None,
+            )
+        
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=True,
+            token=None,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /saveClienteProveedor: {e}")
         return ApiResponse(
-            Success=False,
-            Message="Se presentó un error",
-            Data=False,
-            Token=user_data.token,
+            success=False,
+            message="Se presentó un error",
+            data=False,
+            token=None,
         )
 
 
