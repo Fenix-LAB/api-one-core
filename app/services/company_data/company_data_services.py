@@ -187,7 +187,17 @@ async def fetch_paises(token: str) -> tuple:
         tuple: Paises.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getPaises"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+
+    response.raise_for_status()
+    res = response.json()
+
+    data = [PaisModel(**item) for item in res["data"]]
+    
+    return data, res["token"]
 
 async def fetch_paises_estados(iid_pais: str, token: str) -> tuple:
     """

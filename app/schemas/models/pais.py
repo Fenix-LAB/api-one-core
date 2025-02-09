@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 class PaisModel(BaseModel):
-    PaisCode: str = Field(..., description="Pais code")
-    TelefonoCode: str = Field(..., description="Telefono code")
+    id: UUID = Field(..., description="Id")
+    paisCode: str = Field(..., description="Pais code")
+    telefonoCode: str = Field(..., description="Telefono code")
