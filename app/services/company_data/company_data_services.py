@@ -274,7 +274,19 @@ async def fetch_provedor_nacional_list(token: str) -> tuple:
         tuple: Provedor nacional list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getProveedorNacionalList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+    res = response.json()
+
+    print(res)
+    
+    data = ListResponse[ProveedorNacionalResponse](**res["data"])
+    
+    return data, res["token"]
 
 async def save_provedor_nacional(data: dict, token: str) -> tuple:
     """

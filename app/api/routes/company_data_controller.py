@@ -772,7 +772,7 @@ async def saveClienteProveedor(
 @inject
 async def getProveedorNacionalList(
     request: ProveedorNacionalHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -801,37 +801,41 @@ async def getProveedorNacionalList(
     logger.info(f"ENDPOINT /getProveedorNacionalList: {request}")
 
     try:
-        data = [
-            ProveedorNacionalResponse(
-                ID=1,
-                Name="Proveedor 1",
-                IsActive=True,
-                PaisCode="MX",
-                EstadoCode="NL",
-            ),
-            ProveedorNacionalResponse(
-                ID=2,
-                Name="Proveedor 2",
-                IsActive=True,
-                PaisCode="MX",
-                EstadoCode="JAL",
-            ),
-        ]
+        # data = [
+        #     ProveedorNacionalResponse(
+        #         ID=1,
+        #         Name="Proveedor 1",
+        #         IsActive=True,
+        #         PaisCode="MX",
+        #         EstadoCode="NL",
+        #     ),
+        #     ProveedorNacionalResponse(
+        #         ID=2,
+        #         Name="Proveedor 2",
+        #         IsActive=True,
+        #         PaisCode="MX",
+        #         EstadoCode="JAL",
+        #     ),
+        # ]
+
+        data, token = await fetch_provedor_nacional_list(
+            token=user_data.token,
+        )
 
         return ApiResponse(
-            Success=True,
-            Message="Fetched national providers successfully",
-            Data=data,
-            Token=user_data.token,
+            success=True,
+            message="Fetched national providers successfully",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getProveedorNacionalList: {e}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 
