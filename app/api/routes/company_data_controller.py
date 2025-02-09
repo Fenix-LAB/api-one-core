@@ -381,7 +381,7 @@ async def getHallazgosList(
 @inject
 async def getEvidenciaID(
     request: DatosempresaEvidenciaIDRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -425,31 +425,37 @@ async def getEvidenciaID(
     logger.info(f"ENDPOINT /getEvidenciaID: {request}")
 
     try:
-        evidencia = DatosEmpresaEvidenciaResponse(
-            ID=request.ID,
-            CaseNumber=request.ID,
-            AreaRols=None,
-            Responsables=None,
-            Cliente="Traders",
-            Fecha=datetime.utcnow(),
-            Recomendaciones=None,
-            Hallazgo=None,
+        # evidencia = DatosEmpresaEvidenciaResponse(
+        #     ID=request.ID,
+        #     CaseNumber=request.ID,
+        #     AreaRols=None,
+        #     Responsables=None,
+        #     Cliente="Traders",
+        #     Fecha=datetime.utcnow(),
+        #     Recomendaciones=None,
+        #     Hallazgo=None,
+        # )
+
+        response, token = await fetch_evidencia_id(
+            id=request.id,
+            code_section=request.codeSection,
+            token=user_data.token,
         )
         
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=evidencia,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=response,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getEvidenciaID: {e}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

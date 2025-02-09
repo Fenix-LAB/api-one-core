@@ -140,7 +140,26 @@ async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
         tuple: Evidencia id.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getEvidenciaId"
+    body = {
+        "id": str(id),
+        "codeSection": code_section.value
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    response = response.json()
+
+    print(response)
+
+    # data = DatosEmpresaEvidenciaResponse(**response["data"])
+    if response["data"] is not None:
+        datos_empresa = DatosEmpresaEvidenciaResponse(**response["data"])  
+    else:
+        datos_empresa = None 
+
+    return datos_empresa , response["token"]
 
 async def save_evidencia(data: dict, token: str) -> tuple:
     """
