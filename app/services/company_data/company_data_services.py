@@ -346,7 +346,7 @@ async def fetch_socio_accionista_list(token: str) -> tuple:
 
     return data, res["token"]
 
-async def save_socio_accionista(data: dict, token: str) -> tuple:
+async def save_socio_accionista(data, token: str) -> tuple:
     """
     Method to save socio accionista.
 
@@ -357,8 +357,15 @@ async def save_socio_accionista(data: dict, token: str) -> tuple:
         tuple: Socio accionista data.
     """
 
-    pass
+    request_dict = data.model_dump(mode="json")
 
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveSocioAccionista"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
+
+    return response
 
 async def save_legal_uso(data: dict, token: str) -> tuple:
     """

@@ -975,49 +975,6 @@ async def getSocioAccionistaList(
 
     logger.info(f"ENDPOINT /getSocioAccionistaList: {request}")
 
-    # data = [
-    #     HistoricoResponse(
-    #         Status="Modificado",
-    #         Usuario="Usuario 1",
-    #         Fecha="2024-01-01T00:00:00",
-    #         Data=SocioAccionistaResponse(
-    #             ID=1,
-    #             CaseNumber=1,
-    #             RFC="RFC 1",
-    #             CaracterCode="socio",
-    #             CaracterDescripcion="Socio",
-    #             TipoMovimiento="Agregar",
-    #             EscrituraPublica=11,
-    #             FechaEscritura="2024-01-01T00:00:00",
-    #             IsCompany=True,
-    #             IsObligadoTributar=False,
-    #             Nombre="Nombre 1",
-    #             NombreEmpresa="Empresa 1",
-    #         ),
-    #     ),
-    #     HistoricoResponse(
-    #         Status="Modificado",
-    #         Usuario="Usuario 2",
-    #         Fecha="2024-01-01T00:00:00",
-    #         Data=SocioAccionistaResponse(
-    #             ID=2,
-    #             CaseNumber=3,
-    #             RFC="RFC 3",
-    #             CaracterCode="accionista",
-    #             CaracterDescripcion="Accionista",
-    #             TipoMovimiento="Ratificar",
-    #             EscrituraPublica=110,
-    #             FechaEscritura="2024-01-01T00:00:00",
-    #             IsCompany=False,
-    #             IsObligadoTributar=True,
-    #             Nombre="Nombre 3",
-    #             NombreEmpresa="Empresa 3",
-    #         ),
-    #     ),
-    # ]
-
-
-
     try:
         data, token = await fetch_socio_accionista_list(
             token=user_data.token,
@@ -1044,7 +1001,7 @@ async def getSocioAccionistaList(
 @inject
 async def saveSocioAccionista(
     request: SocioAccionistaSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -1082,15 +1039,25 @@ async def saveSocioAccionista(
     logger.info(f"ENDPOINT /saveSocioAccionista: {request}")
 
     try:
-        success = True
-        message = "OK"
-        data = True
+        response = await save_socio_accionista(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code == 200:
+            logger.info(f"ENDPOINT /saveSocioAccionista: success response")
+            return ApiResponse(
+                success=True,
+                message="OK",
+                data=True,
+                token=user_data.token,
+            )
 
         return ApiResponse(
-            Success=success,
-            Message=message,
-            Data=data,
-            Token=user_data.token,
+            success=False,
+            message="Failed to save socio accionista",
+            data=False,
+            token=user_data.token,
         )
     except Exception as e:
         logger.error(f"ENDPOINT /saveSocioAccionista: {str(e)}")
