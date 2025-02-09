@@ -1,17 +1,8 @@
-{'data': [
-        {'code': 0, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 1, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 2, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 3, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 4, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 5, 'cantidad': 0, 'total': 0, 'selected': False
-        },
-        {'code': 6, 'cantidad': 0, 'total': 0, 'selected': False
+{'id': '3fa85f64-5717-4562-b3fc-2c963f66afa6', 'status': 0, 'codeSection': 'IvaSectionOptionCode.RazonSocial', 'idHallazgo': '3fa85f64-5717-4562-b3fc-2c963f66afa6', 'areaRols': [
+        {'Code': 'AreaRolType.Administrador', 'Name': 'string'
         }
-    ], 'currentPage': 0, 'pageSize': 0, 'totalPages': 0, 'totalRecords': 0
+    ], 'responsables': [
+        {'id': 0, 'nombre': 'string', 'areaCode': 'AreaRolType.Administrador'
+        }
+    ], 'recomendaciones': 'string', 'hallazgoComentarios': 'string'
 }

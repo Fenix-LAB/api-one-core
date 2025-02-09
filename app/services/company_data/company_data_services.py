@@ -151,9 +151,6 @@ async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
 
     response = response.json()
 
-    print(response)
-
-    # data = DatosEmpresaEvidenciaResponse(**response["data"])
     if response["data"] is not None:
         datos_empresa = DatosEmpresaEvidenciaResponse(**response["data"])  
     else:
@@ -161,7 +158,7 @@ async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
 
     return datos_empresa , response["token"]
 
-async def save_evidencia(data: dict, token: str) -> tuple:
+async def save_evidencia(data, token: str) -> tuple:
     """
     Method to save evidencia.
 
@@ -172,7 +169,15 @@ async def save_evidencia(data: dict, token: str) -> tuple:
         tuple: Evidencia data.
     """
 
-    pass
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/saveEvidencia"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, json=request_dict, headers=headers)
+    response.raise_for_status()
+
+    return response
 
 async def fetch_paises(token: str) -> tuple:
     """

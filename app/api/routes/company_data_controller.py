@@ -463,7 +463,7 @@ async def getEvidenciaID(
 @inject
 async def saveEvidencia(
     request: DatosEmpresaEvidenciaSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -491,21 +491,39 @@ async def saveEvidencia(
 
     """
 
+    logger.info(f"ENDPOINT /saveEvidencia: {request}")
+
     try:
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+
+        response = await save_evidencia(
+            data=request,
+            token=user_data.token,
         )
 
-    except Exception as e:
-        logger.error(f"ENDPOINT /saveEvidencia: {e}")
+        if response.status_code == 200:
+            logger.info(f"ENDPOINT /saveEvidencia: success response")
+            return ApiResponse(
+                success=True,
+                message="OK",
+                data=None,
+                token=None,
+            )
+
+        logger.error("ENDPOINT /saveEvidencia: unexpected status code")
         return ApiResponse(
-            Success=False,
-            Message="Se presentó un error",
-            Data=False,
-            Token=user_data.token,
+            success=False,
+            message="Se presentó un error",
+            data=False,
+            token=None,
+        )
+    
+    except Exception as e:
+        logger.error(f"ENDPOINT /saveEvidencia: {str(e)}")
+        return ApiResponse(
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 
