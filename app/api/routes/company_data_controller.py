@@ -893,7 +893,7 @@ async def saveProveedorNacional(
 @inject
 async def getCaracterTipos(
     request: CaracterTiposRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -914,25 +914,30 @@ async def getCaracterTipos(
     logger.info(f"ENDPOINT /getCaracterTipos: {request}")
 
     try:
-        data = [
-            DatosEmpresaSocioAccionistaCaracterModel(Code="socio", Description="Socio"),
-            DatosEmpresaSocioAccionistaCaracterModel(Code="accionista", Description="Accionista"),
-            DatosEmpresaSocioAccionistaCaracterModel(Code="mconsejo", Description="Miembro del consejo"),
-        ]
+        # data = [
+        #     DatosEmpresaSocioAccionistaCaracterModel(Code="socio", Description="Socio"),
+        #     DatosEmpresaSocioAccionistaCaracterModel(Code="accionista", Description="Accionista"),
+        #     DatosEmpresaSocioAccionistaCaracterModel(Code="mconsejo", Description="Miembro del consejo"),
+        # ]
+
+        data, token = await fetch_caracter_tipos(
+            token=user_data.token,
+        )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=data,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getCaracterTipos: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

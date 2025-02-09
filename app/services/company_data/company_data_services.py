@@ -315,7 +315,16 @@ async def fetch_caracter_tipos(token: str) -> tuple:
         tuple: Caracter tipos.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getCaracterTipos"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+    res = response.json()
+
+    data = [DatosEmpresaSocioAccionistaCaracterModel(**item) for item in res["data"]]
+    
+    return data, res["token"]
 
 async def fetch_socio_accionista_list(token: str) -> tuple:
     """
