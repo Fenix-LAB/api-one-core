@@ -367,6 +367,26 @@ async def save_socio_accionista(data, token: str) -> tuple:
 
     return response
 
+async def fetch_legal_uso_list(token: str) -> tuple:
+    """
+    Method to fetch legal uso list.
+
+    Returns:
+        tuple: Legal uso list.
+    """
+
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getLegalUsoList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    res = response.json()
+
+    data = ListResponse[LegalUsoResponse](**res["data"])
+
+    return data, res["token"]
+
 async def save_legal_uso(data: dict, token: str) -> tuple:
     """
     Method to save legal uso.

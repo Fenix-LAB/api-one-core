@@ -1073,7 +1073,7 @@ async def saveSocioAccionista(
 @inject
 async def getLegalUsoList(
     request: LegalUsoHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -1131,96 +1131,100 @@ async def getLegalUsoList(
     logger.info(f"ENDPOINT /getLegalUsoList: {request}")
 
     try:
-        data = [
-            HistoricoResponse(
-                Status="Modificado",
-                Usuario="Usuario 1",
-                Fecha="2024-01-01T12:00:00",
-                Data=LegalUsoResponse(
-                    ID=1,
-                    CaseNumber=1,
-                    DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
-                        Calle="Calle 1",
-                        Colonia="Colonia 1",
-                        CP="12345",
-                        Municipio="Municipio 1",
-                        EstadoCode="cod1",
-                        EstadoNombre="Estado 1",
-                        PaisCode="MX",
-                        Localidad="Localidad 1",
-                        NumeroExterior="Numero Exterior 1",
-                        NumeroInterior="Numero Interior 1",
-                        FechaInicioVigencia="2024-01-01T12:00:00",
-                    ),
-                    DomicilioNuevo=DatosEmpresaLegalUsoModel(
-                        Calle="Nuevo Calle 1",
-                        Colonia="Nuevo Colonia 1",
-                        CP="123",
-                        Municipio="Nuevo Municipio 1",
-                        EstadoCode="cod2",
-                        EstadoNombre="Estado 2",
-                        PaisCode="CO",
-                        Localidad="Nuevo Localidad 1",
-                        NumeroExterior="Nuevo Numero Exterior 1",
-                        FechaInicioVigencia="2024-01-01T12:00:00",
-                        TipoDocumento=2
-                    )
-                )
-            ),
-            HistoricoResponse(
-                Status="Modificado",
-                Usuario="Usuario 2",
-                Fecha="2024-01-02T12:00:00",
-                Data=LegalUsoResponse(
-                    ID=2,
-                    CaseNumber=3,
-                    DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
-                        Calle="Calle 2",
-                        Colonia="Colonia 2",
-                        CP="12345",
-                        Municipio="Municipio 2",
-                        EstadoCode="cod2",
-                        EstadoNombre="Estado 2",
-                        PaisCode="MX",
-                        Localidad="Localidad 2",
-                        NumeroExterior="Numero Exterior 2",
-                        NumeroInterior="Numero Interior 2",
-                        FechaInicioVigencia="2024-01-02T12:00:00",
-                    ),
-                    DomicilioNuevo=DatosEmpresaLegalUsoModel(
-                        Calle="Nuevo Calle 2",
-                        Colonia="Nuevo Colonia 2",
-                        CP="1232",
-                        Municipio="Nuevo Municipio 2",
-                        EstadoCode="cod3",
-                        EstadoNombre="Estado 2",
-                        PaisCode="US",
-                        Localidad="Nuevo Localidad 2",
-                        NumeroExterior="Nuevo Numero Exterior 2",
-                        NumeroInterior="Nuevo Numero Interior 2",
-                        FechaInicioVigencia="2024-01-02T12:00:00",
-                        TipoDocumento=4
-                    )
-                )
-            )
-        ]
+        # data = [
+        #     HistoricoResponse(
+        #         Status="Modificado",
+        #         Usuario="Usuario 1",
+        #         Fecha="2024-01-01T12:00:00",
+        #         Data=LegalUsoResponse(
+        #             ID=1,
+        #             CaseNumber=1,
+        #             DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
+        #                 Calle="Calle 1",
+        #                 Colonia="Colonia 1",
+        #                 CP="12345",
+        #                 Municipio="Municipio 1",
+        #                 EstadoCode="cod1",
+        #                 EstadoNombre="Estado 1",
+        #                 PaisCode="MX",
+        #                 Localidad="Localidad 1",
+        #                 NumeroExterior="Numero Exterior 1",
+        #                 NumeroInterior="Numero Interior 1",
+        #                 FechaInicioVigencia="2024-01-01T12:00:00",
+        #             ),
+        #             DomicilioNuevo=DatosEmpresaLegalUsoModel(
+        #                 Calle="Nuevo Calle 1",
+        #                 Colonia="Nuevo Colonia 1",
+        #                 CP="123",
+        #                 Municipio="Nuevo Municipio 1",
+        #                 EstadoCode="cod2",
+        #                 EstadoNombre="Estado 2",
+        #                 PaisCode="CO",
+        #                 Localidad="Nuevo Localidad 1",
+        #                 NumeroExterior="Nuevo Numero Exterior 1",
+        #                 FechaInicioVigencia="2024-01-01T12:00:00",
+        #                 TipoDocumento=2
+        #             )
+        #         )
+        #     ),
+        #     HistoricoResponse(
+        #         Status="Modificado",
+        #         Usuario="Usuario 2",
+        #         Fecha="2024-01-02T12:00:00",
+        #         Data=LegalUsoResponse(
+        #             ID=2,
+        #             CaseNumber=3,
+        #             DomicilioAcreditacion=DatosEmpresaLegalUsoModel(
+        #                 Calle="Calle 2",
+        #                 Colonia="Colonia 2",
+        #                 CP="12345",
+        #                 Municipio="Municipio 2",
+        #                 EstadoCode="cod2",
+        #                 EstadoNombre="Estado 2",
+        #                 PaisCode="MX",
+        #                 Localidad="Localidad 2",
+        #                 NumeroExterior="Numero Exterior 2",
+        #                 NumeroInterior="Numero Interior 2",
+        #                 FechaInicioVigencia="2024-01-02T12:00:00",
+        #             ),
+        #             DomicilioNuevo=DatosEmpresaLegalUsoModel(
+        #                 Calle="Nuevo Calle 2",
+        #                 Colonia="Nuevo Colonia 2",
+        #                 CP="1232",
+        #                 Municipio="Nuevo Municipio 2",
+        #                 EstadoCode="cod3",
+        #                 EstadoNombre="Estado 2",
+        #                 PaisCode="US",
+        #                 Localidad="Nuevo Localidad 2",
+        #                 NumeroExterior="Nuevo Numero Exterior 2",
+        #                 NumeroInterior="Nuevo Numero Interior 2",
+        #                 FechaInicioVigencia="2024-01-02T12:00:00",
+        #                 TipoDocumento=4
+        #             )
+        #         )
+        #     )
+        # ]
+
+        data, token = await fetch_legal_uso_list(
+            token=user_data.token,
+        )
+    
 
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(Data=data),
-            Token=user_data.token
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getLegalUsoList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
-
 
 
 @app.post("/saveLegalUso")
