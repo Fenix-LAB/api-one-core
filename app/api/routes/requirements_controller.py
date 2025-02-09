@@ -131,12 +131,6 @@ async def getRequerimientosList(
     logger.info(f"ENDPOINT /getRequerimientosList: {request}")
 
     try:
-        # data = [
-        #     RequerimientoElementResponse(ID=1, Verificacion="Pendiente", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-01T10:00:00"),
-        #     RequerimientoElementResponse(ID=2, Verificacion="Pendiente", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días", EsCritico=True, FechaEnvio="2024-01-02T10:00:00"),
-        #     RequerimientoElementResponse(ID=3, Verificacion="Pendiente", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días", EsCritico=False, FechaEnvio="2024-01-03T10:00:00"),
-        #     RequerimientoElementResponse(ID=4, Verificacion="Pendiente", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días", EsCritico=False, FechaEnvio="2024-01-04T10:00:00"),
-        # ]
 
         data, token = await fetch_requerimientos_list(
             code=request.code,
@@ -166,10 +160,9 @@ async def getRequerimientosList(
 @inject
 async def getEvidenciaID(
     request: RequerimientosEvidenciaIDRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     ## DESCRIPTION
@@ -200,48 +193,35 @@ async def getEvidenciaID(
     logger.info(f"ENDPOINT /getEvidenciaID: {request}")
 
     try:
-        evidencia = RequerimientosEvidenciaResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=1,
-            Status="Pendiente",
-            FechaInicio="2024-01-01T00:00:00",
-            FechaVencimiento="2024-07-02T00:00:00",
-            ProximoVencer=True,
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal")
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
-            ],
-            Archivos=[
-                FileInfoModel(ID=1, Tamano=12345, Extension="jpg", Nombre="Archivo 1", Url="_content/OneCore.CertificacionIVA/filesDemo/file1.jpg"),
-                FileInfoModel(ID=2, Tamano=12345, Extension="pdf", Nombre="Archivo 2", Url="_content/OneCore.CertificacionIVA/filesDemo/file2.pdf"),
-                FileInfoModel(ID=3, Tamano=12345, Extension="xlsx", Nombre="Archivo 3", Url="_content/OneCore.CertificacionIVA/filesDemo/file3.xlsx"),
-                FileInfoModel(ID=4, Tamano=12345, Extension="txt", Nombre="Archivo 4", Url="_content/OneCore.CertificacionIVA/filesDemo/file4.txt"),
-            ],
-            Ubicacion="",
-            Comentarios="",
-            HallazgoComentarios="",
-            HallazgoRecomendaciones=""
+
+        evidencia, token = await fetch_evidencia_id(
+            id=request.id,
+            code_section=request.codeSection,
+            token=user_data.token,
         )
 
+        if evidencia is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=None,
+            )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=evidencia,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=evidencia,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getEvidenciaID: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

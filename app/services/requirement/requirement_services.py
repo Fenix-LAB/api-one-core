@@ -1,6 +1,7 @@
 import requests
 import json
 from config.config import config
+from config.logger_config import logger
 from app.schemas.generic_list import ListResponse
 from app.schemas.requirements.response import (
     SectionOptionRequerimientosResponse,
@@ -64,10 +65,7 @@ async def fetch_requerimientos_list(code: int, date_ini: str, date_end: str, tok
     response = requests.post(url, headers=headers, json=body)
     response_data = response.json()
 
-    print("===========================================================")
-    print(f"response_data: {response_data['data']}")  # Updated print statement for debugging
-
-    if 'data' not in response_data:
+    if response_data.get("success") == False:
         logger.error("Invalid response data structure")
         return None, None
 
@@ -76,9 +74,42 @@ async def fetch_requerimientos_list(code: int, date_ini: str, date_end: str, tok
     return list_response, response_data["token"]
 
 async def fetch_evidencia_id(id: str, code_section: int, token: str):
-    pass
+    """
+    Fetch evidencia id
+    
+    Args:
+        id (str): Id
+        code_section (int): Code section
+        token (str): Token
+        
+    Returns:
+        tuple: (RequerimientosEvidenciaResponse, token)
 
-async def fetch_halazagos_list(code_section: int, token: str):
+        """
+    
+    url = f"{config.CIVA_API_URL}/Requerimientos/getEvidenciaId"
+    headers = {"Authorization": f"Bearer {token}"}
+    body = {
+        "id": str(id),
+        "code_section": code_section.value
+    }
+
+    response = requests.post(url, headers=headers, json=body)
+    response_data = response.json()
+
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+    
+    print("====================================================")
+    
+    print(response_data)
+
+    response = RequerimientosEvidenciaResponse(**response_data["data"])
+
+    return response, response_data["token"]
+
+async def fetch_hallazgos_list(code_section: int, token: str):
     pass
 
 async def save_evidencia(data: dict, token: str):
