@@ -225,7 +225,7 @@ async def fetch_paises_estados(iid_pais: str, token: str) -> tuple:
 
     return data, res["token"]
 
-async def get_cliente_proveedor_list(token: str) -> tuple:
+async def fetch_cliente_proveedor_list(token: str) -> tuple:
     """
     Method to get cliente proveedor list.
 
@@ -233,7 +233,16 @@ async def get_cliente_proveedor_list(token: str) -> tuple:
         tuple: Cliente proveedor list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getClienteProveedorList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+    res = response.json()
+
+    data = ListResponse[HistoricoResponse](**res["data"])
+    
+    return data, res["token"]
 
 async def save_cliente_proveedor(data: dict, token: str) -> tuple:
     """

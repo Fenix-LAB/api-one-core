@@ -628,7 +628,7 @@ async def getPaisEstados(
 @inject
 async def getClienteProveedorList(
     requwst: ClienteProveedorHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -666,67 +666,71 @@ async def getClienteProveedorList(
     """
 
     try:
-        data = [
-            HistoricoResponse(
-                Status="Modificado",
-                Usuario="Usuario 1",
-                Fecha="2025-01-07T00:00:00",
-                Data=ClienteProveedorResponse(
-                    ID=1,
-                    CaseNumber=1,
-                    IsCompany=True,
-                    Name="Razón Social 1",
-                    Tipo="Cliente",
-                    ApellidoPaterno="Apellido Paterno 1",
-                    ApellidoMaterno="Apellido Materno 1",
-                    TipoMovimiento="Alta",
-                    Aviso="Aviso 1",
-                    Municipio="Municipio 1",
-                    EstadoCode="cod1",
-                    EstadoNombre="Estado 1",
-                    PaisCode="MX",
-                    FechaMovimiento="2025-01-07T00:00:00",
-                ),
-            ),
-            HistoricoResponse(
-                Status="Modificado",
-                Usuario="Usuario 2",
-                Fecha="2025-01-07T00:00:00",
-                Data=ClienteProveedorResponse(
-                    ID=2,
-                    CaseNumber=2,
-                    IsCompany=False,
-                    Name="Razón Social 2",
-                    Tipo="Proveedor",
-                    ApellidoPaterno="Apellido Paterno 2",
-                    ApellidoMaterno="Apellido Materno 2",
-                    TipoMovimiento="Baja",
-                    Aviso="Aviso 2",
-                    Municipio="Municipio 2",
-                    EstadoCode="cod2",
-                    EstadoNombre="Estado 2",
-                    PaisCode="MX",
-                    FechaMovimiento="2025-01-07T00:00:00",
-                ),
-            ),
-        ]
+        # data = [
+        #     HistoricoResponse(
+        #         Status="Modificado",
+        #         Usuario="Usuario 1",
+        #         Fecha="2025-01-07T00:00:00",
+        #         Data=ClienteProveedorResponse(
+        #             ID=1,
+        #             CaseNumber=1,
+        #             IsCompany=True,
+        #             Name="Razón Social 1",
+        #             Tipo="Cliente",
+        #             ApellidoPaterno="Apellido Paterno 1",
+        #             ApellidoMaterno="Apellido Materno 1",
+        #             TipoMovimiento="Alta",
+        #             Aviso="Aviso 1",
+        #             Municipio="Municipio 1",
+        #             EstadoCode="cod1",
+        #             EstadoNombre="Estado 1",
+        #             PaisCode="MX",
+        #             FechaMovimiento="2025-01-07T00:00:00",
+        #         ),
+        #     ),
+        #     HistoricoResponse(
+        #         Status="Modificado",
+        #         Usuario="Usuario 2",
+        #         Fecha="2025-01-07T00:00:00",
+        #         Data=ClienteProveedorResponse(
+        #             ID=2,
+        #             CaseNumber=2,
+        #             IsCompany=False,
+        #             Name="Razón Social 2",
+        #             Tipo="Proveedor",
+        #             ApellidoPaterno="Apellido Paterno 2",
+        #             ApellidoMaterno="Apellido Materno 2",
+        #             TipoMovimiento="Baja",
+        #             Aviso="Aviso 2",
+        #             Municipio="Municipio 2",
+        #             EstadoCode="cod2",
+        #             EstadoNombre="Estado 2",
+        #             PaisCode="MX",
+        #             FechaMovimiento="2025-01-07T00:00:00",
+        #         ),
+        #     ),
+        # ]
+
+        logger.info("ENDPOINT /getClienteProveedorList")
+
+        data, token = await fetch_cliente_proveedor_list(
+            token=user_data.token,
+        )
 
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(
-                Data=data
-            ),
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getClienteProveedorList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 
