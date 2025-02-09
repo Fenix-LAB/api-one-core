@@ -801,22 +801,6 @@ async def getProveedorNacionalList(
     logger.info(f"ENDPOINT /getProveedorNacionalList: {request}")
 
     try:
-        # data = [
-        #     ProveedorNacionalResponse(
-        #         ID=1,
-        #         Name="Proveedor 1",
-        #         IsActive=True,
-        #         PaisCode="MX",
-        #         EstadoCode="NL",
-        #     ),
-        #     ProveedorNacionalResponse(
-        #         ID=2,
-        #         Name="Proveedor 2",
-        #         IsActive=True,
-        #         PaisCode="MX",
-        #         EstadoCode="JAL",
-        #     ),
-        # ]
 
         data, token = await fetch_provedor_nacional_list(
             token=user_data.token,
@@ -843,7 +827,7 @@ async def getProveedorNacionalList(
 @inject
 async def saveProveedorNacional(
     request: ProveedorNacionalSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -875,19 +859,33 @@ async def saveProveedorNacional(
     logger.info(f"ENDPOINT /saveProveedorNacional: {request}")
 
     try:
+
+        response = await save_provedor_nacional(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code == 200:
+            return ApiResponse(
+                success=True,  # Corregido de "Status" a "Success"
+                message="OK",
+                data=True,
+                token=user_data.token,
+            )
+
         return ApiResponse(
-            Success=True,  # Corregido de "Status" a "Success"
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+            success=True,  # Corregido de "Status" a "Success"
+            message="OK",
+            data=True,
+            token=user_data.token,
         )
     except Exception as e:
         logger.error(f"ENDPOINT /saveProveedorNacional: {str(e)}")
         return ApiResponse(
-            Success=False,  # Corregido de "Status" a "Success"
-            Message="Se presentó un error",
-            Data=False,
-            Token=user_data.token,
+            success=False,  # Corregido de "Status" a "Success"
+            message="Se presentó un error",
+            data=False,
+            token=user_data.token,
         )
 
 
