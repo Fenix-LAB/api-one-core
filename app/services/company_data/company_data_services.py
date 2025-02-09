@@ -334,7 +334,17 @@ async def fetch_socio_accionista_list(token: str) -> tuple:
         tuple: Socio accionista list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getSocioAccionistaList"
+    body = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    res = response.json()
+
+    data = ListResponse[SocioAccionistaResponse](**res["data"])
+
+    return data, res["token"]
 
 async def save_socio_accionista(data: dict, token: str) -> tuple:
     """

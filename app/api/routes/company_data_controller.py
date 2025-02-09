@@ -914,11 +914,6 @@ async def getCaracterTipos(
     logger.info(f"ENDPOINT /getCaracterTipos: {request}")
 
     try:
-        # data = [
-        #     DatosEmpresaSocioAccionistaCaracterModel(Code="socio", Description="Socio"),
-        #     DatosEmpresaSocioAccionistaCaracterModel(Code="accionista", Description="Accionista"),
-        #     DatosEmpresaSocioAccionistaCaracterModel(Code="mconsejo", Description="Miembro del consejo"),
-        # ]
 
         data, token = await fetch_caracter_tipos(
             token=user_data.token,
@@ -945,7 +940,7 @@ async def getCaracterTipos(
 @inject
 async def getSocioAccionistaList(
     request: SocioAccionistaHistoricoRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -980,67 +975,68 @@ async def getSocioAccionistaList(
 
     logger.info(f"ENDPOINT /getSocioAccionistaList: {request}")
 
-    data = [
-        HistoricoResponse(
-            Status="Modificado",
-            Usuario="Usuario 1",
-            Fecha="2024-01-01T00:00:00",
-            Data=SocioAccionistaResponse(
-                ID=1,
-                CaseNumber=1,
-                RFC="RFC 1",
-                CaracterCode="socio",
-                CaracterDescripcion="Socio",
-                TipoMovimiento="Agregar",
-                EscrituraPublica=11,
-                FechaEscritura="2024-01-01T00:00:00",
-                IsCompany=True,
-                IsObligadoTributar=False,
-                Nombre="Nombre 1",
-                NombreEmpresa="Empresa 1",
-            ),
-        ),
-        HistoricoResponse(
-            Status="Modificado",
-            Usuario="Usuario 2",
-            Fecha="2024-01-01T00:00:00",
-            Data=SocioAccionistaResponse(
-                ID=2,
-                CaseNumber=3,
-                RFC="RFC 3",
-                CaracterCode="accionista",
-                CaracterDescripcion="Accionista",
-                TipoMovimiento="Ratificar",
-                EscrituraPublica=110,
-                FechaEscritura="2024-01-01T00:00:00",
-                IsCompany=False,
-                IsObligadoTributar=True,
-                Nombre="Nombre 3",
-                NombreEmpresa="Empresa 3",
-            ),
-        ),
-    ]
+    # data = [
+    #     HistoricoResponse(
+    #         Status="Modificado",
+    #         Usuario="Usuario 1",
+    #         Fecha="2024-01-01T00:00:00",
+    #         Data=SocioAccionistaResponse(
+    #             ID=1,
+    #             CaseNumber=1,
+    #             RFC="RFC 1",
+    #             CaracterCode="socio",
+    #             CaracterDescripcion="Socio",
+    #             TipoMovimiento="Agregar",
+    #             EscrituraPublica=11,
+    #             FechaEscritura="2024-01-01T00:00:00",
+    #             IsCompany=True,
+    #             IsObligadoTributar=False,
+    #             Nombre="Nombre 1",
+    #             NombreEmpresa="Empresa 1",
+    #         ),
+    #     ),
+    #     HistoricoResponse(
+    #         Status="Modificado",
+    #         Usuario="Usuario 2",
+    #         Fecha="2024-01-01T00:00:00",
+    #         Data=SocioAccionistaResponse(
+    #             ID=2,
+    #             CaseNumber=3,
+    #             RFC="RFC 3",
+    #             CaracterCode="accionista",
+    #             CaracterDescripcion="Accionista",
+    #             TipoMovimiento="Ratificar",
+    #             EscrituraPublica=110,
+    #             FechaEscritura="2024-01-01T00:00:00",
+    #             IsCompany=False,
+    #             IsObligadoTributar=True,
+    #             Nombre="Nombre 3",
+    #             NombreEmpresa="Empresa 3",
+    #         ),
+    #     ),
+    # ]
+
+
 
     try:
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(
-                Data=data,
-                TotalRecords=len(data),
-                CurrentPage=1,
-                PageSize=len(data),
-                TotalPages=1,
-            ),
-            Token=user_data.token,
+        data, token = await fetch_socio_accionista_list(
+            token=user_data.token,
         )
+
+        return ApiResponse(
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
+        )
+    
     except Exception as e:
         logger.error(f"ENDPOINT /getSocioAccionistaList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 
