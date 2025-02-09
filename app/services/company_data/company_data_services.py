@@ -12,6 +12,15 @@ from app.schemas.company_data.response import (
     LegalUsoResponse,
     EnlaceOperativoResponse,
 )
+from app.schemas.models import (
+    HallazgoOptionModel,
+    AreaRolModel,
+    DatosEmpresaSocioAccionistaCaracterModel,
+    PaisModel,
+    PaisEstadoModel,
+    DatosEmpresaLegalUsoModel,
+
+)
 from app.schemas.generic_list import ListResponse
 
 async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
@@ -86,7 +95,6 @@ SS
 
     url = f"{config.CIVA_API_URL}/DatosEmpresa/saveRazonSocial"
     headers = {"Authorization": f"Bearer {token}"}
-    print(f'REQUEST: {request_dict}')
 
     response = requests.post(url, json=request_dict, headers=headers)
     response.raise_for_status()
@@ -104,7 +112,21 @@ async def fetch_hallazgos_list(code_section: str, token: str) -> tuple:
         tuple: Hallazgos list.
     """
 
-    pass
+    url = f"{config.CIVA_API_URL}/DatosEmpresa/getHallazgosList"
+    body = {
+        "codeSection": code_section.value
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url, json=body, headers=headers)
+    response.raise_for_status()
+
+    res = response.json()
+
+    list_response = ListResponse[HallazgoOptionModel](
+        **res["data"]
+    )
+
+    return list_response , res["token"]
 
 async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
     """

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 class HallazgoOptionModel(BaseModel):
-    ID: int = Field(..., description="ID")
-    Code: str = Field(..., description="Code")
-    Nombre: str = Field(..., description="Nombre")
+    id: UUID = Field(..., description="Id")
+    code: str = Field(..., description="Code")
+    nombre: str = Field(..., description="Nombre")
