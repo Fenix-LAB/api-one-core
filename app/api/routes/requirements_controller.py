@@ -229,10 +229,9 @@ async def getEvidenciaID(
 @inject
 async def getHallazgosList(
     request: RequerimientosHallazgosListRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     ## DESCRIPTION
@@ -251,26 +250,31 @@ async def getHallazgosList(
     logger.info(f"ENDPOINT /getHallazgosList: {request}")
 
     try:
-        data = [
-            HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
-            HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
-            HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
-            HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
-        ]
+        # data = [
+        #     HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
+        #     HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
+        #     HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
+        #     HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
+        # ]
+
+        data, token = await fetch_hallazgos_list(
+            code_section=request.codeSection,
+            token=user_data.token,
+        )
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=data,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getHallazgosList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

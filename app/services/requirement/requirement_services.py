@@ -10,6 +10,7 @@ from app.schemas.requirements.response import (
     SolicitudesSectionRequerimientosOptionResponse,
     SolicitudResponse,
 )
+from app.schemas.models.hallazgo_option import HallazgoOptionModel
 
 async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
     """
@@ -100,17 +101,40 @@ async def fetch_evidencia_id(id: str, code_section: int, token: str):
     if response_data.get("success") == False:
         logger.error("Invalid response data structure")
         return None, None
-    
-    print("====================================================")
-    
-    print(response_data)
 
     response = RequerimientosEvidenciaResponse(**response_data["data"])
 
     return response, response_data["token"]
 
 async def fetch_hallazgos_list(code_section: int, token: str):
-    pass
+    """
+    Fetch hallazgos list
+    
+    Args:
+        code_section (int): Code section
+        token (str): Token
+        
+    Returns:
+        tuple: (ListResponse, token)
+
+        """
+    
+    url = f"{config.CIVA_API_URL}/Requerimientos/getHallazgosList"
+    headers = {"Authorization": f"Bearer {token}"}
+    body = {
+        "code_section": code_section.value
+    }
+
+    response = requests.post(url, headers=headers, json=body)
+    response_data = response.json()
+
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
+    list_response = ListResponse[HallazgoOptionModel](**response_data["data"])
+
+    return list_response, response_data["token"]
 
 async def save_evidencia(data: dict, token: str):
     pass
