@@ -414,13 +414,13 @@ async def saveHallazgo(
 @inject
 async def getSolicitudesSectionList(
     request: SectionRequerimientosListRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
 ):
     """
     ## DESCRIPTION
-    ### Endpoint to save a finding.
+    ### Endpoint to get a list of solicitude sections.
 
     ## REQUEST
     - DateIni
@@ -437,30 +437,27 @@ async def getSolicitudesSectionList(
     logger.info(f"ENDPOINT /getSolicitudesSectionList: {request}")
 
     try:
-        data = [
-            SolicitudesSectionRequerimientosOptionResponse(Code="Personal", Cantidad=5, Total=10, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Domicilios", Cantidad=6, Total=12, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="SociosAccionistas", Cantidad=3, Total=15, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Aduanero", Cantidad=7, Total=10, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="ABM", Cantidad=2, Total=8, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Fiscal", Cantidad=9, Total=20, CantidadSolicitudes=5),
-            SolicitudesSectionRequerimientosOptionResponse(Code="Societario", Cantidad=4, Total=4, CantidadSolicitudes=5),
-        ]
+
+        data, token = await fetch_solicitudes_section_list(
+            date_ini=request.dateIni,
+            date_end=request.dateEnd,
+            token=user_data.token,
+        )
 
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(Data=data),
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=data,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudesSectionList: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

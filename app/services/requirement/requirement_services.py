@@ -188,7 +188,32 @@ async def save_hallazgo(data: dict, token: str):
     return response_data
 
 async def fetch_solicitudes_section_list(date_ini: str, date_end: str, token: str):
-    pass
+    """
+    
+    Fetches the list of solicitude sections between the given dates.
+
+    Args:
+        date_ini (str): Start date.
+        date_end (str): End date.
+        token (str): Authentication token.
+
+    Returns:
+        ListResponse: List of solicitude sections
+    """
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/getSolicitudesSectionList"
+    headers = {"Authorization": f"Bearer {token}"}
+    body = {
+        "date_ini": date_ini.isoformat(),
+        "date_end": date_end.isoformat()
+    }
+
+    response = requests.post(url, headers=headers, json=body)
+    response_data = response.json()
+
+    list_response = ListResponse[SolicitudesSectionRequerimientosOptionResponse](**response_data["data"])
+
+    return list_response, response_data["token"]
 
 async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: str):
     pass
