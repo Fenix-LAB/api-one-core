@@ -1,23 +1,12 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from dependency_injector.wiring import inject
 
 from app.middleware.authentication import BaseData
 
-from app.database.session import get_db_session
-
 from app.schemas.generic_response import ApiResponse
 from app.schemas.generic_list import ListResponse
-
-from app.schemas.requirements.response import (
-    SectionOptionRequerimientosResponse,
-    RequerimientoElementResponse,
-    RequerimientosEvidenciaResponse,
-    SolicitudesSectionRequerimientosOptionResponse,
-    SolicitudResponse,
-)
 
 from app.schemas.requirements.request import (
     SectionRequerimientosListRequest,
@@ -31,13 +20,6 @@ from app.schemas.requirements.request import (
 )
 
 from app.services.requirement.requirement_services import *
-
-from app.schemas.models.area_rol import AreaRolModel
-from app.schemas.models.responsable import ResponsableModel
-from app.schemas.models.file_info import FileInfoModel  
-from app.schemas.models.hallazgo_option import HallazgoOptionModel
-
-from app.services.get_requirement_obligation import get_requerimiento_obligaciones
 from app.services.role_checker import RoleChecker, get_current_user
 
 from config.logger_config import logger
@@ -557,7 +539,6 @@ async def getSolicitudID(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     ## DESCRIPTION
