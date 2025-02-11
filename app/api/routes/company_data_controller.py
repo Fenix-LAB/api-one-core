@@ -1,13 +1,9 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from dependency_injector.wiring import inject
-from datetime import datetime
 
 from app.middleware.authentication import BaseData
-
-from app.database.session import get_db_session
 
 from app.schemas.generic_response import ApiResponse
 
