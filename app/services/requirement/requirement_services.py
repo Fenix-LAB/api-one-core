@@ -136,11 +136,56 @@ async def fetch_hallazgos_list(code_section: int, token: str):
 
     return list_response, response_data["token"]
 
-async def save_evidencia(data: dict, token: str):
-    pass
+async def save_evidencia(data, token: str):
+    """
+    Save evidencia
+    
+    Args:
+        data (dict): Data
+        token (str): Token
+
+    Returns:
+        tuple: (bool, token)
+
+    """
+
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/saveEvidencia"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, headers=headers, json=request_dict)
+    response_data = response.raise_for_status()
+
+    return response_data
+
 
 async def save_hallazgo(data: dict, token: str):
-    pass
+    """
+    Save hallazgo
+    
+    Args:
+        data (dict): Data
+        token (str): Token
+
+    Returns:
+        tuple: (bool, token)
+
+    """
+
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/saveHallazgo"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, headers=headers, json=request_dict)
+    response_data = response.raise_for_status()
+
+    print("====================================")
+    print(response_data)
+    print("====================================")
+
+    return response_data
 
 async def fetch_solicitudes_section_list(date_ini: str, date_end: str, token: str):
     pass

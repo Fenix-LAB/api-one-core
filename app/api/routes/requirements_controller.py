@@ -156,7 +156,7 @@ async def getRequerimientosList(
         )
 
 
-@app.post("getEvidenciaID")
+@app.post("/getEvidenciaID")
 @inject
 async def getEvidenciaID(
     request: RequerimientosEvidenciaIDRequest,
@@ -225,7 +225,7 @@ async def getEvidenciaID(
         )
 
 
-@app.post("getHallazgosList")
+@app.post("/getHallazgosList")
 @inject
 async def getHallazgosList(
     request: RequerimientosHallazgosListRequest,
@@ -250,17 +250,20 @@ async def getHallazgosList(
     logger.info(f"ENDPOINT /getHallazgosList: {request}")
 
     try:
-        # data = [
-        #     HallazgoOptionModel(ID=1, Code="Code 1", Nombre="Hallazgo 01"),
-        #     HallazgoOptionModel(ID=2, Code="Code 2", Nombre="Hallazgo 02"),
-        #     HallazgoOptionModel(ID=3, Code="Code 3", Nombre="Hallazgo 03"),
-        #     HallazgoOptionModel(ID=4, Code="Code 4", Nombre="Hallazgo 04"),
-        # ]
 
         data, token = await fetch_hallazgos_list(
             code_section=request.codeSection,
             token=user_data.token,
         )
+
+        if data is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=None,
+            )
+        
         return ApiResponse(
             success=True,
             message="OK",
@@ -278,18 +281,18 @@ async def getHallazgosList(
         )
 
 
-@app.post("saveEvidencia")
+@app.post("/saveEvidencia")
 @inject
 async def saveEvidencia(
     request: RequerimientosEvidenciaSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
+    Me dio error
     ## DESCRIPTION
-    ### Endpoint to save ecidence.
+    ### Endpoint to save evidence.
 
     ## REQUEST
     - ID
@@ -311,34 +314,47 @@ async def saveEvidencia(
     logger.info(f"ENDPOINT /saveEvidencia: {request}")
 
     try:
-        # Simulate a successful operation
+
+        response = await save_evidencia(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code != 200:
+            return ApiResponse(
+                success=False,
+                message="Bad Request",
+                data=False,
+                token=None,
+            )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=True,
+            token=None,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /saveEvidencia: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=False,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=False,
+            token=None,
         )
 
 
-@app.post("saveHallazgo")
+@app.post("/saveHallazgo")
 @inject
 async def saveHallazgo(
     request: HallazgoSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
+    Me dio error
     ## DESCRIPTION
     ### Endpoint to save a finding.
 
@@ -363,32 +379,44 @@ async def saveHallazgo(
     logger.info(f"ENDPOINT /saveHallazgo: {request}")
 
     try:
-        # Simulate a successful operation
+
+        response = await save_hallazgo(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code != 200:
+            return ApiResponse(
+                success=False,
+                message="Bad Request",
+                data=False,
+                token=user_data.token,
+            )
+        
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=True,
+            token=None,
         )
     
     except Exception as e:
         logger.error(f"ENDPOINT /saveHallazgo: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=False,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=False,
+            token=None,
         )
 
 
-@app.post("getSolicitudesSectionList")
+@app.post("/getSolicitudesSectionList")
 @inject
 async def getSolicitudesSectionList(
     request: SectionRequerimientosListRequest,
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     ## DESCRIPTION
@@ -436,7 +464,7 @@ async def getSolicitudesSectionList(
         )
 
 
-@app.post("getSolicitudesList")
+@app.post("/getSolicitudesList")
 @inject
 async def getSolicitudesList(
     request: RequerimientosListRequest,
@@ -492,7 +520,7 @@ async def getSolicitudesList(
 
 
 
-@app.post("getSolicitudID")
+@app.post("/getSolicitudID")
 @inject
 async def getSolicitudID(
     request: SolicitudIDRequest,
@@ -558,7 +586,7 @@ async def getSolicitudID(
         )
 
 
-@app.post("saveSolicitud")
+@app.post("/saveSolicitud")
 @inject
 async def saveSolicitud(
     request: SolicitudSaveRequest,
@@ -607,7 +635,7 @@ async def saveSolicitud(
         )
 
 
-@app.post("getSolicitudID")
+@app.post("/getSolicitudID")
 @inject
 async def getSolicitudID(
     request: SolicitudIDRequest,
