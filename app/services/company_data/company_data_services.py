@@ -22,6 +22,7 @@ from app.schemas.models import (
 
 )
 from app.schemas.generic_list import ListResponse
+from config.logger_config import logger
 
 async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
     """
@@ -46,11 +47,15 @@ async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
 
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     list_response = ListResponse[SectionOptionDatosEmpresaResponse](
         **res["data"]
     )
 
-    return list_response , res["token"]
+    return list_response, res["token"]
 
 async def fetch_razon_social_historico_list(token: str) -> tuple:
     """
@@ -73,16 +78,20 @@ async def fetch_razon_social_historico_list(token: str) -> tuple:
 
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     list_response = ListResponse[HistoricoResponse](
         **res["data"]
     )
 
-    return list_response , res["token"]
+    return list_response, res["token"]
 
 async def save_razon_social(request: dict, token: str) -> tuple:
     """
     Method to fetch razon social.
-SS
+
     Args:
         code_section (str): Section code.
 
@@ -122,11 +131,15 @@ async def fetch_hallazgos_list(code_section: str, token: str) -> tuple:
 
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     list_response = ListResponse[HallazgoOptionModel](
         **res["data"]
     )
 
-    return list_response , res["token"]
+    return list_response, res["token"]
 
 async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
     """
@@ -156,7 +169,7 @@ async def fetch_evidencia_id(id: str, code_section: str, token: str) -> tuple:
     else:
         datos_empresa = None 
 
-    return datos_empresa , response["token"]
+    return datos_empresa, response["token"]
 
 async def save_evidencia(data, token: str) -> tuple:
     """
@@ -195,6 +208,10 @@ async def fetch_paises(token: str) -> tuple:
     response.raise_for_status()
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     data = [PaisModel(**item) for item in res["data"]]
     
     return data, res["token"]
@@ -221,6 +238,10 @@ async def fetch_paises_estados(iid_pais: str, token: str) -> tuple:
 
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     data = [PaisEstadoModel(**item) for item in res["data"]]
 
     return data, res["token"]
@@ -239,6 +260,10 @@ async def fetch_cliente_proveedor_list(token: str) -> tuple:
     response = requests.post(url, json=body, headers=headers)
     response.raise_for_status()
     res = response.json()
+
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
 
     data = ListResponse[HistoricoResponse](**res["data"])
     
@@ -281,6 +306,10 @@ async def fetch_provedor_nacional_list(token: str) -> tuple:
     response = requests.post(url, json=body, headers=headers)
     response.raise_for_status()
     res = response.json()
+
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
     
     data = ListResponse[ProveedorNacionalResponse](**res["data"])
     
@@ -322,6 +351,10 @@ async def fetch_caracter_tipos(token: str) -> tuple:
     response.raise_for_status()
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     data = [DatosEmpresaSocioAccionistaCaracterModel(**item) for item in res["data"]]
     
     return data, res["token"]
@@ -341,6 +374,10 @@ async def fetch_socio_accionista_list(token: str) -> tuple:
     response.raise_for_status()
 
     res = response.json()
+
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
 
     data = ListResponse[SocioAccionistaResponse](**res["data"])
 
@@ -383,6 +420,10 @@ async def fetch_legal_uso_list(token: str) -> tuple:
 
     res = response.json()
 
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     data = ListResponse[LegalUsoResponse](**res["data"])
 
     return data, res["token"]
@@ -424,6 +465,10 @@ async def fetch_enlaces_operativos_list(token: str) -> tuple:
     response.raise_for_status()
 
     res = response.json()
+
+    if res.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
 
     data = ListResponse[HistoricoResponse](**res["data"])
 

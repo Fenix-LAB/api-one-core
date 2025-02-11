@@ -79,6 +79,15 @@ async def getSectionList(
             token=user_data.token,
         )
 
+        if response is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -142,6 +151,15 @@ async def getRazonSocialHistoricoList(
         data, token = await fetch_razon_social_historico_list(
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
@@ -259,6 +277,15 @@ async def getHallazgosList(
             token=user_data.token,
         )
 
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -328,6 +355,15 @@ async def getEvidenciaID(
             code_section=request.codeSection,
             token=user_data.token,
         )
+
+        if response is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
         
         return ApiResponse(
             success=True,
@@ -441,6 +477,14 @@ async def getPaises(
             token=user_data.token,
         )
 
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
@@ -490,6 +534,15 @@ async def getPaisEstados(
             iid_pais=request.idPais,
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
@@ -555,6 +608,15 @@ async def getClienteProveedorList(
         data, token = await fetch_cliente_proveedor_list(
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
@@ -687,6 +749,15 @@ async def getProveedorNacionalList(
             token=user_data.token,
         )
 
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
+
         return ApiResponse(
             success=True,
             message="Fetched national providers successfully",
@@ -798,6 +869,15 @@ async def getCaracterTipos(
             token=user_data.token,
         )
 
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -857,6 +937,15 @@ async def getSocioAccionistaList(
         data, token = await fetch_socio_accionista_list(
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
@@ -1011,6 +1100,15 @@ async def getLegalUsoList(
         data, token = await fetch_legal_uso_list(
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
     
         return ApiResponse(
             success=True,
@@ -1151,6 +1249,15 @@ async def getEnlacesOperativosList(
         data, token = await fetch_enlaces_operativos_list(
             token=user_data.token,
         )
+
+        if data is None:
+            logger.error("Invalid response data structure")
+            return ApiResponse(
+                success=False,
+                message="Invalid response data structure",
+                data=None,
+                token=None,
+            )
 
         return ApiResponse(
             success=True,
