@@ -36,6 +36,10 @@ async def fetch_section_list(date_ini: str, date_end: str, token: str) -> tuple:
     response = requests.post(url, headers=headers, json=body)
     response_data = response.json()
 
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     list_response = ListResponse[SectionOptionRequerimientosResponse](**response_data["data"])
 
     return list_response, response_data["token"]
@@ -157,6 +161,10 @@ async def save_evidencia(data, token: str):
     response = requests.post(url, headers=headers, json=request_dict)
     response_data = response.raise_for_status()
 
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     return response_data
 
 
@@ -211,6 +219,10 @@ async def fetch_solicitudes_section_list(date_ini: str, date_end: str, token: st
     response = requests.post(url, headers=headers, json=body)
     response_data = response.json()
 
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
+
     list_response = ListResponse[SolicitudesSectionRequerimientosOptionResponse](**response_data["data"])
 
     return list_response, response_data["token"]
@@ -239,6 +251,10 @@ async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: s
 
     response = requests.post(url, headers=headers, json=body)
     response_data = response.json()
+
+    if response_data.get("success") == False:
+        logger.error("Invalid response data structure")
+        return None, None
 
     # list_response = ListResponse[RequerimientoElementResponse](**response_data["data"])
 

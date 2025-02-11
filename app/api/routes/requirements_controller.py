@@ -83,6 +83,14 @@ async def getSectionList(
             token=user_data.token,
         )
 
+        if data is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=token,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -138,6 +146,14 @@ async def getRequerimientosList(
             date_end=request.dateEnd,
             token=user_data.token,
         )
+
+        if data is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=token,
+            )
 
         return ApiResponse(
             success=True,
@@ -444,6 +460,14 @@ async def getSolicitudesSectionList(
             token=user_data.token,
         )
 
+        if data is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=token,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -468,7 +492,6 @@ async def getSolicitudesList(
     _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
     Me dio error (schema no coincide)
@@ -494,12 +517,6 @@ async def getSolicitudesList(
     logger.info(f"ENDPOINT /getSolicitudesList: {request}")
 
     try:
-        # data = [
-        #     RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
-        #     RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
-        #     RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
-        #     RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
-        # ]
 
         data, token = await fetch_solicitud_list(
             code=request.code,
@@ -507,6 +524,15 @@ async def getSolicitudesList(
             date_end=request.dateEnd,
             token=user_data.token,
         )
+
+        if data is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=token,
+            )
+
         return ApiResponse(
             success=True,
             message="OK",
@@ -556,22 +582,6 @@ async def getSolicitudID(
     logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
     try:
-        # solicitud = SolicitudResponse(
-        #     ID=1,
-        #     Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-        #     CaseNumber=123,
-        #     Cliente="Cliente 1",
-        #     Status="RevisionPendiente",
-        #     FechaRevision="2024-01-01T00:00:00",
-        #     AreaRols=[
-        #         AreaRolModel(Code="Comex"),
-        #         AreaRolModel(Code="Legal"),
-        #     ],
-        #     Responsables=[
-        #         ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-        #         ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
-        #     ],
-        # )
 
         solicitud, token = await fetch_solicitud_id(
             id=request.id,
