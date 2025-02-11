@@ -216,7 +216,33 @@ async def fetch_solicitudes_section_list(date_ini: str, date_end: str, token: st
     return list_response, response_data["token"]
 
 async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: str):
-    pass
+    """
+    Fetches the list of solicitudes between the given dates.
+
+    Args:
+        code (int): Section code.
+        date_ini (str): Start date.
+        date_end (str): End date.
+        token (str): Authentication token.
+
+    Returns:
+        ListResponse: List of solicitudes.
+    """
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/getSolicitudesList"
+    headers = {"Authorization": f"Bearer {token}"}
+    body = {
+        "code": code,
+        "dateIni": date_ini.isoformat(),
+        "dateEnd": date_end.isoformat()
+    }
+
+    response = requests.post(url, headers=headers, json=body)
+    response_data = response.json()
+
+    # list_response = ListResponse[RequerimientoElementResponse](**response_data["data"])
+
+    return list_response, response_data["token"]
 
 async def fetch_solicitud_id(id: str, code_section: int, token: str):
     pass

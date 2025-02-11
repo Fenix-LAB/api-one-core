@@ -471,6 +471,7 @@ async def getSolicitudesList(
     db_session: AsyncSession = Depends(get_db_session),
 ):
     """
+    Me dio error (schema no coincide)
     ## DESCRIPTION
     ### Endpoint to get a list of requests.
 
@@ -493,28 +494,34 @@ async def getSolicitudesList(
     logger.info(f"ENDPOINT /getSolicitudesList: {request}")
 
     try:
-        data = [
-            RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
-            RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
-            RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
-            RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
-        ]
+        # data = [
+        #     RequerimientoElementResponse(ID=1, Verificacion="NuevaSolicitud", Usuario="Vombergar", Elementos="Capturas de pantalla del RFC activo", Vencimiento="30 días"),
+        #     RequerimientoElementResponse(ID=2, Verificacion="NuevaSolicitud", Usuario="Iker Muniain", Elementos="Manifestar si existió alta, baja...", Vencimiento="8 días"),
+        #     RequerimientoElementResponse(ID=3, Verificacion="NuevaSolicitud", Usuario="Romagnoli", Elementos="Manifestar si existió alta, baja...", Vencimiento="30 días"),
+        #     RequerimientoElementResponse(ID=4, Verificacion="NuevaSolicitud", Usuario="Romaña", Elementos="Reporte de importaciones...", Vencimiento="80 días"),
+        # ]
+
+        data, token = await fetch_solicitud_list(
+            code=request.code,
+            date_ini=request.dateIni,
+            date_end=request.dateEnd,
+            token=user_data.token,
+        )
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=ListResponse(Data=data),
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=ListResponse(data=data),
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudesList: {e}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
-
 
 
 @app.post("/getSolicitudID")
