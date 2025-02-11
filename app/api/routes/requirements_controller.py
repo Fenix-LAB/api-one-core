@@ -608,12 +608,12 @@ async def getSolicitudID(
 @inject
 async def saveSolicitud(
     request: SolicitudSaveRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
 ):
     """
+    Me dio error no response
     ## DESCRIPTION
     ### Endpoint to save a request.
 
@@ -635,85 +635,33 @@ async def saveSolicitud(
     logger.info(f"ENDPOINT /saveSolicitud: {request}")
 
     try:
-        # Simulate a successful operation
+        
+        response = await save_solicitud(
+            data=request,
+            token=user_data.token,
+        )
+
+        if response.status_code != 200:
+            return ApiResponse(
+                success=False,
+                message="Bad Request",
+                data=False,
+                token=None,
+            )   
+        
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=True,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=True,
+            token=None,
         )
     
     except Exception as e:
         logger.error(f"ENDPOINT /saveSolicitud: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=False,
-            Token=user_data.token,
-        )
-
-
-@app.post("/getSolicitudID")
-@inject
-async def getSolicitudID(
-    request: SolicitudIDRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    user_data: BaseData = Depends(get_current_user),
-    db_session: AsyncSession = Depends(get_db_session),
-):
-    """
-    ## DESCRIPTION
-    ### Endpoint to get a request by id.
-
-    ## REQUEST
-    - ID
-    - CodeSection
-
-    ## RESPONSE
-    - ID
-    - Elemento
-    - CaseNumber
-    - Cliente
-    - Status
-    - FechaRevision
-    - AreaRols
-    - Responsables
-
-    """
-
-    logger.info(f"ENDPOINT /getSolicitudID: {request}")
-
-    try:
-        solicitud = SolicitudResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=1,
-            Status="RevisionPendiente",
-            FechaRevision="2024-01-01",
-            Cliente="Cliente 1",
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal")
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas")
-            ]
-        )
-
-        return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=solicitud,
-            Token=user_data.token,
-        )
-
-    except Exception as e:
-        logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
-        return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=False,
+            token=None,
         )

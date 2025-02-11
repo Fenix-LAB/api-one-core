@@ -275,4 +275,23 @@ async def fetch_solicitud_id(id: str, code_section: int, token: str):
     return response, response_data["token"]
 
 async def save_solicitud(data: dict, token: str):
-    pass
+    """
+    Saves the solicitude data.
+
+    Args:
+        data (dict): Solicitude data.
+        token (str): Authentication token.
+
+    Returns:
+        bool: True if the data was saved successfully.
+    """
+
+    request_dict = data.model_dump(mode="json")
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/saveSolicitud"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = requests.post(url, headers=headers, json=request_dict)
+    response_data = response.raise_for_status()
+
+    return response_data
