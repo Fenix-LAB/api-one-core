@@ -465,7 +465,7 @@ async def getSolicitudesSectionList(
 @inject
 async def getSolicitudesList(
     request: RequerimientosListRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -528,7 +528,7 @@ async def getSolicitudesList(
 @inject
 async def getSolicitudID(
     request: SolicitudIDRequest,
-    _: RoleChecker = Depends(RoleChecker(allowed_roles=["admin"])),
+    _: RoleChecker = Depends(RoleChecker(allowed_roles=["Admin"])),
     credentials: HTTPAuthorizationCredentials = Depends(security),
     user_data: BaseData = Depends(get_current_user),
     db_session: AsyncSession = Depends(get_db_session),
@@ -556,37 +556,51 @@ async def getSolicitudID(
     logger.info(f"ENDPOINT /getSolicitudID: {request}")
 
     try:
-        solicitud = SolicitudResponse(
-            ID=1,
-            Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
-            CaseNumber=123,
-            Cliente="Cliente 1",
-            Status="RevisionPendiente",
-            FechaRevision="2024-01-01T00:00:00",
-            AreaRols=[
-                AreaRolModel(Code="Comex"),
-                AreaRolModel(Code="Legal"),
-            ],
-            Responsables=[
-                ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
-                ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
-            ],
+        # solicitud = SolicitudResponse(
+        #     ID=1,
+        #     Elemento="Elemento 1 Captura de pantalla de Informes de descargos obtenidos del portal de Anexo 30 (SCCCYG) (última modificación en su caso)",
+        #     CaseNumber=123,
+        #     Cliente="Cliente 1",
+        #     Status="RevisionPendiente",
+        #     FechaRevision="2024-01-01T00:00:00",
+        #     AreaRols=[
+        #         AreaRolModel(Code="Comex"),
+        #         AreaRolModel(Code="Legal"),
+        #     ],
+        #     Responsables=[
+        #         ResponsableModel(ID=1, Nombre="Walter Mazzantti", AreaCode="Fiscal"),
+        #         ResponsableModel(ID=2, Nombre="Iker Muniain", AreaCode="Finanzas"),
+        #     ],
+        # )
+
+        solicitud, token = await fetch_solicitud_id(
+            id=request.id,
+            code_section=request.codeSection,
+            token=user_data.token,
         )
 
+        if solicitud is None:
+            return ApiResponse(
+                success=False,
+                message="No data found",
+                data=None,
+                token=token,
+            )
+
         return ApiResponse(
-            Success=True,
-            Message="OK",
-            Data=solicitud,
-            Token=user_data.token,
+            success=True,
+            message="OK",
+            data=solicitud,
+            token=token,
         )
 
     except Exception as e:
         logger.error(f"ENDPOINT /getSolicitudID: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Internal Server Error",
-            Data=None,
-            Token=user_data.token,
+            success=False,
+            message="Internal Server Error",
+            data=None,
+            token=None,
         )
 
 

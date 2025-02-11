@@ -245,7 +245,34 @@ async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: s
     return list_response, response_data["token"]
 
 async def fetch_solicitud_id(id: str, code_section: int, token: str):
-    pass
+    """
+    Fetches the solicitude with the given id.
+
+    Args:
+        id (str): Solicitude id.
+        code_section (int): Section code.
+        token (str): Authentication token.
+
+    Returns:
+        SolicitudResponse: Solicitude data.
+    """
+
+    url = f"{config.CIVA_API_URL}/Requerimientos/getSolicitudId"
+    headers = {"Authorization": f"Bearer {token}"}
+    body = {
+        "id": str(id),
+        "code_section": code_section.value
+    }
+
+    response = requests.post(url, headers=headers, json=body)
+    response_data = response.json()
+
+    if response_data["data"] is None:
+        return None, None
+
+    response = SolicitudResponse(**response_data["data"])
+
+    return response, response_data["token"]
 
 async def save_solicitud(data: dict, token: str):
     pass
