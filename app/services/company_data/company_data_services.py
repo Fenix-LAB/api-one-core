@@ -99,8 +99,7 @@ async def save_razon_social(request: dict, token: str) -> tuple:
         tuple: Razon social.
     """
 
-    request_dict = request.model_dump()
-    request_dict = json.loads(json.dumps(request_dict, default=str))
+    request_dict = request.model_dump(mode="json")
 
     url = f"{config.CIVA_API_URL}/DatosEmpresa/saveRazonSocial"
     headers = {"Authorization": f"Bearer {token}"}
@@ -311,7 +310,7 @@ async def fetch_provedor_nacional_list(token: str) -> tuple:
         logger.error("Invalid response data structure")
         return None, None
     
-    data = ListResponse[ProveedorNacionalResponse](**res["data"])
+    data = ListResponse[HistoricoResponse](**res["data"])
     
     return data, res["token"]
 
@@ -378,8 +377,8 @@ async def fetch_socio_accionista_list(token: str) -> tuple:
     if res.get("success") == False:
         logger.error("Invalid response data structure")
         return None, None
-
-    data = ListResponse[SocioAccionistaResponse](**res["data"])
+    
+    data = ListResponse[HistoricoResponse](**res["data"])
 
     return data, res["token"]
 
@@ -424,7 +423,7 @@ async def fetch_legal_uso_list(token: str) -> tuple:
         logger.error("Invalid response data structure")
         return None, None
 
-    data = ListResponse[LegalUsoResponse](**res["data"])
+    data = ListResponse[HistoricoResponse](**res["data"])
 
     return data, res["token"]
 

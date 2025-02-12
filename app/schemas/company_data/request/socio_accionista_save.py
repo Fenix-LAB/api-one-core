@@ -1,17 +1,22 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 class SocioAccionistaSaveRequest(BaseModel):
-    ID: int = Field(..., description="ID")
-    IsCompany: bool = Field(..., description="Is company")
-    Nombre: str = Field(..., description="Nombre")
-    RFC: str = Field(..., description="RFC")
-    CaracterCode: str = Field(..., description="Caracter code")
-    IsObligadoTributar: bool = Field(..., description="Is obligado tributar")
-    NombreEmpresa: str = Field(..., description="Nombre empresa")
-    TipoMovimiento: Optional[str] = Field(None, description="Tipo movimiento")  # Assuming DatosEmpresaSocioAccionistaTipoMovimiento is a string
-    EscrituraPublica: Optional[int] = Field(None, description="Escritura publica")
-    FechaEscritura: Optional[datetime] = Field(None, description="Fecha escritura")
-    Fedatario: str = Field(..., description="Fedatario")
-    NumeroNotario: Optional[int] = Field(None, description="Numero notario")
+    id: UUID = Field(..., description="ID")
+    status: int = Field(..., description="Registro status")  # Assuming RegistroStatus is a string
+    isCompany: bool = Field(..., description="Is company")
+    nombre: str = Field(..., description="Nombre")
+    rfc: str = Field(..., description="RFC")
+    caracterCode: str = Field(..., description="Caracter code")
+    isObligadoTributar: bool = Field(..., description="Is obligado tributar")
+    nombreEmpresa: str = Field(..., description="Nombre empresa")
+    tipoMovimiento: Optional[int] = Field(None, description="Tipo movimiento")  # Assuming DatosEmpresaSocioAccionistaTipoMovimiento is a string
+    escrituraPublica: Optional[str] = Field(None, description="Escritura publica")
+    fechaEscritura: Optional[datetime] = Field(None, description="Fecha escritura")
+    fedatario: str = Field(..., description="Fedatario")
+    numeroNotario: Optional[str] = Field(None, description="Numero notario")
+    efectoEscrituraPublica: int = Field(..., description="Efecto escritura publica")
+    aviso: str = Field(..., description="Aviso")
+    fechaAviso: Optional[datetime] = Field(None, description="Fecha aviso")

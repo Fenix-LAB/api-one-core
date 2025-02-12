@@ -1024,10 +1024,10 @@ async def saveSocioAccionista(
     except Exception as e:
         logger.error(f"ENDPOINT /saveSocioAccionista: {str(e)}")
         return ApiResponse(
-            Success=False,
-            Message="Se presentó un error",
-            Data=False,
-            Token=user_data.token,
+            success=False,
+            message="Se presentó un error",
+            data=False,
+            token=None,
         )
 
 

@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from app.schemas.models.datos_empresa_legal_uso import DatosEmpresaLegalUsoModel
 
 class LegalUsoResponse(BaseModel):
-    ID: int = Field(..., description="ID")
-    CaseNumber: int = Field(..., description="Case number")
-    DomicilioAcreditacion: DatosEmpresaLegalUsoModel = Field(..., description="Domicilio acreditacion")
-    DomicilioNuevo: DatosEmpresaLegalUsoModel = Field(..., description="Domicilio nuevo")
+    id: int = Field(..., description="ID")
+    caseNumber: int = Field(..., description="Case number")
+    domicilioAcreditacion: DatosEmpresaLegalUsoModel = Field(..., description="Domicilio acreditacion")
+    domicilioNuevo: DatosEmpresaLegalUsoModel = Field(..., description="Domicilio nuevo")
