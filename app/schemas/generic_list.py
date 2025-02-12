@@ -9,4 +9,4 @@ class ListResponse(BaseModel, Generic[T]):
     pageSize: int
     totalPages: int
     totalRecords: int
-    data: List[T]
+    data: List[T] = []

@@ -288,7 +288,7 @@ async def saveEvidencia(
     user_data: BaseData = Depends(get_current_user),
 ):
     """
-    Me dio error
+    Me dio error bad request
     ## DESCRIPTION
     ### Endpoint to save evidence.
 
@@ -518,7 +518,7 @@ async def getSolicitudesList(
         return ApiResponse(
             success=True,
             message="OK",
-            data=ListResponse(data=data),
+            data=data,
             token=token,
         )
 

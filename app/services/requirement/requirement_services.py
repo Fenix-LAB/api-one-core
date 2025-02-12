@@ -244,7 +244,7 @@ async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: s
     url = f"{config.CIVA_API_URL}/Requerimientos/getSolicitudesList"
     headers = {"Authorization": f"Bearer {token}"}
     body = {
-        "code": code,
+        "code": code.value,
         "dateIni": date_ini.isoformat(),
         "dateEnd": date_end.isoformat()
     }
@@ -255,8 +255,11 @@ async def fetch_solicitud_list(code: int, date_ini: str, date_end: str, token: s
     if response_data.get("success") == False:
         logger.error("Invalid response data structure")
         return None, None
+    
+    print("====================================")
+    print(response_data)
 
-    # list_response = ListResponse[RequerimientoElementResponse](**response_data["data"])
+    list_response = ListResponse[RequerimientoElementResponse](**response_data["data"])
 
     return list_response, response_data["token"]
 
