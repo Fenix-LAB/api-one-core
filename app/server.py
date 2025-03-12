@@ -11,6 +11,8 @@ from app.database.session import engine
 from app.database.seeder import seed_database
 from app.database.procedures.stores_procedures import stored_prcedures_populate, drop_procedures
 
+from mangum import Mangum
+
 from app.middleware import (
     OneAuthBackend,
     AuthenticationMiddleware,
@@ -65,3 +67,11 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+handler = Mangum(app)
+@app.exception_handler(Exception)
+async def exception_handler(request: Request, exc: Exception):
+    logger.error(f"SERVER: Exception {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"message": "Internal Server Error"},
+    )
