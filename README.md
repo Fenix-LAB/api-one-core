@@ -24,6 +24,32 @@ To apply the black formatter to the code, you can run the following command:
 black --config .\pyproject.toml .
 ```
 
+## Deployment
+To deploy the backend, I am using AWS lambda, which is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources for you. You can deploy the backend using the following command:
+
+Build the backend using the AWS SAM CLI:
+```bash
+sam build
+```
+
+Test the backend locally using the AWS SAM CLI:
+```bash
+sam local start-api
+```
+
+This command will start a local server that simulates the AWS Lambda environment. You can test the backend by sending requests to the local server using a tool like Postman or curl.
+
+Deploy the backend using the AWS SAM CLI:
+```bash
+sam deploy --guided
+```
+This command will prompt you for some information, such as the stack name, AWS region, and whether you want to save the configuration for future deployments. After providing the required information, the command will deploy the backend to AWS Lambda.
+
+To create a sam package, you can run the following command:
+```bash
+sam package --output-template-file packaged.yaml --s3-bucket <your-s3-bucket>
+```
+
 ## Create database backup
 To create a backup of the database, first enter the database container:
 ```bash
