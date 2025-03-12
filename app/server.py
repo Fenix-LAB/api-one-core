@@ -18,9 +18,6 @@ from app.middleware import (
 
 
 def init_routers(app_: FastAPI) -> None:
-    # container = Container()
-    # user_router.container = container
-    # auth_router.container = container
     app_.include_router(router, prefix=config.ROUTE_PATH)
     # app_.include_router(auth_router)
 
@@ -50,11 +47,9 @@ def create_app() -> FastAPI:
         version="1.0.0",
         docs_url=None if config.ENV == "production" else "/docs",
         redoc_url=None if config.ENV == "production" else "/redoc",
-        # dependencies=[Depends(Logging)],
         middleware=make_middleware(),
     )
     init_routers(app_=app_)
-    # app_.add_event_handler("startup", create_tables)
     logger.info("SERVER: Event 'start up'")
 
     @app_.on_event("startup")
@@ -66,10 +61,6 @@ def create_app() -> FastAPI:
         pass
 
     logger.info("SERVER: App created")
-    # await create_tables(engine)
-    # init_listeners(app_=app_)
-    # init_cache()
-    # logger.info("App created")
     return app_
 
 
